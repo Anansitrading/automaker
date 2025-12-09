@@ -706,56 +706,55 @@ export function BoardView() {
   const handleSendFollowUp = async () => {
     if (!currentProject || !followUpFeature || !followUpPrompt.trim()) return;
 
+    // Save values before clearing state
+    const featureId = followUpFeature.id;
+    const featureDescription = followUpFeature.description;
+    const prompt = followUpPrompt;
+    const imagePaths = followUpImagePaths.map(img => img.path);
+
     console.log("[Board] Sending follow-up prompt for feature:", {
-      id: followUpFeature.id,
-      prompt: followUpPrompt,
-      imagePaths: followUpImagePaths
+      id: featureId,
+      prompt: prompt,
+      imagePaths: imagePaths
     });
 
-    try {
-      const api = getElectronAPI();
-      if (!api?.autoMode?.followUpFeature) {
-        console.error("Follow-up feature API not available");
-        toast.error("Follow-up not available", {
-          description: "This feature is not available in the current version.",
-        });
-        return;
-      }
+    const api = getElectronAPI();
+    if (!api?.autoMode?.followUpFeature) {
+      console.error("Follow-up feature API not available");
+      toast.error("Follow-up not available", {
+        description: "This feature is not available in the current version.",
+      });
+      return;
+    }
 
-      // Move feature back to in_progress before sending follow-up
-      updateFeature(followUpFeature.id, { status: "in_progress", startedAt: new Date().toISOString() });
+    // Move feature back to in_progress before sending follow-up
+    updateFeature(featureId, { status: "in_progress", startedAt: new Date().toISOString() });
 
-      // Call the API to send follow-up prompt
-      const result = await api.autoMode.followUpFeature(
-        currentProject.path,
-        followUpFeature.id,
-        followUpPrompt,
-        followUpImagePaths.map(img => img.path)
-      );
+    // Reset follow-up state immediately (close dialog, clear form)
+    setShowFollowUpDialog(false);
+    setFollowUpFeature(null);
+    setFollowUpPrompt("");
+    setFollowUpImagePaths([]);
 
-      if (result.success) {
-        console.log("[Board] Follow-up started successfully");
-        toast.success("Follow-up started", {
-          description: `Continuing work on: ${followUpFeature.description.slice(0, 50)}${followUpFeature.description.length > 50 ? "..." : ""}`,
-        });
-        setShowFollowUpDialog(false);
-        setFollowUpFeature(null);
-        setFollowUpPrompt("");
-        setFollowUpImagePaths([]);
-      } else {
-        console.error("[Board] Failed to send follow-up:", result.error);
-        toast.error("Failed to send follow-up", {
-          description: result.error || "An error occurred",
-        });
-        await loadFeatures();
-      }
-    } catch (error) {
+    // Show success toast immediately
+    toast.success("Follow-up started", {
+      description: `Continuing work on: ${featureDescription.slice(0, 50)}${featureDescription.length > 50 ? "..." : ""}`,
+    });
+
+    // Call the API in the background (don't await - let it run async)
+    api.autoMode.followUpFeature(
+      currentProject.path,
+      featureId,
+      prompt,
+      imagePaths
+    ).catch((error) => {
       console.error("[Board] Error sending follow-up:", error);
       toast.error("Failed to send follow-up", {
         description: error instanceof Error ? error.message : "An error occurred",
       });
-      await loadFeatures();
-    }
+      // Reload features to revert status if there was an error
+      loadFeatures();
+    });
   };
 
   // Handle commit-only for waiting_approval features (marks as verified and commits)

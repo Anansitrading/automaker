@@ -585,9 +585,11 @@ function createMockAutoModeAPI(): AutoModeAPI {
       mockRunningFeatures.add(featureId);
 
       // Simulate follow-up work (similar to run but with additional context)
+      // Note: We don't await this - it runs in the background like the real implementation
       simulateAutoModeLoop(projectPath, featureId);
 
-      return { success: true, passes: true };
+      // Return immediately so the modal can close (matches real implementation)
+      return { success: true };
     },
 
     commitFeature: async (projectPath: string, featureId: string) => {

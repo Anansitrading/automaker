@@ -557,6 +557,21 @@ class AutoModeService {
     execution.sendToRenderer = sendToRenderer;
     this.runningFeatures.set(featureId, execution);
 
+    // Start the async work in the background (don't await)
+    // This allows the API to return immediately so the modal can close
+    this.runFollowUpWork({ projectPath, featureId, prompt, imagePaths, sendToRenderer, execution }).catch((error) => {
+      console.error("[AutoMode] Follow-up work error:", error);
+      this.runningFeatures.delete(featureId);
+    });
+
+    // Return immediately so the frontend can close the modal
+    return { success: true };
+  }
+
+  /**
+   * Internal method to run follow-up work asynchronously
+   */
+  async runFollowUpWork({ projectPath, featureId, prompt, imagePaths, sendToRenderer, execution }) {
     try {
       // Load features
       const features = await featureLoader.loadFeatures(projectPath);
@@ -611,8 +626,6 @@ class AutoModeService {
         passes: result.passes,
         message: result.message,
       });
-
-      return { success: true, passes: result.passes };
     } catch (error) {
       console.error("[AutoMode] Error in follow-up:", error);
       sendToRenderer({
@@ -620,7 +633,6 @@ class AutoModeService {
         error: error.message,
         featureId: featureId,
       });
-      throw error;
     } finally {
       this.runningFeatures.delete(featureId);
     }
