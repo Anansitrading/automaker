@@ -1,12 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import type { LucideIcon } from "lucide-react";
 import type { Project } from "@/store/app-store";
-
-interface NavigationItem {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-}
+import type { NavigationItem } from "../config/navigation";
 
 /**
  * Custom hook for managing scroll-based navigation tracking

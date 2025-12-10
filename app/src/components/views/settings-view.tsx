@@ -5,19 +5,7 @@ import { useAppStore } from "@/store/app-store";
 import { useSetupStore } from "@/store/setup-store";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  Settings,
-  Key,
-  Keyboard,
-  Trash2,
-  Folder,
-  Terminal,
-  Atom,
-  Palette,
-  LayoutGrid,
-  Settings2,
-  FlaskConical,
-} from "lucide-react";
+import { Settings, Keyboard, Trash2, Folder } from "lucide-react";
 import { getElectronAPI } from "@/lib/electron";
 import {
   Dialog,
@@ -31,6 +19,8 @@ import { KeyboardMap, ShortcutReferencePanel } from "@/components/ui/keyboard-ma
 // Import custom hooks
 import { useCliStatus } from "./settings-view/hooks/use-cli-status";
 import { useScrollTracking } from "./settings-view/hooks/use-scroll-tracking";
+// Import config
+import { NAV_ITEMS } from "./settings-view/config/navigation";
 // Import extracted sections
 import { ApiKeysSection } from "./settings-view/api-keys/api-keys-section";
 import { ClaudeCliStatus } from "./settings-view/cli-status/claude-cli-status";
@@ -40,18 +30,6 @@ import { KanbanDisplaySection } from "./settings-view/kanban-display/kanban-disp
 import { KeyboardShortcutsSection } from "./settings-view/keyboard-shortcuts/keyboard-shortcuts-section";
 import { FeatureDefaultsSection } from "./settings-view/feature-defaults/feature-defaults-section";
 import { DangerZoneSection } from "./settings-view/danger-zone/danger-zone-section";
-
-// Navigation items for the side panel
-const NAV_ITEMS = [
-  { id: "api-keys", label: "API Keys", icon: Key },
-  { id: "claude", label: "Claude", icon: Terminal },
-  { id: "codex", label: "Codex", icon: Atom },
-  { id: "appearance", label: "Appearance", icon: Palette },
-  { id: "kanban", label: "Kanban Display", icon: LayoutGrid },
-  { id: "keyboard", label: "Keyboard Shortcuts", icon: Settings2 },
-  { id: "defaults", label: "Feature Defaults", icon: FlaskConical },
-  { id: "danger", label: "Danger Zone", icon: Trash2 },
-];
 
 export function SettingsView() {
   const {
