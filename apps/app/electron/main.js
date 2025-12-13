@@ -63,18 +63,31 @@ async function startServer() {
     command = "node";
     serverPath = path.join(process.resourcesPath, "server", "index.js");
     args = [serverPath];
+
+    // Verify server files exist
+    if (!fs.existsSync(serverPath)) {
+      throw new Error(`Server not found at: ${serverPath}`);
+    }
   }
 
   // Set environment variables for server
+  const serverNodeModules = app.isPackaged
+    ? path.join(process.resourcesPath, "server", "node_modules")
+    : path.join(__dirname, "../../server/node_modules");
+
   const env = {
     ...process.env,
     PORT: SERVER_PORT.toString(),
     DATA_DIR: app.getPath("userData"),
+    NODE_PATH: serverNodeModules,
   };
 
   console.log("[Electron] Starting backend server...");
+  console.log("[Electron] Server path:", serverPath);
+  console.log("[Electron] NODE_PATH:", serverNodeModules);
 
   serverProcess = spawn(command, args, {
+    cwd: path.dirname(serverPath),
     env,
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -89,6 +102,11 @@ async function startServer() {
 
   serverProcess.on("close", (code) => {
     console.log(`[Server] Process exited with code ${code}`);
+    serverProcess = null;
+  });
+
+  serverProcess.on("error", (err) => {
+    console.error(`[Server] Failed to start server process:`, err);
     serverProcess = null;
   });
 
