@@ -9,6 +9,7 @@ import { KeyboardMapDialog } from "./settings-view/components/keyboard-map-dialo
 import { DeleteProjectDialog } from "./settings-view/components/delete-project-dialog";
 import { SettingsNavigation } from "./settings-view/components/settings-navigation";
 import { ApiKeysSection } from "./settings-view/api-keys/api-keys-section";
+import { ClaudeUsageSection } from "./settings-view/api-keys/claude-usage-section";
 import { ClaudeCliStatus } from "./settings-view/cli-status/claude-cli-status";
 import { AIEnhancementSection } from "./settings-view/ai-enhancement";
 import { AppearanceSection } from "./settings-view/appearance/appearance-section";
@@ -46,7 +47,13 @@ export function SettingsView() {
     defaultAIProfileId,
     setDefaultAIProfileId,
     aiProfiles,
+    apiKeys,
   } = useAppStore();
+
+  // Hide usage tracking when using API key (only show for Claude Code CLI users)
+  // Also hide on Windows for now (CLI usage command not supported)
+  const isWindows = typeof navigator !== 'undefined' && navigator.platform?.toLowerCase().includes('win');
+  const showUsageTracking = !apiKeys.anthropic && !isWindows;
 
   // Convert electron Project to settings-view Project type
   const convertProject = (
@@ -92,11 +99,14 @@ export function SettingsView() {
     switch (activeView) {
       case "claude":
         return (
-          <ClaudeCliStatus
-            status={claudeCliStatus}
-            isChecking={isCheckingClaudeCli}
-            onRefresh={handleRefreshClaudeCli}
-          />
+          <div className="space-y-6">
+            <ClaudeCliStatus
+              status={claudeCliStatus}
+              isChecking={isCheckingClaudeCli}
+              onRefresh={handleRefreshClaudeCli}
+            />
+            {showUsageTracking && <ClaudeUsageSection />}
+          </div>
         );
       case "ai-enhancement":
         return <AIEnhancementSection />;

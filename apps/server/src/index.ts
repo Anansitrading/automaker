@@ -44,6 +44,8 @@ import { AutoModeService } from "./services/auto-mode-service.js";
 import { getTerminalService } from "./services/terminal-service.js";
 import { SettingsService } from "./services/settings-service.js";
 import { createSpecRegenerationRoutes } from "./routes/app-spec/index.js";
+import { createClaudeRoutes } from "./routes/claude/index.js";
+import { ClaudeUsageService } from "./services/claude-usage-service.js";
 
 // Load environment variables
 dotenv.config();
@@ -111,6 +113,7 @@ const agentService = new AgentService(DATA_DIR, events);
 const featureLoader = new FeatureLoader();
 const autoModeService = new AutoModeService(events);
 const settingsService = new SettingsService(DATA_DIR);
+const claudeUsageService = new ClaudeUsageService();
 
 // Initialize services
 (async () => {
@@ -141,6 +144,7 @@ app.use("/api/workspace", createWorkspaceRoutes());
 app.use("/api/templates", createTemplatesRoutes());
 app.use("/api/terminal", createTerminalRoutes());
 app.use("/api/settings", createSettingsRoutes(settingsService));
+app.use("/api/claude", createClaudeRoutes(claudeUsageService));
 
 // Create HTTP server
 const server = createServer(app);

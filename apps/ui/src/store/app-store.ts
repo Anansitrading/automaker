@@ -431,6 +431,75 @@ export interface AppState {
     planContent: string;
     planningMode: 'lite' | 'spec' | 'full';
   } | null;
+
+  // Claude Usage Tracking
+  claudeRefreshInterval: number; // Refresh interval in seconds (default: 60)
+  claudeUsage: ClaudeUsage | null;
+  claudeUsageLastUpdated: number | null;
+}
+
+// Claude Usage interface matching the server response
+export type ClaudeUsage = {
+  sessionTokensUsed: number;
+  sessionLimit: number;
+  sessionPercentage: number;
+  sessionResetTime: string;
+  sessionResetText: string;
+
+  weeklyTokensUsed: number;
+  weeklyLimit: number;
+  weeklyPercentage: number;
+  weeklyResetTime: string;
+  weeklyResetText: string;
+
+  sonnetWeeklyTokensUsed: number;
+  sonnetWeeklyPercentage: number;
+  sonnetResetText: string;
+
+  costUsed: number | null;
+  costLimit: number | null;
+  costCurrency: string | null;
+
+  lastUpdated: string;
+  userTimezone: string;
+};
+
+// Response type for Claude usage API (can be success or error)
+export type ClaudeUsageResponse =
+  | ClaudeUsage
+  | { error: string; message?: string };
+
+/**
+ * Check if Claude usage is at its limit (any of: session >= 100%, weekly >= 100%, OR cost >= limit)
+ * Returns true if any limit is reached, meaning auto mode should pause feature pickup.
+ */
+export function isClaudeUsageAtLimit(claudeUsage: ClaudeUsage | null): boolean {
+  if (!claudeUsage) {
+    // No usage data available - don't block
+    return false;
+  }
+
+  // Check session limit (5-hour window)
+  if (claudeUsage.sessionPercentage >= 100) {
+    return true;
+  }
+
+  // Check weekly limit
+  if (claudeUsage.weeklyPercentage >= 100) {
+    return true;
+  }
+
+  // Check cost limit (if configured)
+  if (
+    claudeUsage.costLimit !== null &&
+    claudeUsage.costLimit > 0 &&
+    claudeUsage.costUsed !== null &&
+    claudeUsage.costUsed >= claudeUsage.costLimit
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 // Default background settings for board backgrounds
@@ -665,6 +734,11 @@ export interface AppActions {
     } | null
   ) => void;
 
+  // Claude Usage Tracking actions
+  setClaudeRefreshInterval: (interval: number) => void;
+  setClaudeUsageLastUpdated: (timestamp: number) => void;
+  setClaudeUsage: (usage: ClaudeUsage | null) => void;
+
   // Reset
   reset: () => void;
 }
@@ -756,6 +830,9 @@ const initialState: AppState = {
   defaultRequirePlanApproval: false,
   defaultAIProfileId: null,
   pendingPlanApproval: null,
+  claudeRefreshInterval: 60,
+  claudeUsage: null,
+  claudeUsageLastUpdated: null,
 };
 
 export const useAppStore = create<AppState & AppActions>()(
@@ -1052,8 +1129,10 @@ export const useAppStore = create<AppState & AppActions>()(
       },
 
       addFeature: (feature) => {
-        const id = feature.id || `feature-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        const featureWithId = { ...feature, id } as Feature;
+        const id =
+          feature.id ||
+          `feature-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        const featureWithId = { ...feature, id } as unknown as Feature;
         set({ features: [...get().features, featureWithId] });
         return featureWithId;
       },
@@ -2096,6 +2175,14 @@ export const useAppStore = create<AppState & AppActions>()(
       // Plan Approval actions
       setPendingPlanApproval: (approval) => set({ pendingPlanApproval: approval }),
 
+      // Claude Usage Tracking actions
+      setClaudeRefreshInterval: (interval: number) => set({ claudeRefreshInterval: interval }),
+      setClaudeUsageLastUpdated: (timestamp: number) => set({ claudeUsageLastUpdated: timestamp }),
+      setClaudeUsage: (usage: ClaudeUsage | null) => set({
+        claudeUsage: usage,
+        claudeUsageLastUpdated: usage ? Date.now() : null,
+      }),
+
       // Reset
       reset: () => set(initialState),
     }),
@@ -2168,6 +2255,10 @@ export const useAppStore = create<AppState & AppActions>()(
         defaultPlanningMode: state.defaultPlanningMode,
         defaultRequirePlanApproval: state.defaultRequirePlanApproval,
         defaultAIProfileId: state.defaultAIProfileId,
+        // Claude usage tracking
+        claudeUsage: state.claudeUsage,
+        claudeUsageLastUpdated: state.claudeUsageLastUpdated,
+        claudeRefreshInterval: state.claudeRefreshInterval,
       }),
     }
   )

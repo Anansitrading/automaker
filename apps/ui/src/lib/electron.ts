@@ -1,5 +1,6 @@
 // Type definitions for Electron IPC API
 import type { SessionListItem, Message } from "@/types/electron";
+import type { ClaudeUsageResponse } from "@/store/app-store";
 import { getJSON, setJSON, removeItem } from "./storage";
 
 export interface FileEntry {
@@ -482,6 +483,9 @@ export interface ElectronAPI {
       sessionId: string
     ) => Promise<{ success: boolean; error?: string }>;
   };
+  claude?: {
+    getUsage: () => Promise<ClaudeUsageResponse>;
+  };
 }
 
 // Note: Window interface is declared in @/types/electron.d.ts
@@ -879,6 +883,33 @@ const getMockElectronAPI = (): ElectronAPI => {
 
     // Mock Running Agents API
     runningAgents: createMockRunningAgentsAPI(),
+
+    // Mock Claude API
+    claude: {
+      getUsage: async () => {
+        console.log("[Mock] Getting Claude usage");
+        return {
+          sessionTokensUsed: 0,
+          sessionLimit: 0,
+          sessionPercentage: 15,
+          sessionResetTime: new Date(Date.now() + 3600000).toISOString(),
+          sessionResetText: "Resets in 1h",
+          weeklyTokensUsed: 0,
+          weeklyLimit: 0,
+          weeklyPercentage: 5,
+          weeklyResetTime: new Date(Date.now() + 86400000 * 2).toISOString(),
+          weeklyResetText: "Resets Dec 23",
+          sonnetWeeklyTokensUsed: 0,
+          sonnetWeeklyPercentage: 1,
+          sonnetResetText: "Resets Dec 27",
+          costUsed: null,
+          costLimit: null,
+          costCurrency: null,
+          lastUpdated: new Date().toISOString(),
+          userTimezone: "UTC"
+        };
+      },
+    }
   };
 };
 
