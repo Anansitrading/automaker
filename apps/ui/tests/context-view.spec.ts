@@ -205,36 +205,16 @@ test.describe('Context View - File Management', () => {
 
     await navigateToContext(page);
 
-    // Click Add File button
-    await clickElement(page, 'add-context-file');
-    await page.waitForSelector('[data-testid="add-context-dialog"]', {
-      timeout: 5000,
-    });
+    // Use the hidden file input to upload an image directly
+    // The "Import File" button triggers this input
+    const fileInput = page.locator('[data-testid="file-import-input"]');
+    await fileInput.setInputFiles(TEST_IMAGE_SRC);
 
-    // Select image type
-    await clickElement(page, 'add-image-type');
-
-    // Enter filename
-    await fillInput(page, 'new-file-name', 'test-image.png');
-
-    // Upload image using file input
-    await page.setInputFiles('[data-testid="image-upload-input"]', TEST_IMAGE_SRC);
-
-    // Wait for image preview to appear (indicates upload success)
-    const addDialog = await getByTestId(page, 'add-context-dialog');
-    await addDialog.locator('img').waitFor({ state: 'visible' });
-
-    // Click confirm
-    await clickElement(page, 'confirm-add-file');
-
-    // Wait for dialog to close
-    await page.waitForFunction(
-      () => !document.querySelector('[data-testid="add-context-dialog"]'),
-      { timeout: 5000 }
-    );
+    // Wait for file to appear in the list (filename is extracted from path)
+    await waitForContextFile(page, 'logo.png', 10000);
 
     // Verify file appears in list
-    const fileButton = await getByTestId(page, 'context-file-test-image.png');
+    const fileButton = await getByTestId(page, 'context-file-logo.png');
     await expect(fileButton).toBeVisible();
 
     // Click on the image to view it
