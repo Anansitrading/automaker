@@ -127,21 +127,6 @@ function PathInput({
     }
   }, [error, isEditing]);
 
-  // Focus search input when search opens
-  useEffect(() => {
-    if (isSearchOpen) {
-      // Small delay to ensure the CommandInput is rendered
-      setTimeout(() => {
-        const searchInput = containerRef.current?.querySelector(
-          '[data-slot="command-input"]'
-        ) as HTMLInputElement;
-        if (searchInput) {
-          searchInput.focus();
-        }
-      }, 0);
-    }
-  }, [isSearchOpen]);
-
   const handleGoToParent = useCallback(() => {
     if (parentPath) {
       onNavigate(parentPath);
@@ -308,7 +293,11 @@ function PathInput({
               <div className="absolute inset-0 bg-popover border border-border rounded-md shadow-lg">
                 <Command className="h-auto max-h-[300px]">
                   <div className="flex items-center gap-2 px-3 **:data-[slot=command-input-wrapper]:border-0 **:data-[slot=command-input-wrapper]:px-0">
-                    <CommandInput placeholder={searchPlaceholder} className="h-8 flex-1" />
+                    <CommandInput
+                      autoFocus
+                      placeholder={searchPlaceholder}
+                      className="h-8 flex-1"
+                    />
                     <div className="flex items-center gap-1 shrink-0 ml-auto">
                       <Button
                         variant="ghost"
