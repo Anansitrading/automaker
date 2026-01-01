@@ -226,6 +226,7 @@ export async function syncSettingsToServer(): Promise<boolean> {
       validationModel: state.validationModel,
       autoLoadClaudeMd: state.autoLoadClaudeMd,
       enableSandboxMode: state.enableSandboxMode,
+      skipSandboxWarning: state.skipSandboxWarning,
       keyboardShortcuts: state.keyboardShortcuts,
       aiProfiles: state.aiProfiles,
       mcpServers: state.mcpServers,
