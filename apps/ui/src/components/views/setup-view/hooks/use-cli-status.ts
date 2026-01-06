@@ -7,6 +7,7 @@ interface UseCliStatusOptions {
   setCliStatus: (status: any) => void;
   setAuthStatus: (status: any) => void;
 }
+const logger = createLogger('CliStatus');
 
 export function useCliStatus({
   cliType,
@@ -15,7 +16,6 @@ export function useCliStatus({
   setAuthStatus,
 }: UseCliStatusOptions) {
   const [isChecking, setIsChecking] = useState(false);
-  const logger = createLogger('CliStatus');
 
   const checkStatus = useCallback(async () => {
     logger.info(`Starting status check for ${cliType}...`);
