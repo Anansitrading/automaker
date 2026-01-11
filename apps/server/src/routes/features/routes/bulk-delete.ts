@@ -30,23 +30,22 @@ export function createBulkDeleteHandler(featureLoader: FeatureLoader) {
         return;
       }
 
-      const results: BulkDeleteResult[] = [];
-
-      for (const featureId of featureIds) {
-        try {
+      const results = await Promise.all(
+        featureIds.map(async (featureId) => {
           const success = await featureLoader.delete(projectPath, featureId);
-          results.push({ featureId, success });
-        } catch (error) {
-          results.push({
+          if (success) {
+            return { featureId, success: true };
+          }
+          return {
             featureId,
             success: false,
-            error: getErrorMessage(error),
-          });
-        }
-      }
+            error: 'Deletion failed. Check server logs for details.',
+          };
+        })
+      );
 
-      const successCount = results.filter((r) => r.success).length;
-      const failureCount = results.filter((r) => !r.success).length;
+      const successCount = results.reduce((count, r) => count + (r.success ? 1 : 0), 0);
+      const failureCount = results.length - successCount;
 
       res.json({
         success: failureCount === 0,

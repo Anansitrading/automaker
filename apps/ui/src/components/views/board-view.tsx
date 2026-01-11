@@ -514,24 +514,35 @@ export function BoardView() {
       const featureIds = Array.from(selectedFeatureIds);
       const result = await api.features.bulkDelete(currentProject.path, featureIds);
 
-      if (result.success) {
-        // Delete from local state
-        featureIds.forEach((featureId) => {
-          persistFeatureDelete(featureId);
+      const successfullyDeletedIds =
+        result.results?.filter((r) => r.success).map((r) => r.featureId) ?? [];
+
+      if (successfullyDeletedIds.length > 0) {
+        // Delete from local state without calling the API again
+        successfullyDeletedIds.forEach((featureId) => {
+          useAppStore.getState().removeFeature(featureId);
         });
-        toast.success(`Deleted ${result.deletedCount} features`);
-        exitSelectionMode();
-        loadFeatures();
-      } else {
+        toast.success(`Deleted ${successfullyDeletedIds.length} features`);
+      }
+
+      if (result.failedCount && result.failedCount > 0) {
         toast.error('Failed to delete some features', {
           description: `${result.failedCount} features failed to delete`,
         });
+      }
+
+      // Exit selection mode and reload if the operation was at least partially processed.
+      if (result.results) {
+        exitSelectionMode();
+        loadFeatures();
+      } else if (!result.success) {
+        toast.error('Failed to delete features', { description: result.error });
       }
     } catch (error) {
       logger.error('Bulk delete failed:', error);
       toast.error('Failed to delete features');
     }
-  }, [currentProject, selectedFeatureIds, persistFeatureDelete, exitSelectionMode, loadFeatures]);
+  }, [currentProject, selectedFeatureIds, exitSelectionMode, loadFeatures]);
 
   // Get selected features for mass edit dialog
   const selectedFeatures = useMemo(() => {
