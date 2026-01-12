@@ -11,12 +11,8 @@ import type { OpencodeAuthStatus, OpenCodeProviderInfo } from '../cli-status/ope
 
 const logger = createLogger('OpencodeSettings');
 const OPENCODE_PROVIDER_ID = 'opencode';
-const OPENCODE_BEDROCK_PROVIDER_ID = 'amazon-bedrock';
 const OPENCODE_PROVIDER_SIGNATURE_SEPARATOR = '|';
-const OPENCODE_STATIC_MODEL_PROVIDERS = new Set([
-  OPENCODE_PROVIDER_ID,
-  OPENCODE_BEDROCK_PROVIDER_ID,
-]);
+const OPENCODE_STATIC_MODEL_PROVIDERS = new Set([OPENCODE_PROVIDER_ID]);
 
 export function OpencodeSettingsTab() {
   const {
