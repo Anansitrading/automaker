@@ -46,6 +46,7 @@ const SETTINGS_FIELDS_TO_SYNC = [
   'cursorDefaultModel',
   'enabledOpencodeModels',
   'opencodeDefaultModel',
+  'enabledDynamicModelIds',
   'autoLoadClaudeMd',
   'keyboardShortcuts',
   'mcpServers',

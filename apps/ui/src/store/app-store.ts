@@ -592,7 +592,7 @@ export interface AppState {
   // Dynamic models are session-only (not persisted) because they're discovered at runtime
   // from `opencode models` CLI and depend on current provider authentication state
   dynamicOpencodeModels: ModelDefinition[]; // Dynamically discovered models from OpenCode CLI
-  enabledDynamicModelIds: string[]; // Which dynamic models are enabled (session-only)
+  enabledDynamicModelIds: string[]; // Which dynamic models are enabled
   cachedOpencodeProviders: Array<{
     id: string;
     name: string;
@@ -1241,7 +1241,7 @@ const initialState: AppState = {
   enabledOpencodeModels: getAllOpencodeModelIds(), // All OpenCode models enabled by default
   opencodeDefaultModel: DEFAULT_OPENCODE_MODEL, // Default to OpenCode free tier
   dynamicOpencodeModels: [], // Empty until fetched from OpenCode CLI
-  enabledDynamicModelIds: [], // All dynamic models enabled by default (populated when models are fetched)
+  enabledDynamicModelIds: [], // Empty until user enables dynamic models
   cachedOpencodeProviders: [], // Empty until fetched from OpenCode CLI
   autoLoadClaudeMd: false, // Default to disabled (user must opt-in)
   skipSandboxWarning: false, // Default to disabled (show sandbox warning dialog)
@@ -2041,9 +2041,8 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
         : state.enabledOpencodeModels.filter((m) => m !== model),
     })),
   setDynamicOpencodeModels: (models) => {
-    // Dynamic models are session-only (not persisted to server) because they depend on
-    // current CLI authentication state and are re-discovered each session
-    // When setting dynamic models, auto-enable all of them if enabledDynamicModelIds is empty
+    // Dynamic models depend on CLI authentication state and are re-discovered each session.
+    // Persist enabled model IDs, but do not auto-enable new models.
     const filteredModels = models.filter(
       (model) =>
         model.provider !== OPENCODE_BEDROCK_PROVIDER_ID &&
@@ -2051,14 +2050,10 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
     );
     const currentEnabled = get().enabledDynamicModelIds;
     const newModelIds = filteredModels.map((m) => m.id);
+    const filteredEnabled = currentEnabled.filter((modelId) => newModelIds.includes(modelId));
 
-    // If no models were previously enabled, enable all new ones
-    if (currentEnabled.length === 0) {
-      set({ dynamicOpencodeModels: filteredModels, enabledDynamicModelIds: newModelIds });
-    } else {
-      // Keep existing enabled state, just update the models list
-      set({ dynamicOpencodeModels: filteredModels });
-    }
+    const nextEnabled = currentEnabled.length === 0 ? [] : filteredEnabled;
+    set({ dynamicOpencodeModels: filteredModels, enabledDynamicModelIds: nextEnabled });
   },
   setEnabledDynamicModelIds: (ids) => set({ enabledDynamicModelIds: ids }),
   toggleDynamicModel: (modelId, enabled) =>

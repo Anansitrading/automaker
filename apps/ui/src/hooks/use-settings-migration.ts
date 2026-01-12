@@ -158,6 +158,8 @@ export function parseLocalStorageSettings(): Partial<GlobalSettings> | null {
       cursorDefaultModel: state.cursorDefaultModel as GlobalSettings['cursorDefaultModel'],
       enabledOpencodeModels: state.enabledOpencodeModels as GlobalSettings['enabledOpencodeModels'],
       opencodeDefaultModel: state.opencodeDefaultModel as GlobalSettings['opencodeDefaultModel'],
+      enabledDynamicModelIds:
+        state.enabledDynamicModelIds as GlobalSettings['enabledDynamicModelIds'],
       autoLoadClaudeMd: state.autoLoadClaudeMd as boolean,
       keyboardShortcuts: state.keyboardShortcuts as GlobalSettings['keyboardShortcuts'],
       mcpServers: state.mcpServers as GlobalSettings['mcpServers'],
@@ -517,6 +519,12 @@ export function hydrateStoreFromSettings(settings: GlobalSettings): void {
     sanitizedEnabledOpencodeModels.push(sanitizedOpencodeDefaultModel);
   }
 
+  const persistedDynamicModelIds =
+    settings.enabledDynamicModelIds ?? current.enabledDynamicModelIds;
+  const sanitizedDynamicModelIds = persistedDynamicModelIds.filter(
+    (modelId) => !modelId.startsWith('amazon-bedrock/')
+  );
+
   // Convert ProjectRef[] to Project[] (minimal data, features will be loaded separately)
   const projects = (settings.projects ?? []).map((ref) => ({
     id: ref.id,
@@ -562,6 +570,7 @@ export function hydrateStoreFromSettings(settings: GlobalSettings): void {
     cursorDefaultModel: settings.cursorDefaultModel ?? 'auto',
     enabledOpencodeModels: sanitizedEnabledOpencodeModels,
     opencodeDefaultModel: sanitizedOpencodeDefaultModel,
+    enabledDynamicModelIds: sanitizedDynamicModelIds,
     autoLoadClaudeMd: settings.autoLoadClaudeMd ?? false,
     skipSandboxWarning: settings.skipSandboxWarning ?? false,
     keyboardShortcuts: {
@@ -615,6 +624,7 @@ function buildSettingsUpdateFromStore(): Record<string, unknown> {
     enhancementModel: state.enhancementModel,
     validationModel: state.validationModel,
     phaseModels: state.phaseModels,
+    enabledDynamicModelIds: state.enabledDynamicModelIds,
     autoLoadClaudeMd: state.autoLoadClaudeMd,
     skipSandboxWarning: state.skipSandboxWarning,
     keyboardShortcuts: state.keyboardShortcuts,
