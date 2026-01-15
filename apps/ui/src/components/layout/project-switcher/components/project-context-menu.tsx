@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo, useCallback } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { Edit2, Trash2, Palette, ChevronRight, Moon, Sun, Monitor } from 'lucide-react';
 import { toast } from 'sonner';
@@ -8,6 +8,9 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import type { Project } from '@/lib/electron';
 import { PROJECT_DARK_THEMES, PROJECT_LIGHT_THEMES } from '@/components/layout/sidebar/constants';
 import { useThemePreview } from '@/components/layout/sidebar/hooks';
+
+// Constant for "use global theme" option
+const USE_GLOBAL_THEME = '' as const;
 
 // Constants for z-index values
 const Z_INDEX = {
@@ -125,6 +128,7 @@ export function ProjectContextMenu({
   } = useAppStore();
   const [showRemoveDialog, setShowRemoveDialog] = useState(false);
   const [showThemeSubmenu, setShowThemeSubmenu] = useState(false);
+  const [removeConfirmed, setRemoveConfirmed] = useState(false);
   const themeSubmenuRef = useRef<HTMLDivElement>(null);
 
   const { handlePreviewEnter, handlePreviewLeave } = useThemePreview({ setPreviewTheme });
@@ -167,24 +171,41 @@ export function ProjectContextMenu({
     setShowRemoveDialog(true);
   };
 
-  const handleThemeSelect = (value: ThemeMode | '') => {
-    setPreviewTheme(null);
-    if (value !== '') {
-      setTheme(value);
-    } else {
-      setTheme(globalTheme);
-    }
-    setProjectTheme(project.id, value === '' ? null : value);
-    setShowThemeSubmenu(false);
-  };
+  const handleThemeSelect = useCallback(
+    (value: ThemeMode | typeof USE_GLOBAL_THEME) => {
+      setPreviewTheme(null);
+      const isUsingGlobal = value === USE_GLOBAL_THEME;
+      setTheme(isUsingGlobal ? globalTheme : value);
+      setProjectTheme(project.id, isUsingGlobal ? null : value);
+      setShowThemeSubmenu(false);
+    },
+    [globalTheme, project.id, setPreviewTheme, setProjectTheme, setTheme]
+  );
 
-  const handleConfirmRemove = () => {
+  const handleConfirmRemove = useCallback(() => {
     moveProjectToTrash(project.id);
     toast.success('Project removed', {
       description: `${project.name} has been removed from your projects list`,
     });
-    onClose();
-  };
+    setRemoveConfirmed(true);
+  }, [moveProjectToTrash, project.id, project.name]);
+
+  const handleDialogClose = useCallback(
+    (isOpen: boolean) => {
+      setShowRemoveDialog(isOpen);
+      // Only close the context menu after dialog closes if removal was confirmed
+      // This prevents race condition where onClose unmounts the component
+      // before ConfirmDialog finishes its internal state cleanup
+      if (!isOpen && removeConfirmed) {
+        onClose();
+      }
+      // Reset confirmation state when dialog closes (for potential reopen)
+      if (!isOpen) {
+        setRemoveConfirmed(false);
+      }
+    },
+    [onClose, removeConfirmed]
+  );
 
   return (
     <>
@@ -267,7 +288,7 @@ export function ProjectContextMenu({
                     <button
                       onPointerEnter={() => handlePreviewEnter(globalTheme)}
                       onPointerLeave={handlePreviewLeave}
-                      onClick={() => handleThemeSelect('')}
+                      onClick={() => handleThemeSelect(USE_GLOBAL_THEME)}
                       className={cn(
                         'w-full flex items-center gap-2 px-3 py-2 rounded-md',
                         'text-sm font-medium text-left',
@@ -332,7 +353,7 @@ export function ProjectContextMenu({
 
       <ConfirmDialog
         open={showRemoveDialog}
-        onOpenChange={setShowRemoveDialog}
+        onOpenChange={handleDialogClose}
         onConfirm={handleConfirmRemove}
         title="Remove Project"
         description={`Are you sure you want to remove "${project.name}" from the project list? This won't delete any files on disk.`}
