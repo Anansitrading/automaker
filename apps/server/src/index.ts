@@ -83,6 +83,7 @@ import { createNotificationsRoutes } from './routes/notifications/index.js';
 import { getNotificationService } from './services/notification-service.js';
 import { createEventHistoryRoutes } from './routes/event-history/index.js';
 import { getEventHistoryService } from './services/event-history-service.js';
+import { getTelemetryService } from './services/telemetry/telemetry-service.js';
 
 // Load environment variables
 dotenv.config();
@@ -224,6 +225,9 @@ const eventHistoryService = getEventHistoryService();
 // Initialize Event Hook Service for custom event triggers (with history storage)
 eventHookService.initialize(events, settingsService, eventHistoryService);
 
+// Initialize Telemetry Service
+const telemetryService = getTelemetryService();
+
 // Initialize services
 (async () => {
   // Apply logging settings from saved settings
@@ -247,6 +251,11 @@ eventHookService.initialize(events, settingsService, eventHistoryService);
   // Bootstrap Codex model cache in background (don't block server startup)
   void codexModelCacheService.getModels().catch((err) => {
     logger.error('Failed to bootstrap Codex model cache:', err);
+  });
+
+  // Start Telemetry Service (OTLP Receiver)
+  telemetryService.start().catch((err) => {
+    logger.error('Failed to start TelemetryService:', err);
   });
 })();
 
@@ -687,6 +696,7 @@ process.on('uncaughtException', (error: Error) => {
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received, shutting down...');
   terminalService.cleanup();
+  telemetryService.stop();
   server.close(() => {
     logger.info('Server closed');
     process.exit(0);
@@ -696,6 +706,7 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down...');
   terminalService.cleanup();
+  telemetryService.stop();
   server.close(() => {
     logger.info('Server closed');
     process.exit(0);
