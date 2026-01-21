@@ -149,6 +149,37 @@ export class CodexModelCacheService {
     try {
       // Check if app-server is available
       const isAvailable = await this.appServerService.isAvailable();
+
+      // FALLBACK: If CLI is not available but we have an OpenAI API Key (e.g. in CI or limited env),
+      // provide default models so the UI doesn't block.
+      if (!isAvailable && process.env.OPENAI_API_KEY) {
+        logger.info('[doRefresh] CLI unavailable but OPENAI_API_KEY found. Using fallback models.');
+        const fallbackModels: CodexModel[] = [
+          {
+            id: 'codex-gpt-4o',
+            label: 'GPT-4o (Fallback)',
+            description: 'Fallback model using direct OpenAI API',
+            hasThinking: false,
+            supportsVision: true,
+            tier: 'premium',
+            isDefault: true,
+          },
+          {
+            id: 'codex-gpt-4o-mini',
+            label: 'GPT-4o Mini (Fallback)',
+            description: 'Fast fallback model using direct OpenAI API',
+            hasThinking: false,
+            supportsVision: true,
+            tier: 'basic',
+            isDefault: false,
+          },
+        ];
+
+        // Save to cache so subsequent requests are fast
+        await this.saveToCache(fallbackModels);
+        return fallbackModels;
+      }
+
       if (!isAvailable) {
         return [];
       }
