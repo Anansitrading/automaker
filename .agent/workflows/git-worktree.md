@@ -13,18 +13,17 @@ This workflow describes how to safely use git worktrees for feature development 
 
 2. **Create a new worktree for a feature**:
    ```bash
-   git worktree add ../automaker-feature-<name> -b feature/<name>
+   git worktree add ../automaker-worktree-<name> -b feature/<name>
    ```
 
 3. **Navigate to the worktree**:
-   - `cd ../automaker-feature-<name>`
+   - `cd ../automaker-worktree-<name>`
 
 4. **Remove worktree after completion**:
    ```bash
-   git worktree remove ../automaker-feature-<name>
+   git worktree remove ../automaker-worktree-<name>
    git branch -d feature/<name>
    ```
 
-// turbo
 5. **Verify current setup**:
    git status
