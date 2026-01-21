@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { createLogger } from '@automaker/utils';
 import { spritesConfig } from '../config/sprites.js';
 
@@ -37,50 +38,46 @@ export interface SpriteConfig {
  * SpriteApiClient - Client for interacting with the Sprites.dev REST API
  * 
  * Handles sprite lifecycle, command execution, and state management.
- * Uses native Node 22 fetch for communication.
+ * Uses axios for communication.
  */
 export class SpriteApiClient extends EventEmitter {
-    private apiBase: string;
-    private token: string;
+    private axiosInstance: AxiosInstance;
     private statusCache: Map<string, Sprite> = new Map();
 
     constructor() {
         super();
-        this.apiBase = spritesConfig.SPRITES_API_BASE || 'https://api.sprites.dev/v1';
-        this.token = spritesConfig.SPRITES_TOKEN || '';
+        const apiBase = spritesConfig.SPRITES_API_BASE || 'https://api.sprites.dev/v1';
+        const token = spritesConfig.SPRITES_TOKEN || '';
 
-        if (!this.token) {
+        if (!token) {
             logger.warn('SPRITES_TOKEN is not configured. API calls will fail.');
         }
+
+        this.axiosInstance = axios.create({
+            baseURL: apiBase,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
     }
 
     /**
-     * Helper to perform authenticated fetch requests
+     * Helper to perform authenticated requests using axios
      */
-    private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
-        const url = `${this.apiBase}${path.startsWith('/') ? path : `/${path}`}`;
-        const headers = {
-            'Authorization': `Bearer ${this.token}`,
-            'Content-Type': 'application/json',
-            ...options.headers,
-        };
-
+    private async request<T>(url: string, options: any = {}): Promise<T> {
         try {
-            const response = await fetch(url, { ...options, headers });
+            const response: AxiosResponse<T> = await this.axiosInstance({
+                url,
+                ...options,
+            });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Sprites API Error (${response.status}): ${errorText || response.statusText}`);
-            }
-
-            if (response.status === 204) {
-                return {} as T;
-            }
-
-            return (await response.json()) as T;
-        } catch (error) {
-            logger.error(`Request to ${url} failed:`, error);
-            throw error;
+            return response.data;
+        } catch (error: any) {
+            const status = error.response?.status;
+            const errorText = error.response?.data ? JSON.stringify(error.response.data) : error.message;
+            logger.error(`Request to ${url} failed (${status}):`, errorText);
+            throw new Error(`Sprites API Error (${status || 'Unknown'}): ${errorText}`);
         }
     }
 
@@ -113,7 +110,7 @@ export class SpriteApiClient extends EventEmitter {
         logger.info(`Creating sprite: ${config.name}`);
         const sprite = await this.request<Sprite>('/sprites', {
             method: 'POST',
-            body: JSON.stringify({
+            data: JSON.stringify({
                 ...config,
                 repoUrl: config.repoUrl || spritesConfig.DEFAULT_REPO_URL,
                 branch: config.branch || spritesConfig.DEFAULT_BRANCH,
@@ -147,7 +144,7 @@ export class SpriteApiClient extends EventEmitter {
 
         const result = await this.request<ExecResult>(`/sprites/${spriteId}/exec`, {
             method: 'POST',
-            body: JSON.stringify({ command, timeout }),
+            data: JSON.stringify({ command, timeout }),
         });
 
         return result;
@@ -164,7 +161,7 @@ export class SpriteApiClient extends EventEmitter {
         logger.info(`Creating checkpoint '${name}' for sprite ${spriteId}`);
         return this.request<Checkpoint>(`/sprites/${spriteId}/checkpoints`, {
             method: 'POST',
-            body: JSON.stringify({ name }),
+            data: JSON.stringify({ name }),
         });
     }
 
@@ -175,7 +172,7 @@ export class SpriteApiClient extends EventEmitter {
         logger.info(`Restoring sprite ${spriteId} to checkpoint ${checkpointId}`);
         await this.request(`/sprites/${spriteId}/restore`, {
             method: 'POST',
-            body: JSON.stringify({ checkpointId }),
+            data: JSON.stringify({ checkpointId }),
         });
         this.emit('spriteRestored', { spriteId, checkpointId });
     }
@@ -220,7 +217,8 @@ export class SpriteApiClient extends EventEmitter {
      * Get the console URL for a sprite in the Sprites dashboard
      */
     getConsoleUrl(spriteName: string): string {
-        const baseUrl = this.apiBase.replace('/v1', '').replace('api.', '');
+        const apiBase = this.axiosInstance.defaults.baseURL || '';
+        const baseUrl = apiBase.replace('/v1', '').replace('api.', '');
         return `${baseUrl}/dashboard/sprites/${spriteName}`;
     }
 

@@ -1,4 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import axios from 'axios';
 import { SpriteApiClient } from '../../../src/services/sprite-api-client.js';
 
 // Mock the config
@@ -11,17 +12,29 @@ vi.mock('../../../src/config/sprites.js', () => ({
     }
 }));
 
+// Mock axios
+vi.mock('axios', () => {
+    return {
+        default: {
+            create: vi.fn(),
+        }
+    };
+});
+
 describe('SpriteApiClient', () => {
     let client: SpriteApiClient;
+    let mockAxiosInstance: any;
 
     beforeEach(() => {
-        client = new SpriteApiClient();
-        // Reset global fetch mock
-        vi.stubGlobal('fetch', vi.fn());
-    });
+        vi.clearAllMocks();
 
-    afterEach(() => {
-        vi.unstubAllGlobals();
+        mockAxiosInstance = vi.fn();
+        mockAxiosInstance.defaults = { baseURL: 'https://api.test.dev/v1' };
+
+        // Setup the create mock to return our instance mock
+        vi.mocked(axios.create).mockReturnValue(mockAxiosInstance);
+
+        client = new SpriteApiClient();
     });
 
     describe('Sprite CRUD', () => {
@@ -31,26 +44,31 @@ describe('SpriteApiClient', () => {
                 { id: 's2', name: 'sprite2', status: 'hibernating' }
             ];
 
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockSprites
-            } as Response);
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: mockSprites,
+                status: 200
+            });
 
             const sprites = await client.listSprites();
 
-            expect(fetch).toHaveBeenCalledWith('https://api.test.dev/v1/sprites', expect.objectContaining({
+            expect(axios.create).toHaveBeenCalledWith(expect.objectContaining({
+                baseURL: 'https://api.test.dev/v1',
                 headers: expect.objectContaining({
                     'Authorization': 'Bearer test-token'
                 })
             }));
+
+            expect(mockAxiosInstance).toHaveBeenCalledWith(expect.objectContaining({
+                url: '/sprites'
+            }));
+
             expect(sprites).toEqual(mockSprites);
 
-            // Verify cache by getting a sprite (it should be in cache, though getSprite calls API)
-            // Actually statusCache is private, but let's check if getSprite works
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockSprites[0]
-            } as Response);
+            // Verify second call for getSprite
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: mockSprites[0],
+                status: 200
+            });
 
             const sprite = await client.getSprite('s1');
             expect(sprite).toEqual(mockSprites[0]);
@@ -60,10 +78,10 @@ describe('SpriteApiClient', () => {
             const mockSprite = { id: 's3', name: 'new-sprite', status: 'provisioning' };
             const config = { name: 'new-sprite' };
 
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockSprite
-            } as Response);
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: mockSprite,
+                status: 201
+            });
 
             const spy = vi.fn();
             client.on('spriteCreated', spy);
@@ -71,9 +89,10 @@ describe('SpriteApiClient', () => {
             const sprite = await client.createSprite(config);
 
             expect(sprite).toEqual(mockSprite);
-            expect(fetch).toHaveBeenCalledWith('https://api.test.dev/v1/sprites', expect.objectContaining({
+            expect(mockAxiosInstance).toHaveBeenCalledWith(expect.objectContaining({
                 method: 'POST',
-                body: JSON.stringify({
+                url: '/sprites',
+                data: JSON.stringify({
                     name: 'new-sprite',
                     repoUrl: 'https://github.com/test/repo',
                     branch: 'main'
@@ -83,18 +102,19 @@ describe('SpriteApiClient', () => {
         });
 
         it('should delete a sprite and emit event', async () => {
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: {},
                 status: 204
-            } as Response);
+            });
 
             const spy = vi.fn();
             client.on('spriteDeleted', spy);
 
             await client.deleteSprite('s1');
 
-            expect(fetch).toHaveBeenCalledWith('https://api.test.dev/v1/sprites/s1', expect.objectContaining({
-                method: 'DELETE'
+            expect(mockAxiosInstance).toHaveBeenCalledWith(expect.objectContaining({
+                method: 'DELETE',
+                url: '/sprites/s1'
             }));
             expect(spy).toHaveBeenCalledWith('s1');
         });
@@ -104,48 +124,51 @@ describe('SpriteApiClient', () => {
         it('should execute command', async () => {
             const mockResult = { stdout: 'hello', stderr: '', exitCode: 0, durationMs: 100 };
 
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockResult
-            } as Response);
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: mockResult,
+                status: 200
+            });
 
             const result = await client.execCommand('s1', 'echo hello');
 
             expect(result).toEqual(mockResult);
-            expect(fetch).toHaveBeenCalledWith('https://api.test.dev/v1/sprites/s1/exec', expect.objectContaining({
+            expect(mockAxiosInstance).toHaveBeenCalledWith(expect.objectContaining({
                 method: 'POST',
-                body: JSON.stringify({ command: 'echo hello', timeout: 60000 })
+                url: '/sprites/s1/exec',
+                data: JSON.stringify({ command: 'echo hello', timeout: 60000 })
             }));
         });
     });
 
     describe('Lifecycle Management', () => {
         it('should shutdown sprite', async () => {
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: {},
                 status: 204
-            } as Response);
+            });
 
             const spy = vi.fn();
             client.on('spriteStatusChanged', spy);
 
             await client.shutdownSprite('s1');
 
-            expect(fetch).toHaveBeenCalledWith('https://api.test.dev/v1/sprites/s1/shutdown', expect.objectContaining({
-                method: 'POST'
+            expect(mockAxiosInstance).toHaveBeenCalledWith(expect.objectContaining({
+                method: 'POST',
+                url: '/sprites/s1/shutdown'
             }));
         });
 
         it('should wake up sprite', async () => {
-            vi.mocked(fetch).mockResolvedValueOnce({
-                ok: true,
+            mockAxiosInstance.mockResolvedValueOnce({
+                data: {},
                 status: 204
-            } as Response);
+            });
 
             await client.wakeSprite('s1');
 
-            expect(fetch).toHaveBeenCalledWith('https://api.test.dev/v1/sprites/s1/wake', expect.objectContaining({
-                method: 'POST'
+            expect(mockAxiosInstance).toHaveBeenCalledWith(expect.objectContaining({
+                method: 'POST',
+                url: '/sprites/s1/wake'
             }));
         });
     });
