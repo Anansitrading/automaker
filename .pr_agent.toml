@@ -1,0 +1,12 @@
+# Qodo configuration for Automaker
+# IDENTIFIER: automaker-qodo-config
+
+[pr_test]
+testing_framework = "vitest"
+
+[pr_reviewer]
+require_score_review = true
+enable_review_labels_security = true
+enable_review_labels_effort = true
+num_code_suggestions = 4
+inline_code_comments = true

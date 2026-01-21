@@ -33,12 +33,12 @@
 
 ## 8.2 Test Types
 
-| Type | Coverage Target | Tools | Location |
-|------|-----------------|-------|----------|
-| Unit | 80%+ | Vitest | `apps/server/tests/unit/` |
-| Integration | Key flows | Vitest | `apps/server/tests/` |
-| E2E | Critical paths | Playwright | `e2e/` |
-| Package | Shared libs | Vitest | `libs/*/tests/` |
+| Type        | Coverage Target | Tools      | Location                  |
+| ----------- | --------------- | ---------- | ------------------------- |
+| Unit        | 80%+            | Vitest     | `apps/server/tests/unit/` |
+| Integration | Key flows       | Vitest     | `apps/server/tests/`      |
+| E2E         | Critical paths  | Playwright | `e2e/`                    |
+| Package     | Shared libs     | Vitest     | `libs/*/tests/`           |
 
 ### Unit Tests (Vitest)
 
@@ -159,9 +159,9 @@ describe('AgentService', () => {
     });
 
     it('should validate working directory path', async () => {
-      await expect(
-        agentService.createSession('Test', '/etc/passwd')
-      ).rejects.toThrow('Path not allowed');
+      await expect(agentService.createSession('Test', '/etc/passwd')).rejects.toThrow(
+        'Path not allowed'
+      );
     });
   });
 });
@@ -279,11 +279,11 @@ AUTOMAKER_MOCK_AGENT=true npm run test
 
 ### Coverage Targets
 
-| Area | Current | Target |
-|------|---------|--------|
-| Server Unit Tests | ~75% | 80% |
-| Shared Packages | ~60% | 70% |
-| E2E Critical Paths | ~50% | 80% |
+| Area               | Current | Target |
+| ------------------ | ------- | ------ |
+| Server Unit Tests  | ~75%    | 80%    |
+| Shared Packages    | ~60%    | 70%    |
+| E2E Critical Paths | ~50%    | 80%    |
 
 ### Coverage Reports
 
@@ -308,12 +308,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'html'],
-      exclude: [
-        'node_modules',
-        'dist',
-        '**/*.test.ts',
-        '**/types/**',
-      ],
+      exclude: ['node_modules', 'dist', '**/*.test.ts', '**/types/**'],
       thresholds: {
         lines: 80,
         branches: 75,
@@ -329,15 +324,15 @@ export default defineConfig({
 
 ## 8.7 Test Commands Reference
 
-| Command | Description |
-|---------|-------------|
-| `npm run test` | Run E2E tests (Playwright) |
-| `npm run test:headed` | E2E with visible browser |
-| `npm run test:server` | Server unit tests |
+| Command                        | Description                |
+| ------------------------------ | -------------------------- |
+| `npm run test`                 | Run E2E tests (Playwright) |
+| `npm run test:headed`          | E2E with visible browser   |
+| `npm run test:server`          | Server unit tests          |
 | `npm run test:server:coverage` | Server tests with coverage |
-| `npm run test:packages` | Shared library tests |
-| `npm run test:all` | All tests |
-| `npm run test:watch` | Watch mode |
+| `npm run test:packages`        | Shared library tests       |
+| `npm run test:all`             | All tests                  |
+| `npm run test:watch`           | Watch mode                 |
 
 ---
 

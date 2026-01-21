@@ -60,12 +60,23 @@ export function createGenerateTitleHandler(
       const prompts = await getPromptCustomization(settingsService, '[GenerateTitle]');
       const systemPrompt = prompts.titleGeneration.systemPrompt;
 
+      let model = CLAUDE_MODEL_MAP.haiku;
+
+      // Fallback to OpenAI if Anthropic key is missing but OpenAI key is present
+      if (!process.env.ANTHROPIC_API_KEY && process.env.OPENAI_API_KEY) {
+        // Use gpt-4o which is comparable/better than haiku
+        model = 'codex-gpt-4o';
+        logger.info(
+          'Using OpenAI (codex-gpt-4o) for title generation due to missing Anthropic key'
+        );
+      }
+
       const userPrompt = `Generate a concise title for this feature:\n\n${trimmedDescription}`;
 
       // Use simpleQuery - provider abstraction handles all the streaming/extraction
       const result = await simpleQuery({
         prompt: `${systemPrompt}\n\n${userPrompt}`,
-        model: CLAUDE_MODEL_MAP.haiku,
+        model,
         cwd: process.cwd(),
         maxTurns: 1,
         allowedTools: [],

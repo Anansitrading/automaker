@@ -215,6 +215,19 @@ export function getModelForUseCase(
     default: CLAUDE_MODEL_MAP['opus'],
   };
 
+  // Fallback to OpenAI if Anthropic key is missing but OpenAI key is present
+  if (!process.env.ANTHROPIC_API_KEY && process.env.OPENAI_API_KEY) {
+    // Override defaults with OpenAI equivalents
+    defaultModels.spec = 'codex-gpt-4o';
+    defaultModels.features = 'codex-gpt-4o';
+    defaultModels.suggestions = 'codex-gpt-4o';
+    defaultModels.chat = 'codex-gpt-4o';
+    defaultModels.auto = 'codex-gpt-4o';
+    defaultModels.default = 'codex-gpt-4o';
+
+    logger.info(`Using OpenAI (codex-gpt-4o) for ${useCase} due to missing Anthropic key`);
+  }
+
   return resolveModelString(defaultModels[useCase] || DEFAULT_MODELS.claude);
 }
 

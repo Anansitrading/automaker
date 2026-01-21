@@ -139,22 +139,23 @@ apps/ui/src/
 
 ## 5.3 Design Patterns
 
-| Pattern | Location | Purpose |
-|---------|----------|---------|
-| **Factory** | `provider-factory.ts` | Create appropriate AI provider based on model |
-| **Service Layer** | `services/` | Encapsulate business logic from routes |
-| **Event Emitter** | `lib/events.ts` | Decouple components via pub/sub |
-| **Repository** | `SettingsService` | Abstract data persistence |
-| **Adapter** | Provider classes | Unified interface for AI providers |
-| **Strategy** | Planning modes | Interchangeable planning algorithms |
-| **Observer** | WebSocket events | Real-time UI updates |
-| **Singleton** | Terminal/DevServer services | Shared stateful resources |
-| **Builder** | `sdk-options.ts` | Construct complex SDK options |
-| **Middleware** | Express middleware | Request processing pipeline |
+| Pattern           | Location                    | Purpose                                       |
+| ----------------- | --------------------------- | --------------------------------------------- |
+| **Factory**       | `provider-factory.ts`       | Create appropriate AI provider based on model |
+| **Service Layer** | `services/`                 | Encapsulate business logic from routes        |
+| **Event Emitter** | `lib/events.ts`             | Decouple components via pub/sub               |
+| **Repository**    | `SettingsService`           | Abstract data persistence                     |
+| **Adapter**       | Provider classes            | Unified interface for AI providers            |
+| **Strategy**      | Planning modes              | Interchangeable planning algorithms           |
+| **Observer**      | WebSocket events            | Real-time UI updates                          |
+| **Singleton**     | Terminal/DevServer services | Shared stateful resources                     |
+| **Builder**       | `sdk-options.ts`            | Construct complex SDK options                 |
+| **Middleware**    | Express middleware          | Request processing pipeline                   |
 
 ### Pattern Examples
 
 **Factory Pattern - Provider Selection:**
+
 ```typescript
 // provider-factory.ts
 class ProviderFactory {
@@ -170,6 +171,7 @@ class ProviderFactory {
 ```
 
 **Event Emitter Pattern:**
+
 ```typescript
 // lib/events.ts
 interface EventEmitter {
@@ -184,37 +186,37 @@ interface EventEmitter {
 
 ### REST API Structure
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| **Sessions** |
-| POST | /api/sessions | Create session |
-| GET | /api/sessions | List sessions |
-| PUT | /api/sessions/:id | Update session |
-| DELETE | /api/sessions/:id | Delete session |
-| **Agent** |
-| POST | /api/agent/start | Start conversation |
-| POST | /api/agent/send | Send message |
-| POST | /api/agent/stop | Stop agent |
-| GET | /api/agent/history | Get history |
+| Method        | Endpoint                    | Purpose                |
+| ------------- | --------------------------- | ---------------------- |
+| **Sessions**  |
+| POST          | /api/sessions               | Create session         |
+| GET           | /api/sessions               | List sessions          |
+| PUT           | /api/sessions/:id           | Update session         |
+| DELETE        | /api/sessions/:id           | Delete session         |
+| **Agent**     |
+| POST          | /api/agent/start            | Start conversation     |
+| POST          | /api/agent/send             | Send message           |
+| POST          | /api/agent/stop             | Stop agent             |
+| GET           | /api/agent/history          | Get history            |
 | **Auto-Mode** |
-| POST | /api/auto-mode/run-feature | Start feature |
-| POST | /api/auto-mode/approve-plan | Approve plan |
-| POST | /api/auto-mode/verify | Verify feature |
-| POST | /api/auto-mode/commit | Commit changes |
-| **Terminal** |
-| POST | /api/terminal/sessions | Create terminal |
-| DELETE | /api/terminal/sessions/:id | Kill terminal |
-| **Settings** |
-| GET | /api/settings/global | Get global settings |
-| POST | /api/settings/global | Update global settings |
-| GET | /api/settings/project | Get project settings |
+| POST          | /api/auto-mode/run-feature  | Start feature          |
+| POST          | /api/auto-mode/approve-plan | Approve plan           |
+| POST          | /api/auto-mode/verify       | Verify feature         |
+| POST          | /api/auto-mode/commit       | Commit changes         |
+| **Terminal**  |
+| POST          | /api/terminal/sessions      | Create terminal        |
+| DELETE        | /api/terminal/sessions/:id  | Kill terminal          |
+| **Settings**  |
+| GET           | /api/settings/global        | Get global settings    |
+| POST          | /api/settings/global        | Update global settings |
+| GET           | /api/settings/project       | Get project settings   |
 
 ### WebSocket API
 
-| Endpoint | Events |
-|----------|--------|
-| `/api/events` | agent:stream, agent:complete, agent:error, feature:status |
-| `/api/terminal/ws` | connected, scrollback, data, exit |
+| Endpoint           | Events                                                    |
+| ------------------ | --------------------------------------------------------- |
+| `/api/events`      | agent:stream, agent:complete, agent:error, feature:status |
+| `/api/terminal/ws` | connected, scrollback, data, exit                         |
 
 ---
 
@@ -222,23 +224,23 @@ interface EventEmitter {
 
 ### External Integrations
 
-| Integration | Protocol | Purpose |
-|-------------|----------|---------|
-| Anthropic API | HTTPS | Claude model inference |
-| OpenAI API | HTTPS | Codex model inference |
-| GitHub API | HTTPS | PRs, issues, repos |
-| MCP Servers | stdio/HTTP | Extended tools |
-| Cursor CLI | subprocess | Cursor model access |
+| Integration   | Protocol   | Purpose                |
+| ------------- | ---------- | ---------------------- |
+| Anthropic API | HTTPS      | Claude model inference |
+| OpenAI API    | HTTPS      | Codex model inference  |
+| GitHub API    | HTTPS      | PRs, issues, repos     |
+| MCP Servers   | stdio/HTTP | Extended tools         |
+| Cursor CLI    | subprocess | Cursor model access    |
 
 ### Internal Integrations
 
-| From | To | Method |
-|------|-----|--------|
-| Routes | Services | Direct call |
-| Services | Events | Event emitter |
-| Events | WebSocket | Broadcast |
-| UI | Backend | HTTP/WS |
-| Electron | Backend | localhost |
+| From     | To        | Method        |
+| -------- | --------- | ------------- |
+| Routes   | Services  | Direct call   |
+| Services | Events    | Event emitter |
+| Events   | WebSocket | Broadcast     |
+| UI       | Backend   | HTTP/WS       |
+| Electron | Backend   | localhost     |
 
 ---
 
@@ -251,6 +253,7 @@ interface EventEmitter {
 **Decision:** Use npm workspaces with `libs/` for shared packages.
 
 **Rationale:**
+
 - Single repository for all code
 - Shared TypeScript types
 - Atomic commits across packages
@@ -263,6 +266,7 @@ interface EventEmitter {
 **Decision:** Extract all business logic into dedicated service classes.
 
 **Rationale:**
+
 - Separation of concerns
 - Easier testing (mock services)
 - Reusable logic across routes
@@ -275,6 +279,7 @@ interface EventEmitter {
 **Decision:** Create provider interface with factory pattern.
 
 **Rationale:**
+
 - Unified interface for all providers
 - Easy to add new providers
 - Swap providers at runtime
@@ -287,6 +292,7 @@ interface EventEmitter {
 **Decision:** Use WebSocket with event emitter pattern.
 
 **Rationale:**
+
 - Low latency updates
 - Decoupled components
 - Scalable to multiple clients
@@ -299,6 +305,7 @@ interface EventEmitter {
 **Decision:** Each feature runs in its own git worktree.
 
 **Rationale:**
+
 - Complete isolation between features
 - No merge conflicts during development
 - Easy cleanup after completion

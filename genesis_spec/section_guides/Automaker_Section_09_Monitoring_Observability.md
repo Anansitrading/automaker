@@ -35,12 +35,12 @@
 
 ### Log Levels
 
-| Level | Use Case | Example |
-|-------|----------|---------|
-| ERROR | System failures | `Failed to save session: ENOENT` |
-| WARN | Recoverable issues | `No ANTHROPIC_API_KEY configured` |
-| INFO | Normal operations | `Agent service initialized` |
-| DEBUG | Detailed tracing | `Event received: { type, hasPayload }` |
+| Level | Use Case           | Example                                |
+| ----- | ------------------ | -------------------------------------- |
+| ERROR | System failures    | `Failed to save session: ENOENT`       |
+| WARN  | Recoverable issues | `No ANTHROPIC_API_KEY configured`      |
+| INFO  | Normal operations  | `Agent service initialized`            |
+| DEBUG | Detailed tracing   | `Event received: { type, hasPayload }` |
 
 ### Logger Implementation
 
@@ -74,21 +74,23 @@ morgan.token('status-colored', (_req, res) => {
   if (status >= 500) return `\x1b[31m${status}\x1b[0m`; // Red
   if (status >= 400) return `\x1b[33m${status}\x1b[0m`; // Yellow
   if (status >= 300) return `\x1b[36m${status}\x1b[0m`; // Cyan
-  return `\x1b[32m${status}\x1b[0m`;                    // Green
+  return `\x1b[32m${status}\x1b[0m`; // Green
 });
 
-app.use(morgan(':method :url :status-colored', {
-  skip: (req) => !requestLoggingEnabled || req.url === '/api/health',
-}));
+app.use(
+  morgan(':method :url :status-colored', {
+    skip: (req) => !requestLoggingEnabled || req.url === '/api/health',
+  })
+);
 ```
 
 ### Log Output Locations
 
-| Environment | Output |
-|-------------|--------|
-| Development | Console (stdout) |
-| Docker | Container logs (stdout) |
-| Electron | Console + file (~/.automaker/logs/) |
+| Environment | Output                              |
+| ----------- | ----------------------------------- |
+| Development | Console (stdout)                    |
+| Docker      | Container logs (stdout)             |
+| Electron    | Console + file (~/.automaker/logs/) |
 
 ### Structured Logging Format
 
@@ -116,14 +118,14 @@ logger.info('Event received:', {
 
 ### Application Metrics
 
-| Metric | Type | Description |
-|--------|------|-------------|
-| `agent_sessions_active` | Gauge | Currently active sessions |
-| `agent_messages_total` | Counter | Total messages sent |
-| `agent_errors_total` | Counter | Total agent errors |
-| `terminal_sessions_active` | Gauge | Active terminal sessions |
-| `websocket_connections` | Gauge | Connected WebSocket clients |
-| `feature_completions` | Counter | Completed feature implementations |
+| Metric                     | Type    | Description                       |
+| -------------------------- | ------- | --------------------------------- |
+| `agent_sessions_active`    | Gauge   | Currently active sessions         |
+| `agent_messages_total`     | Counter | Total messages sent               |
+| `agent_errors_total`       | Counter | Total agent errors                |
+| `terminal_sessions_active` | Gauge   | Active terminal sessions          |
+| `websocket_connections`    | Gauge   | Connected WebSocket clients       |
+| `feature_completions`      | Counter | Completed feature implementations |
 
 ### Collection Points
 
@@ -161,11 +163,11 @@ const codexUsageService = new CodexUsageService(codexAppServerService);
 ```typescript
 // Event History Service provides trace-like capability
 interface StoredEvent {
-  id: string;              // Unique event ID
-  type: string;            // Event type
-  timestamp: string;       // ISO timestamp
-  sessionId?: string;      // Correlation ID
-  payload: unknown;        // Event data
+  id: string; // Unique event ID
+  type: string; // Event type
+  timestamp: string; // ISO timestamp
+  sessionId?: string; // Correlation ID
+  payload: unknown; // Event data
 }
 
 // All events stored for replay
@@ -247,13 +249,13 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 ### Error Conditions
 
-| Condition | Severity | Action |
-|-----------|----------|--------|
-| Uncaught Exception | Critical | Log + Exit |
-| Unhandled Rejection | Warning | Log + Continue |
-| WebSocket Disconnect | Info | Log + Cleanup |
-| Auth Failure | Warning | Log + Reject |
-| Path Traversal Attempt | Warning | Log + Reject |
+| Condition              | Severity | Action         |
+| ---------------------- | -------- | -------------- |
+| Uncaught Exception     | Critical | Log + Exit     |
+| Unhandled Rejection    | Warning  | Log + Continue |
+| WebSocket Disconnect   | Info     | Log + Cleanup  |
+| Auth Failure           | Warning  | Log + Reject   |
+| Path Traversal Attempt | Warning  | Log + Reject   |
 
 ### Global Error Handlers
 
@@ -301,9 +303,9 @@ process.on('uncaughtException', (error: Error) => {
 
 ```typescript
 // Runtime status (via API)
-GET /api/running-agents  // List active agents
-GET /api/auto-mode/status // Auto-mode status
-GET /api/terminal/sessions // Terminal status
+GET / api / running - agents; // List active agents
+GET / api / auto - mode / status; // Auto-mode status
+GET / api / terminal / sessions; // Terminal status
 ```
 
 ---

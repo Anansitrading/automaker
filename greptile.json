@@ -1,0 +1,8 @@
+{
+  "name": "automaker-greptile-config",
+  "project": "automaker",
+  "commentTypes": ["logic", "architecture", "security"],
+  "instructions": "This is an Automaker-specific configuration. Focus on the monorepo structure (libs/ vs apps/), the Claude Agent SDK integration, and ensure that changes adhere to the patterns defined in CLAUDE.md and DEVELOPMENT_WORKFLOW.md.",
+  "strictness": 1,
+  "triggerOnUpdates": true
+}

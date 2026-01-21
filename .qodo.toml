@@ -1,0 +1,5 @@
+# Qodo configuration for Automaker
+# IDENTIFIER: automaker-qodo-config
+
+[pr_test]
+testing_framework = "vitest"
