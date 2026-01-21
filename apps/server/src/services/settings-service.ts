@@ -17,6 +17,7 @@ import {
   ensureDataDir,
   ensureAutomakerDir,
 } from '@automaker/platform';
+import { ensureProjectInitialized } from '../lib/project-initializer.js';
 import type {
   GlobalSettings,
   Credentials,
@@ -471,6 +472,7 @@ export class SettingsService {
    * @returns Promise resolving to complete ProjectSettings object
    */
   async getProjectSettings(projectPath: string): Promise<ProjectSettings> {
+    await ensureProjectInitialized(projectPath);
     const settingsPath = getProjectSettingsPath(projectPath);
     const settings = await readJsonFile<ProjectSettings>(settingsPath, DEFAULT_PROJECT_SETTINGS);
 
@@ -494,7 +496,7 @@ export class SettingsService {
     projectPath: string,
     updates: Partial<ProjectSettings>
   ): Promise<ProjectSettings> {
-    await ensureAutomakerDir(projectPath);
+    await ensureProjectInitialized(projectPath);
     const settingsPath = getProjectSettingsPath(projectPath);
 
     const current = await this.getProjectSettings(projectPath);
