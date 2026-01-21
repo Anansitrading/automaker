@@ -1,0 +1,12 @@
+# Qodo configuration for Automaker
+# IDENTIFIER: automaker-qodo-config
+
+[tests]
+framework = "vitest"
+directory = "libs"
+test_pattern = "**/*.test.ts"
+
+[quality]
+enabled = true
+check_types = true
+scripts = ["npm run lint"]
