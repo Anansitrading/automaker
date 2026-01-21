@@ -157,8 +157,10 @@ test.describe('Open Project', () => {
 
     // Wait for a project to be set as current and visible on the page
     // The project name appears in the project switcher button
+    // Wait for a project to be set as current and visible on the page
+    // The project name appears in the project switcher button (title attribute)
     if (targetProjectName) {
-      await expect(page.getByTestId(`project-switcher-project-${targetProjectName}`)).toBeVisible({
+      await expect(page.getByTitle(targetProjectName)).toBeVisible({
         timeout: 15000,
       });
     }
