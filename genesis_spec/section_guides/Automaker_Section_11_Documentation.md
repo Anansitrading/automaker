@@ -33,15 +33,15 @@ automaker/
 
 ### Documentation Types
 
-| Type | Location | Purpose | Audience |
-|------|----------|---------|----------|
-| README | Root | Quick start, overview | New users |
-| CONTRIBUTING | Root | How to contribute | Contributors |
-| ARCHITECTURE | Root | Technical overview | Developers |
-| CLAUDE.md | Root | AI agent instructions | AI agents |
-| Genesis Spec | genesis_spec/ | Comprehensive reference | All |
-| API Docs | Inline | Endpoint documentation | Integrators |
-| Code Comments | Source | Implementation details | Maintainers |
+| Type          | Location      | Purpose                 | Audience     |
+| ------------- | ------------- | ----------------------- | ------------ |
+| README        | Root          | Quick start, overview   | New users    |
+| CONTRIBUTING  | Root          | How to contribute       | Contributors |
+| ARCHITECTURE  | Root          | Technical overview      | Developers   |
+| CLAUDE.md     | Root          | AI agent instructions   | AI agents    |
+| Genesis Spec  | genesis_spec/ | Comprehensive reference | All          |
+| API Docs      | Inline        | Endpoint documentation  | Integrators  |
+| Code Comments | Source        | Implementation details  | Maintainers  |
 
 ---
 
@@ -166,17 +166,21 @@ Location: Inline in ARCHITECTURE.md or separate `docs/adrs/`
 # ADR-001: Monorepo Structure
 
 ## Status
+
 Accepted
 
 ## Context
+
 Need to share TypeScript types and utilities between frontend and backend.
 
 ## Decision
+
 Use npm workspaces with `libs/` directory for shared packages.
 
 ## Consequences
+
 - Single repository for all code
-- Shared TypeScript types via @automaker/*
+- Shared TypeScript types via @automaker/\*
 - Atomic commits across packages
 - Build order dependency management required
 ```
@@ -184,6 +188,7 @@ Use npm workspaces with `libs/` directory for shared packages.
 ### Component Documentation
 
 Each major component should document:
+
 - Purpose and responsibility
 - Dependencies (internal and external)
 - Configuration options
@@ -200,17 +205,20 @@ Each major component should document:
 # Getting Started with Automaker
 
 ## Prerequisites
+
 - Node.js 22+
 - Git
 - Anthropic API key
 
 ## Installation
+
 1. Clone the repository
 2. Run `npm install`
 3. Set `ANTHROPIC_API_KEY` environment variable
 4. Run `npm run dev`
 
 ## First Session
+
 1. Click "New Session"
 2. Enter a name for your session
 3. Type a message to the AI agent
@@ -231,13 +239,13 @@ Each major component should document:
 
 ### Document Updates Required
 
-| Change Type | Documentation Required |
-|-------------|----------------------|
-| New feature | README, user guide, API docs |
-| API change | API reference, CHANGELOG |
-| Bug fix | CHANGELOG |
-| Refactoring | ARCHITECTURE (if significant) |
-| Configuration | Settings documentation |
+| Change Type   | Documentation Required        |
+| ------------- | ----------------------------- |
+| New feature   | README, user guide, API docs  |
+| API change    | API reference, CHANGELOG      |
+| Bug fix       | CHANGELOG                     |
+| Refactoring   | ARCHITECTURE (if significant) |
+| Configuration | Settings documentation        |
 
 ### Documentation Review Checklist
 
@@ -261,26 +269,33 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+
 - New feature description
 
 ### Changed
+
 - Changed behavior description
 
 ### Deprecated
+
 - Soon-to-be removed features
 
 ### Removed
+
 - Removed features
 
 ### Fixed
+
 - Bug fix description
 
 ### Security
+
 - Security fix description
 
 ## [0.12.0] - 2026-01-15
 
 ### Added
+
 - Multi-provider support (Codex, Cursor, OpenCode)
 - Event hook system for custom automation
 ```

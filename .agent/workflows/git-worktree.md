@@ -7,11 +7,13 @@ description: How to manage git worktrees in Automaker (IDENTIFIER: automaker-wor
 This workflow describes how to safely use git worktrees for feature development in Automaker.
 
 1. **Check existing worktrees**:
+
    ```bash
    git worktree list
    ```
 
 2. **Create a new worktree for a feature**:
+
    ```bash
    git worktree add ../automaker-worktree-<name> -b feature/<name>
    ```
@@ -20,6 +22,7 @@ This workflow describes how to safely use git worktrees for feature development 
    - `cd ../automaker-worktree-<name>`
 
 4. **Remove worktree after completion**:
+
    ```bash
    git worktree remove ../automaker-worktree-<name>
    git branch -d feature/<name>

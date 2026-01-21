@@ -46,25 +46,25 @@
 
 ### STRIDE Analysis
 
-| Threat | Category | Mitigation |
-|--------|----------|------------|
-| **Spoofing** | Identity | API key validation, session tokens |
-| **Tampering** | Data | Input validation, secure file operations |
-| **Repudiation** | Actions | Request logging, event history |
-| **Information Disclosure** | Data | Encrypted credentials, path restrictions |
-| **Denial of Service** | Availability | Rate limiting, input size limits |
-| **Elevation of Privilege** | Authorization | Path validation, tool restrictions |
+| Threat                     | Category      | Mitigation                               |
+| -------------------------- | ------------- | ---------------------------------------- |
+| **Spoofing**               | Identity      | API key validation, session tokens       |
+| **Tampering**              | Data          | Input validation, secure file operations |
+| **Repudiation**            | Actions       | Request logging, event history           |
+| **Information Disclosure** | Data          | Encrypted credentials, path restrictions |
+| **Denial of Service**      | Availability  | Rate limiting, input size limits         |
+| **Elevation of Privilege** | Authorization | Path validation, tool restrictions       |
 
 ### Threat Scenarios
 
-| ID | Threat | Impact | Likelihood | Mitigation |
-|----|--------|--------|------------|------------|
-| T-001 | API key exposure | Critical | Medium | Encrypted storage, env vars |
-| T-002 | Path traversal | High | Medium | Allowlist validation |
-| T-003 | Command injection | Critical | Low | No shell exec in user input |
-| T-004 | CSRF attacks | Medium | Medium | JSON content-type required |
-| T-005 | WebSocket hijacking | High | Low | Token authentication |
-| T-006 | Terminal escape | High | Low | PTY isolation, password option |
+| ID    | Threat              | Impact   | Likelihood | Mitigation                     |
+| ----- | ------------------- | -------- | ---------- | ------------------------------ |
+| T-001 | API key exposure    | Critical | Medium     | Encrypted storage, env vars    |
+| T-002 | Path traversal      | High     | Medium     | Allowlist validation           |
+| T-003 | Command injection   | Critical | Low        | No shell exec in user input    |
+| T-004 | CSRF attacks        | Medium   | Medium     | JSON content-type required     |
+| T-005 | WebSocket hijacking | High     | Low        | Token authentication           |
+| T-006 | Terminal escape     | High     | Low        | PTY isolation, password option |
 
 ---
 
@@ -171,11 +171,7 @@ async function writeFile(path: string, content: string): Promise<void> {
 
 ```typescript
 // Agent tools are explicitly allowlisted
-const allowedTools = [
-  'Read', 'Write', 'Edit',
-  'Glob', 'Grep', 'Bash',
-  'WebSearch', 'WebFetch'
-];
+const allowedTools = ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', 'WebSearch', 'WebFetch'];
 
 // Additional tools require configuration
 if (skillsConfig.shouldIncludeInTools) {
@@ -206,28 +202,28 @@ const key = await keytar.getPassword('automaker', 'anthropic-api-key');
 interface EncryptedCredentials {
   version: number;
   data: string; // AES-256-GCM encrypted
-  iv: string;   // Initialization vector
-  tag: string;  // Auth tag
+  iv: string; // Initialization vector
+  tag: string; // Auth tag
 }
 ```
 
 ### Data at Rest
 
-| Data Type | Protection |
-|-----------|------------|
-| API Keys | System keychain / AES-256 encrypted file |
-| Session Data | JSON files (user-accessible) |
-| Settings | JSON files (user-accessible) |
-| Logs | Plain text (user-accessible) |
+| Data Type    | Protection                               |
+| ------------ | ---------------------------------------- |
+| API Keys     | System keychain / AES-256 encrypted file |
+| Session Data | JSON files (user-accessible)             |
+| Settings     | JSON files (user-accessible)             |
+| Logs         | Plain text (user-accessible)             |
 
 ### Data in Transit
 
-| Connection | Protocol | Encryption |
-|------------|----------|------------|
-| API Calls | HTTPS | TLS 1.2+ |
-| WebSocket | WSS | TLS 1.2+ |
-| Local (Electron) | HTTP | N/A (localhost) |
-| Docker Internal | HTTP | N/A (isolated network) |
+| Connection       | Protocol | Encryption             |
+| ---------------- | -------- | ---------------------- |
+| API Calls        | HTTPS    | TLS 1.2+               |
+| WebSocket        | WSS      | TLS 1.2+               |
+| Local (Electron) | HTTP     | N/A (localhost)        |
+| Docker Internal  | HTTP     | N/A (isolated network) |
 
 ---
 
@@ -249,11 +245,11 @@ app.use(
 ```typescript
 interface StoredEvent {
   id: string;
-  type: string;           // Event type (e.g., 'agent:tool_use')
-  timestamp: string;      // ISO 8601
-  sessionId?: string;     // Associated session
-  payload: unknown;       // Event data
-  source: string;         // Origin (e.g., 'agent-service')
+  type: string; // Event type (e.g., 'agent:tool_use')
+  timestamp: string; // ISO 8601
+  sessionId?: string; // Associated session
+  payload: unknown; // Event data
+  source: string; // Origin (e.g., 'agent-service')
 }
 
 // Events are persisted for replay and audit
@@ -277,12 +273,12 @@ logger.error('Unhandled Promise Rejection:', reason);
 
 ### Current Compliance Status
 
-| Standard | Status | Notes |
-|----------|--------|-------|
-| GDPR | Partial | User data stored locally |
-| SOC 2 | N/A | Not applicable (local app) |
-| HIPAA | N/A | Not applicable |
-| PCI DSS | N/A | No payment processing |
+| Standard | Status  | Notes                      |
+| -------- | ------- | -------------------------- |
+| GDPR     | Partial | User data stored locally   |
+| SOC 2    | N/A     | Not applicable (local app) |
+| HIPAA    | N/A     | Not applicable             |
+| PCI DSS  | N/A     | No payment processing      |
 
 ### Privacy Considerations
 

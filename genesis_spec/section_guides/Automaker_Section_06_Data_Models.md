@@ -12,16 +12,16 @@
 
 ```typescript
 interface AgentSession {
-  id: string;                    // Unique identifier (msg_timestamp_random)
-  name: string;                  // User-defined session name
-  projectPath?: string;          // Associated project directory
-  workingDirectory: string;      // Current working directory
-  createdAt: string;             // ISO 8601 timestamp
-  updatedAt: string;             // ISO 8601 timestamp
-  archived?: boolean;            // Soft delete flag
-  tags?: string[];               // User-defined tags
-  model?: string;                // AI model (e.g., "claude-sonnet-4-20250514")
-  sdkSessionId?: string;         // Claude SDK session for continuity
+  id: string; // Unique identifier (msg_timestamp_random)
+  name: string; // User-defined session name
+  projectPath?: string; // Associated project directory
+  workingDirectory: string; // Current working directory
+  createdAt: string; // ISO 8601 timestamp
+  updatedAt: string; // ISO 8601 timestamp
+  archived?: boolean; // Soft delete flag
+  tags?: string[]; // User-defined tags
+  model?: string; // AI model (e.g., "claude-sonnet-4-20250514")
+  sdkSessionId?: string; // Claude SDK session for continuity
 }
 ```
 
@@ -29,16 +29,17 @@ interface AgentSession {
 
 ```typescript
 interface Message {
-  id: string;                    // Unique identifier
-  role: 'user' | 'assistant';    // Message sender
-  content: string;               // Text content
-  images?: Array<{               // Optional image attachments
-    data: string;                // Base64 encoded
-    mimeType: string;            // e.g., "image/png"
-    filename: string;            // Original filename
+  id: string; // Unique identifier
+  role: 'user' | 'assistant'; // Message sender
+  content: string; // Text content
+  images?: Array<{
+    // Optional image attachments
+    data: string; // Base64 encoded
+    mimeType: string; // e.g., "image/png"
+    filename: string; // Original filename
   }>;
-  timestamp: string;             // ISO 8601 timestamp
-  isError?: boolean;             // Error message flag
+  timestamp: string; // ISO 8601 timestamp
+  isError?: boolean; // Error message flag
 }
 ```
 
@@ -46,16 +47,16 @@ interface Message {
 
 ```typescript
 interface Feature {
-  id: string;                    // Unique identifier
-  name: string;                  // Feature name
-  description: string;           // Detailed description
-  status: FeatureStatus;         // Current state
-  priority: number;              // Execution order
-  dependencies: string[];        // Feature IDs this depends on
-  images?: FeatureImagePath[];   // Associated images
+  id: string; // Unique identifier
+  name: string; // Feature name
+  description: string; // Detailed description
+  status: FeatureStatus; // Current state
+  priority: number; // Execution order
+  dependencies: string[]; // Feature IDs this depends on
+  images?: FeatureImagePath[]; // Associated images
   textFiles?: FeatureTextFilePath[]; // Associated text files
-  createdAt?: string;            // ISO 8601 timestamp
-  updatedAt?: string;            // ISO 8601 timestamp
+  createdAt?: string; // ISO 8601 timestamp
+  updatedAt?: string; // ISO 8601 timestamp
   descriptionHistory?: DescriptionHistoryEntry[];
 }
 
@@ -74,17 +75,17 @@ type FeatureStatus =
 
 ```typescript
 interface GlobalSettings {
-  theme: ThemeMode;              // 'light' | 'dark' | 'system'
-  defaultModel: string;          // Default AI model
-  maxConcurrentAgents: number;   // Parallel agent limit
-  telemetryEnabled: boolean;     // Usage analytics
-  autoUpdate: boolean;           // Auto-update setting
+  theme: ThemeMode; // 'light' | 'dark' | 'system'
+  defaultModel: string; // Default AI model
+  maxConcurrentAgents: number; // Parallel agent limit
+  telemetryEnabled: boolean; // Usage analytics
+  autoUpdate: boolean; // Auto-update setting
   serverLogLevel: ServerLogLevel; // 'error' | 'warn' | 'info' | 'debug'
   enableRequestLogging: boolean; // HTTP request logging
   keyboardShortcuts: KeyboardShortcuts;
   phaseModels: PhaseModelConfig; // Model per auto-mode phase
   boardBackground: BoardBackgroundSettings;
-  eventHooks: EventHook[];       // Custom event triggers
+  eventHooks: EventHook[]; // Custom event triggers
   mcpServers: Record<string, MCPServerConfig>;
   skillsEnabled: boolean;
   skillsSources: Array<'user' | 'project'>;
@@ -93,27 +94,27 @@ interface GlobalSettings {
 }
 
 interface ProjectSettings {
-  name: string;                  // Project name
-  model?: string;                // Override model
-  autoModeEnabled: boolean;      // Enable auto-mode
-  planningMode: PlanningMode;    // 'skip' | 'lite' | 'spec' | 'full'
-  autoLoadClaudeMd: boolean;     // Load CLAUDE.md automatically
+  name: string; // Project name
+  model?: string; // Override model
+  autoModeEnabled: boolean; // Enable auto-mode
+  planningMode: PlanningMode; // 'skip' | 'lite' | 'spec' | 'full'
+  autoLoadClaudeMd: boolean; // Load CLAUDE.md automatically
   gitWorkflow: {
-    branchPrefix: string;        // e.g., "feature/"
-    commitPrefix: string;        // e.g., "feat:"
-    autoCommit: boolean;         // Auto-commit on completion
+    branchPrefix: string; // e.g., "feature/"
+    commitPrefix: string; // e.g., "feat:"
+    autoCommit: boolean; // Auto-commit on completion
   };
   hooks: {
-    preToolUse?: string[];       // Commands before tool use
-    postToolUse?: string[];      // Commands after tool use
+    preToolUse?: string[]; // Commands before tool use
+    postToolUse?: string[]; // Commands after tool use
   };
 }
 
 interface Credentials {
-  anthropicApiKey?: string;      // Encrypted API key
-  githubToken?: string;          // GitHub access token
-  cursorSession?: string;        // Cursor session token
-  codexApiKey?: string;          // Codex API key
+  anthropicApiKey?: string; // Encrypted API key
+  githubToken?: string; // GitHub access token
+  cursorSession?: string; // Cursor session token
+  codexApiKey?: string; // Codex API key
 }
 ```
 
@@ -121,23 +122,23 @@ interface Credentials {
 
 ```typescript
 interface ProviderConfig {
-  model: string;                 // Model identifier
-  apiKey?: string;               // API authentication
-  timeout?: number;              // Request timeout (ms)
+  model: string; // Model identifier
+  apiKey?: string; // API authentication
+  timeout?: number; // Request timeout (ms)
 }
 
 interface ExecuteOptions {
-  prompt: string;                // User prompt
-  model: string;                 // Bare model ID
-  originalModel: string;         // Model with prefix
-  cwd: string;                   // Working directory
-  systemPrompt?: string;         // System prompt
-  maxTurns?: number;             // Max agentic turns
-  allowedTools?: string[];       // Permitted tools
+  prompt: string; // User prompt
+  model: string; // Bare model ID
+  originalModel: string; // Model with prefix
+  cwd: string; // Working directory
+  systemPrompt?: string; // System prompt
+  maxTurns?: number; // Max agentic turns
+  allowedTools?: string[]; // Permitted tools
   abortController: AbortController;
   conversationHistory?: ConversationMessage[];
   settingSources?: Array<'user' | 'project'>;
-  sdkSessionId?: string;         // Resume session
+  sdkSessionId?: string; // Resume session
   mcpServers?: Record<string, McpServerConfig>;
   agents?: Record<string, AgentDefinition>;
   thinkingLevel?: ThinkingLevel; // Claude thinking mode
@@ -233,6 +234,7 @@ Automaker uses **file-based storage** (JSON) rather than a traditional database.
 ### File Schemas
 
 **sessions-metadata.json:**
+
 ```json
 {
   "session_123": {
@@ -249,6 +251,7 @@ Automaker uses **file-based storage** (JSON) rather than a traditional database.
 ```
 
 **{sessionId}.json (Messages):**
+
 ```json
 [
   {
@@ -273,6 +276,7 @@ Automaker uses **file-based storage** (JSON) rather than a traditional database.
 ### Request Schemas
 
 **Create Session:**
+
 ```typescript
 interface CreateSessionParams {
   name: string;
@@ -283,6 +287,7 @@ interface CreateSessionParams {
 ```
 
 **Send Message:**
+
 ```typescript
 interface SendMessageRequest {
   sessionId: string;
@@ -296,6 +301,7 @@ interface SendMessageRequest {
 ```
 
 **Run Feature:**
+
 ```typescript
 interface RunFeatureRequest {
   featureId: string;
@@ -308,6 +314,7 @@ interface RunFeatureRequest {
 ### Response Schemas
 
 **Session Response:**
+
 ```typescript
 interface SessionResponse {
   success: boolean;
@@ -317,6 +324,7 @@ interface SessionResponse {
 ```
 
 **Agent Stream Event:**
+
 ```typescript
 interface AgentStreamEvent {
   type: 'started' | 'stream' | 'tool_use' | 'complete' | 'error';
@@ -334,14 +342,14 @@ interface AgentStreamEvent {
 
 ### Environment Variables
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| PORT | number | 3008 | Server port |
-| HOST | string | 0.0.0.0 | Server host |
-| DATA_DIR | string | ./data | Data directory |
-| ANTHROPIC_API_KEY | string | - | Claude API key |
-| CORS_ORIGIN | string | - | Allowed origins |
-| ENABLE_REQUEST_LOGGING | boolean | true | HTTP logging |
+| Variable               | Type    | Default | Description     |
+| ---------------------- | ------- | ------- | --------------- |
+| PORT                   | number  | 3008    | Server port     |
+| HOST                   | string  | 0.0.0.0 | Server host     |
+| DATA_DIR               | string  | ./data  | Data directory  |
+| ANTHROPIC_API_KEY      | string  | -       | Claude API key  |
+| CORS_ORIGIN            | string  | -       | Allowed origins |
+| ENABLE_REQUEST_LOGGING | boolean | true    | HTTP logging    |
 
 ### MCP Server Configuration
 

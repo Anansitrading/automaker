@@ -10,13 +10,13 @@
 
 ### Build Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run build` | Build all packages and apps |
-| `npm run build:packages` | Build shared libraries only |
-| `npm run build --workspace=apps/server` | Build server only |
-| `npm run build --workspace=apps/ui` | Build UI only |
-| `npm run build:electron` | Build desktop app |
+| Command                                 | Description                 |
+| --------------------------------------- | --------------------------- |
+| `npm run build`                         | Build all packages and apps |
+| `npm run build:packages`                | Build shared libraries only |
+| `npm run build --workspace=apps/server` | Build server only           |
+| `npm run build --workspace=apps/ui`     | Build UI only               |
+| `npm run build:electron`                | Build desktop app           |
 
 ### Build Process Flow
 
@@ -120,15 +120,15 @@ npm run build:electron:linux    # Linux AppImage
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | 3008 | Server HTTP port |
-| `HOST` | 0.0.0.0 | Server bind address |
-| `HOSTNAME` | localhost | Display hostname |
-| `DATA_DIR` | ./data | Data storage directory |
-| `ANTHROPIC_API_KEY` | - | Claude API authentication |
-| `CORS_ORIGIN` | - | Allowed CORS origins |
-| `ENABLE_REQUEST_LOGGING` | true | HTTP request logging |
+| Variable                 | Default   | Description               |
+| ------------------------ | --------- | ------------------------- |
+| `PORT`                   | 3008      | Server HTTP port          |
+| `HOST`                   | 0.0.0.0   | Server bind address       |
+| `HOSTNAME`               | localhost | Display hostname          |
+| `DATA_DIR`               | ./data    | Data storage directory    |
+| `ANTHROPIC_API_KEY`      | -         | Claude API authentication |
+| `CORS_ORIGIN`            | -         | Allowed CORS origins      |
+| `ENABLE_REQUEST_LOGGING` | true      | HTTP request logging      |
 
 ### Docker Environment
 
@@ -146,7 +146,7 @@ services:
       - automaker-data:/data
       - ./projects:/projects
     ports:
-      - "3008:3008"
+      - '3008:3008'
 ```
 
 ---
@@ -156,28 +156,28 @@ services:
 ### System Requirements
 
 | Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| CPU | 2 cores | 4+ cores |
-| RAM | 4 GB | 8+ GB |
-| Disk | 2 GB | 10+ GB |
-| Node.js | 22.0.0 | 22.x LTS |
+| --------- | ------- | ----------- |
+| CPU       | 2 cores | 4+ cores    |
+| RAM       | 4 GB    | 8+ GB       |
+| Disk      | 2 GB    | 10+ GB      |
+| Node.js   | 22.0.0  | 22.x LTS    |
 
 ### Required Software
 
-| Software | Purpose |
-|----------|---------|
-| Node.js 22+ | Runtime |
-| Git | Version control |
-| npm | Package management |
+| Software    | Purpose            |
+| ----------- | ------------------ |
+| Node.js 22+ | Runtime            |
+| Git         | Version control    |
+| npm         | Package management |
 
 ### Optional Software
 
-| Software | Purpose |
-|----------|---------|
-| Docker | Containerized deployment |
-| Claude CLI | Claude agent access |
-| Cursor CLI | Cursor model access |
-| GitHub CLI | Git operations |
+| Software   | Purpose                  |
+| ---------- | ------------------------ |
+| Docker     | Containerized deployment |
+| Claude CLI | Claude agent access      |
+| Cursor CLI | Cursor model access      |
+| GitHub CLI | Git operations           |
 
 ---
 
@@ -275,13 +275,13 @@ cp -r ~/automaker-backup-20260120 ~/.automaker
 
 ### Common Issues
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Port already in use | Previous process | `lsof -ti:3008 \| xargs kill -9` |
-| WebSocket disconnects | Timeout | Check firewall settings |
-| Agent won't start | Missing API key | Set ANTHROPIC_API_KEY |
-| Terminal not working | node-pty issue | `npm rebuild node-pty` |
-| Session not persisting | Write permissions | Check DATA_DIR permissions |
+| Issue                  | Cause             | Solution                         |
+| ---------------------- | ----------------- | -------------------------------- |
+| Port already in use    | Previous process  | `lsof -ti:3008 \| xargs kill -9` |
+| WebSocket disconnects  | Timeout           | Check firewall settings          |
+| Agent won't start      | Missing API key   | Set ANTHROPIC_API_KEY            |
+| Terminal not working   | node-pty issue    | `npm rebuild node-pty`           |
+| Session not persisting | Write permissions | Check DATA_DIR permissions       |
 
 ### Debug Mode
 
@@ -298,11 +298,11 @@ DEBUG=automaker:* npm run dev
 
 ### Log Locations
 
-| Location | Content |
-|----------|---------|
-| Console (stdout) | Server logs |
-| ~/.automaker/logs/ | Persistent logs (Electron) |
-| Docker logs | `docker logs automaker-server` |
+| Location           | Content                        |
+| ------------------ | ------------------------------ |
+| Console (stdout)   | Server logs                    |
+| ~/.automaker/logs/ | Persistent logs (Electron)     |
+| Docker logs        | `docker logs automaker-server` |
 
 ### Port Conflict Resolution
 
@@ -324,17 +324,18 @@ PORT=3009 npm run dev
 ### Horizontal Scaling
 
 Not currently supported - single-instance architecture. Future considerations:
+
 - Session state externalization (Redis)
 - Load balancer for UI
 - Separate agent worker processes
 
 ### Vertical Scaling
 
-| Resource | Impact |
-|----------|--------|
-| More CPU | Faster builds, more concurrent terminals |
+| Resource | Impact                                    |
+| -------- | ----------------------------------------- |
+| More CPU | Faster builds, more concurrent terminals  |
 | More RAM | More concurrent sessions, larger contexts |
-| SSD | Faster file operations, session loading |
+| SSD      | Faster file operations, session loading   |
 
 ### Performance Tuning
 
