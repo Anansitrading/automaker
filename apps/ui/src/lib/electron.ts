@@ -658,6 +658,43 @@ export interface EventHistoryAPI {
   }>;
 }
 
+export interface Sprite {
+  id: string;
+  name: string;
+  status: 'running' | 'hibernating' | 'provisioning' | 'error';
+  lastActivityAt: string;
+  createdAt: string;
+}
+
+export interface SpriteConfig {
+  name: string;
+  repoUrl?: string;
+  branch?: string;
+  env?: Record<string, string>;
+}
+
+export interface ExecResult {
+  stdout: string;
+  stderr: string;
+  exitCode: number;
+  durationMs: number;
+}
+
+export interface SpritesAPI {
+  list: () => Promise<{ success: boolean; sprites?: Sprite[]; error?: string }>;
+  get: (name: string) => Promise<{ success: boolean; sprite?: Sprite; error?: string }>;
+  create: (config: SpriteConfig) => Promise<{ success: boolean; sprite?: Sprite; error?: string }>;
+  delete: (name: string) => Promise<{ success: boolean; error?: string }>;
+  exec: (
+    name: string,
+    command: string,
+    timeout?: number
+  ) => Promise<{ success: boolean; result?: ExecResult; error?: string }>;
+  shutdown: (name: string) => Promise<{ success: boolean; error?: string }>;
+  wake: (name: string) => Promise<{ success: boolean; error?: string }>;
+  getConsoleUrl: (name: string) => Promise<{ success: boolean; url?: string; error?: string }>;
+}
+
 export interface ElectronAPI {
   ping: () => Promise<string>;
   getApiKey?: () => Promise<string | null>;
@@ -720,6 +757,7 @@ export interface ElectronAPI {
   autoMode?: AutoModeAPI;
   features?: FeaturesAPI;
   runningAgents?: RunningAgentsAPI;
+  sprites?: SpritesAPI;
   github?: GitHubAPI;
   enhancePrompt?: {
     enhance: (

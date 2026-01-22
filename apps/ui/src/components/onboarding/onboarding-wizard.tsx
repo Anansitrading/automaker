@@ -5,8 +5,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, CheckCircle2, XCircle, Play } from 'lucide-react';
-import { getElectronAPI } from '@/lib/electron';
+import { Loader2, CheckCircle2, XCircle, Play, Plus, RefreshCw } from 'lucide-react';
+import { getElectronAPI, Sprite } from '@/lib/electron';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'sonner';
 
 interface OnboardingManifest {
@@ -54,8 +61,60 @@ export function OnboardingWizard({
 }) {
   const [activeTab, setActiveTab] = useState<'config' | 'progress'>('config');
   const [spriteId, setSpriteId] = useState('');
+  const [sprites, setSprites] = useState<Sprite[]>([]);
+  const [isLoadingSprites, setIsLoadingSprites] = useState(false);
+  const [isCreatingSprite, setIsCreatingSprite] = useState(false);
+  const [newSpriteName, setNewSpriteName] = useState('');
   const [steps, setSteps] = useState<Step[]>(INITIAL_STEPS);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Fetch sprites on mount
+  useEffect(() => {
+    if (open) {
+      loadSprites();
+    }
+  }, [open]);
+
+  const loadSprites = async () => {
+    setIsLoadingSprites(true);
+    try {
+      const api = getElectronAPI();
+      if (api.sprites) {
+        const result = await api.sprites.list();
+        if (result.success && result.sprites) {
+          setSprites(result.sprites);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load sprites:', error);
+    } finally {
+      setIsLoadingSprites(false);
+    }
+  };
+
+  const handleCreateSprite = async () => {
+    if (!newSpriteName) return;
+    setIsProcessing(true);
+    try {
+      const api = getElectronAPI();
+      if (!api.sprites) throw new Error('Sprites API not available');
+
+      const result = await api.sprites.create({ name: newSpriteName });
+      if (result.success && result.sprite) {
+        setSprites((prev) => [...prev, result.sprite!]);
+        setSpriteId(result.sprite.id);
+        setIsCreatingSprite(false);
+        setNewSpriteName('');
+        toast.success('Sprite created successfully');
+      } else {
+        throw new Error(result.error || 'Failed to create sprite');
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   // Form State
   const [systemPrompt, setSystemPrompt] = useState('You are a helpful AI coding agent.');
@@ -145,12 +204,62 @@ export function OnboardingWizard({
           {activeTab === 'config' ? (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Target Sprite ID</Label>
-                <Input
-                  value={spriteId}
-                  onChange={(e) => setSpriteId(e.target.value)}
-                  placeholder="e.g. sprite-123"
-                />
+                <Label>Target Sprite</Label>
+                {!isCreatingSprite ? (
+                  <div className="flex gap-2">
+                    <Select value={spriteId} onValueChange={setSpriteId}>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Select a sprite..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {sprites.map((s) => (
+                          <SelectItem key={s.id} value={s.id}>
+                            {s.name} ({s.status})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setIsCreatingSprite(true)}
+                      title="Create new sprite"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={loadSprites}
+                      disabled={isLoadingSprites}
+                      title="Refresh sprites"
+                    >
+                      <RefreshCw className={`h-4 w-4 ${isLoadingSprites ? 'animate-spin' : ''}`} />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <Input
+                      value={newSpriteName}
+                      onChange={(e) => setNewSpriteName(e.target.value)}
+                      placeholder="Enter new sprite name"
+                      className="flex-1"
+                    />
+                    <Button onClick={handleCreateSprite} disabled={!newSpriteName || isProcessing}>
+                      Create
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => setIsCreatingSprite(false)}
+                      disabled={isProcessing}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                )}
+                <div className="text-xs text-muted-foreground">
+                  <span className="font-semibold">ID:</span> {spriteId || 'None selected'}
+                </div>
               </div>
 
               <div className="space-y-2">

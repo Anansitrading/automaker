@@ -1,12 +1,7 @@
 import { EventEmitter } from 'events';
 import { createLogger } from '@automaker/utils';
-import {
-  SpriteApiClient,
-  Sprite,
-  SpriteConfig,
-  Checkpoint,
-  ExecResult,
-} from './sprite-api-client.js';
+import { SpriteApiClient } from './sprite-api-client.js';
+import type { Sprite, SpriteConfig, Checkpoint, ExecResult } from './sprite-api-client.js';
 import { TelemetryStore } from './telemetry-store.js';
 
 const logger = createLogger('SpriteService');

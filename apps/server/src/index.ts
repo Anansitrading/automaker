@@ -87,6 +87,8 @@ import { OnboardingService } from './services/onboarding-service.js';
 import { SpriteApiClient } from './services/sprite-api-client.js';
 import { createOnboardingRoutes } from './routes/onboarding/index.js';
 import { getTelemetryService } from './services/telemetry/telemetry-service.js';
+import { SpriteService } from './services/sprite-service.js';
+import { createSpriteRoutes } from './routes/sprite/index.js';
 
 // Load environment variables
 dotenv.config();
@@ -234,6 +236,9 @@ const telemetryService = getTelemetryService();
 // Initialize Sprite API Client
 const spriteApiClient = new SpriteApiClient();
 
+// Initialize Sprite Service
+const spriteService = new SpriteService();
+
 // Initialize Onboarding Service
 const onboardingService = new OnboardingService(spriteApiClient);
 
@@ -330,6 +335,7 @@ app.use('/api/ideation', createIdeationRoutes(events, ideationService, featureLo
 app.use('/api/notifications', createNotificationsRoutes(notificationService));
 app.use('/api/event-history', createEventHistoryRoutes(eventHistoryService, settingsService));
 app.use('/api/onboarding', createOnboardingRoutes(onboardingService));
+app.use('/api/sprites', createSpriteRoutes(spriteService));
 
 // Create HTTP server
 const server = createServer(app);

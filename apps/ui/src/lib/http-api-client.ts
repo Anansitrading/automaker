@@ -35,6 +35,10 @@ import type {
   NotificationsAPI,
   EventHistoryAPI,
   OnboardingAPI,
+  SpritesAPI,
+  Sprite,
+  SpriteConfig,
+  ExecResult,
 } from './electron';
 import type { EventHistoryFilter } from '@automaker/types';
 import type { Message, SessionListItem } from '@/types/electron';
@@ -1916,6 +1920,19 @@ export class HttpApiClient implements ElectronAPI {
       totalCount?: number;
       error?: string;
     }> => this.get('/api/running-agents'),
+  };
+
+  // Sprites API
+  sprites: SpritesAPI = {
+    list: () => this.get('/api/sprites'),
+    get: (name: string) => this.get(`/api/sprites/${name}`),
+    create: (config: SpriteConfig) => this.post('/api/sprites', config),
+    delete: (name: string) => this.httpDelete(`/api/sprites/${name}`),
+    exec: (name: string, command: string, timeout?: number) =>
+      this.post(`/api/sprites/${name}/exec`, { command, timeout }),
+    shutdown: (name: string) => this.post(`/api/sprites/${name}/shutdown`, {}),
+    wake: (name: string) => this.post(`/api/sprites/${name}/wake`, {}),
+    getConsoleUrl: (name: string) => this.get(`/api/sprites/${name}/url`),
   };
 
   // GitHub API
