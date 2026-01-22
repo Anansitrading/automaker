@@ -83,6 +83,9 @@ import { createNotificationsRoutes } from './routes/notifications/index.js';
 import { getNotificationService } from './services/notification-service.js';
 import { createEventHistoryRoutes } from './routes/event-history/index.js';
 import { getEventHistoryService } from './services/event-history-service.js';
+import { OnboardingService } from './services/onboarding-service.js';
+import { SpriteApiClient } from './services/sprite-api-client.js';
+import { createOnboardingRoutes } from './routes/onboarding/index.js';
 import { getTelemetryService } from './services/telemetry/telemetry-service.js';
 
 // Load environment variables
@@ -228,6 +231,23 @@ eventHookService.initialize(events, settingsService, eventHistoryService);
 // Initialize Telemetry Service
 const telemetryService = getTelemetryService();
 
+// Initialize Sprite API Client
+const spriteApiClient = new SpriteApiClient();
+
+// Initialize Onboarding Service
+const onboardingService = new OnboardingService(spriteApiClient);
+
+// Pipe onboarding events to global event emitter
+onboardingService.on('step', (payload) => {
+  events.emit('onboarding:step', payload);
+});
+onboardingService.on('completed', (payload) => {
+  events.emit('onboarding:completed', payload);
+});
+onboardingService.on('failed', (payload) => {
+  events.emit('onboarding:failed', payload);
+});
+
 // Initialize services
 (async () => {
   // Apply logging settings from saved settings
@@ -309,6 +329,7 @@ app.use('/api/pipeline', createPipelineRoutes(pipelineService));
 app.use('/api/ideation', createIdeationRoutes(events, ideationService, featureLoader));
 app.use('/api/notifications', createNotificationsRoutes(notificationService));
 app.use('/api/event-history', createEventHistoryRoutes(eventHistoryService, settingsService));
+app.use('/api/onboarding', createOnboardingRoutes(onboardingService));
 
 // Create HTTP server
 const server = createServer(app);
