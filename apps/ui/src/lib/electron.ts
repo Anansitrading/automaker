@@ -595,6 +595,28 @@ export interface NotificationsAPI {
 }
 
 // Event History API interface
+// Onboarding API interface
+export interface OnboardingAPI {
+  start: (
+    spriteId: string,
+    manifest: {
+      claudeCodeInstalled: boolean;
+      mcpServers: Array<{
+        name: string;
+        transport: 'stdio' | 'http' | 'sse';
+        command?: string;
+        args?: string[];
+        url?: string;
+        scope: 'user' | 'project';
+        env?: Record<string, string>;
+      }>;
+      skillsRepos: string[];
+      systemPrompt: string;
+    }
+  ) => Promise<{ success: boolean; message?: string; error?: string }>;
+  onEvent: (callback: (event: { type: string; payload: unknown }) => void) => () => void;
+}
+
 export interface EventHistoryAPI {
   list: (
     projectPath: string,
@@ -848,6 +870,7 @@ export interface ElectronAPI {
   ideation?: IdeationAPI;
   notifications?: NotificationsAPI;
   eventHistory?: EventHistoryAPI;
+  onboarding?: OnboardingAPI;
   codex?: {
     getUsage: () => Promise<CodexUsageResponse>;
     getModels: (refresh?: boolean) => Promise<{

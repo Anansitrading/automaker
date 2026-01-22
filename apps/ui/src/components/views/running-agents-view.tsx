@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createLogger } from '@automaker/utils/logger';
-import { Bot, Folder, Loader2, RefreshCw, Square, Activity, FileText } from 'lucide-react';
+import { Bot, Folder, Loader2, RefreshCw, Square, Activity, FileText, Plus } from 'lucide-react';
 import { getElectronAPI, RunningAgent } from '@/lib/electron';
 import { useAppStore } from '@/store/app-store';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { AgentOutputModal } from './board-view/dialogs/agent-output-modal';
 
 const logger = createLogger('RunningAgentsView');
 
-export function RunningAgentsView() {
+export function RunningAgentsView({ onNewSprite }: { onNewSprite?: () => void }) {
   const [runningAgents, setRunningAgents] = useState<RunningAgent[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -168,10 +168,18 @@ export function RunningAgentsView() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing}>
-          <RefreshCw className={cn('h-4 w-4 mr-2', refreshing && 'animate-spin')} />
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          {onNewSprite && (
+            <Button onClick={onNewSprite} size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              New Sprite
+            </Button>
+          )}
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing}>
+            <RefreshCw className={cn('h-4 w-4 mr-2', refreshing && 'animate-spin')} />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       {/* Content */}

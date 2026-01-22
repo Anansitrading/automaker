@@ -34,6 +34,7 @@ import type {
   ConvertToFeatureOptions,
   NotificationsAPI,
   EventHistoryAPI,
+  OnboardingAPI,
 } from './electron';
 import type { EventHistoryFilter } from '@automaker/types';
 import type { Message, SessionListItem } from '@/types/electron';
@@ -524,7 +525,10 @@ type EventType =
   | 'dev-server:started'
   | 'dev-server:output'
   | 'dev-server:stopped'
-  | 'notification:created';
+  | 'notification:created'
+  | 'onboarding:step'
+  | 'onboarding:completed'
+  | 'onboarding:failed';
 
 /**
  * Dev server log event payloads for WebSocket streaming
@@ -2622,6 +2626,33 @@ export class HttpApiClient implements ElectronAPI {
       stepIds: string[]
     ): Promise<{ success: boolean; error?: string }> =>
       this.post('/api/pipeline/steps/reorder', { projectPath, stepIds }),
+  };
+
+  onboarding: OnboardingAPI = {
+    start: async (spriteId: string, manifest: any) => {
+      return this.post(`/api/onboarding/${spriteId}/start`, manifest);
+    },
+    onEvent: (callback: (event: { type: string; payload: unknown }) => void) => {
+      // Subscribe to all onboarding events
+      // Note: subscribeToEvent expects EventCallback which only receives payload
+      // We need to wrap it to provide the full event object with type
+      const unsubscribeStep = this.subscribeToEvent('onboarding:step', (payload) =>
+        callback({ type: 'onboarding:step', payload })
+      );
+      const unsubscribeCompleted = this.subscribeToEvent('onboarding:completed', (payload) =>
+        callback({ type: 'onboarding:completed', payload })
+      );
+      const unsubscribeFailed = this.subscribeToEvent('onboarding:failed', (payload) =>
+        callback({ type: 'onboarding:failed', payload })
+      );
+
+      // Return combined unsubscribe function
+      return () => {
+        unsubscribeStep();
+        unsubscribeCompleted();
+        unsubscribeFailed();
+      };
+    },
   };
 }
 
