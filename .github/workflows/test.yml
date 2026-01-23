@@ -36,6 +36,7 @@ jobs:
         env:
           PORT: 3008
           NODE_ENV: test
+          AUTOMAKER_API_KEY: test-ci-api-key
 
       - name: Wait for backend
         run: npx -y wait-on tcp:3008 --timeout 60000

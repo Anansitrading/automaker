@@ -48,7 +48,10 @@ describe('Onboarding API Integration', () => {
     // Start onboarding
     const response = await fetch(`${SERVER_URL}/api/onboarding/test-sprite-123/start`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.AUTOMAKER_API_KEY || 'test-ci-api-key',
+      },
       body: JSON.stringify(manifest),
     });
 
