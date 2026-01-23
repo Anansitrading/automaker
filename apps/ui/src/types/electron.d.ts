@@ -124,7 +124,8 @@ export interface SessionsAPI {
   create: (
     name: string,
     projectPath: string,
-    workingDirectory?: string
+    workingDirectory?: string,
+    useSandbox?: boolean
   ) => Promise<{
     success: boolean;
     sessionId?: string;

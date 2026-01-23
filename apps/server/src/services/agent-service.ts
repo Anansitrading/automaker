@@ -80,6 +80,7 @@ interface SessionMetadata {
   model?: string;
   sdkSessionId?: string; // Claude SDK session ID for conversation continuity
   spriteId?: string; // ID of the sandbox sprite if enabled
+  useSandbox?: boolean; // Whether this session should use sandbox isolation
 }
 
 export class AgentService {
@@ -119,7 +120,24 @@ export class AgentService {
       const metadata = await this.loadMetadata();
       const sessionMetadata = metadata[sessionId];
 
+      // Auto-provision sandbox if enabled but missing
+      if (sessionMetadata?.useSandbox && !sessionMetadata.spriteId && this.spriteService) {
+        try {
+          this.logger.info(`Auto-provisioning missing sandbox for session ${sessionId}...`);
+          const sprite = await this.spriteService.createSprite({
+            name: `agent-${sessionId}`,
+          });
+          sessionMetadata.spriteId = sprite.id;
+          await this.updateSession(sessionId, { spriteId: sprite.id });
+          this.logger.info(`Sandbox auto-provisioned: ${sprite.id}`);
+        } catch (error) {
+          this.logger.error('Failed to auto-provision sandbox:', error);
+          // Continue without sandbox, but log error
+        }
+      }
+
       // Determine the effective working directory
+
       const effectiveWorkingDirectory = workingDirectory || process.cwd();
       const resolvedWorkingDirectory = path.resolve(effectiveWorkingDirectory);
 
@@ -722,7 +740,8 @@ export class AgentService {
     name: string,
     projectPath?: string,
     workingDirectory?: string,
-    model?: string
+    model?: string,
+    useSandbox = false
   ): Promise<SessionMetadata> {
     const sessionId = this.generateId();
     const metadata = await this.loadMetadata();
@@ -747,10 +766,18 @@ export class AgentService {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       model,
+      useSandbox,
     };
 
     metadata[sessionId] = session;
     await this.saveMetadata(metadata);
+
+    // Auto-provision sandbox immediately if requested
+    if (useSandbox && this.spriteService) {
+      // Provisioning happens in startConversation usually, but we can do it here too
+      // or let startConversation handle it on first load.
+      // Doing it on startConversation is safer as it handles retries better.
+    }
 
     return session;
   }

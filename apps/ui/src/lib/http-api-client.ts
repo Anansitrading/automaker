@@ -2270,7 +2270,8 @@ export class HttpApiClient implements ElectronAPI {
     create: (
       name: string,
       projectPath: string,
-      workingDirectory?: string
+      workingDirectory?: string,
+      useSandbox?: boolean
     ): Promise<{
       success: boolean;
       session?: {
@@ -2282,7 +2283,7 @@ export class HttpApiClient implements ElectronAPI {
         updatedAt: string;
       };
       error?: string;
-    }> => this.post('/api/sessions', { name, projectPath, workingDirectory }),
+    }> => this.post('/api/sessions', { name, projectPath, workingDirectory, useSandbox }),
 
     update: (
       sessionId: string,

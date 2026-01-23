@@ -108,6 +108,7 @@ export function SessionManager({
   const [editingName, setEditingName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [newSessionName, setNewSessionName] = useState('');
+  const [useSandbox, setUseSandbox] = useState(false);
   const [runningSessions, setRunningSessions] = useState<Set<string>>(new Set());
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [sessionToDelete, setSessionToDelete] = useState<SessionListItem | null>(null);
@@ -175,10 +176,11 @@ export function SessionManager({
 
     const sessionName = newSessionName.trim() || generateRandomSessionName();
 
-    const result = await api.sessions.create(sessionName, projectPath, projectPath);
+    const result = await api.sessions.create(sessionName, projectPath, projectPath, useSandbox);
 
     if (result.success && result.session?.id) {
       setNewSessionName('');
+      setUseSandbox(false);
       setIsCreating(false);
       await loadSessions();
       onSelectSession(result.session.id);
@@ -326,7 +328,9 @@ export function SessionManager({
               if (activeTab === 'archived') {
                 setActiveTab('active');
               }
-              handleQuickCreateSession();
+              setIsCreating(true);
+              setNewSessionName('');
+              setUseSandbox(false);
             }}
             hotkey={shortcuts.newSession}
             hotkeyActive={false}
@@ -359,7 +363,7 @@ export function SessionManager({
       <CardContent className="flex-1 overflow-y-auto space-y-2" data-testid="session-list">
         {/* Create new session */}
         {isCreating && (
-          <div className="p-3 border rounded-lg bg-muted/50">
+          <div className="p-3 border rounded-lg bg-muted/50 space-y-2">
             <div className="flex gap-2">
               <Input
                 placeholder="Session name..."
@@ -370,6 +374,7 @@ export function SessionManager({
                   if (e.key === 'Escape') {
                     setIsCreating(false);
                     setNewSessionName('');
+                    setUseSandbox(false);
                   }
                 }}
                 autoFocus
@@ -383,10 +388,26 @@ export function SessionManager({
                 onClick={() => {
                   setIsCreating(false);
                   setNewSessionName('');
+                  setUseSandbox(false);
                 }}
               >
                 <X className="w-4 h-4" />
               </Button>
+            </div>
+            <div className="flex items-center space-x-2 px-1">
+              <input
+                type="checkbox"
+                id="useSandbox"
+                checked={useSandbox}
+                onChange={(e) => setUseSandbox(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <label
+                htmlFor="useSandbox"
+                className="text-xs text-muted-foreground select-none cursor-pointer"
+              >
+                Run in Sandbox (Isolated Environment)
+              </label>
             </div>
           </div>
         )}
