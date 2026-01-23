@@ -84,4 +84,22 @@ describe('SpriteService', () => {
 
     expect(telemetry.recordError).toHaveBeenCalledWith('sprites.listSprites.error', error);
   });
+
+  it('should emit RESTORED event when client emits spriteRestored', () => {
+    const emitSpy = vi.spyOn(service, 'emit');
+    const client = (service as any).client;
+
+    // Extract the listener passed to SpriteApiClient
+    const calls = client.on.mock.calls;
+    const restoredListener = calls.find((call: any[]) => call[0] === 'spriteRestored')?.[1];
+
+    expect(restoredListener).toBeDefined();
+
+    // Simulate client event
+    const mockData = { spriteId: 's1', checkpointId: 'cp1' };
+    restoredListener(mockData);
+
+    expect(emitSpy).toHaveBeenCalledWith(SpriteEvents.RESTORED, mockData);
+    expect(telemetry.recordCounter).toHaveBeenCalledWith('sprites.restored');
+  });
 });

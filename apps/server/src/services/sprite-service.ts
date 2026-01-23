@@ -18,6 +18,7 @@ export const SpriteEvents = {
   SHUTDOWN: 'sprite:shutdown',
   WOKEN: 'sprite:woken',
   STATUS_CHANGED: 'sprite:status_changed',
+  RESTORED: 'sprite:restored',
   ERROR: 'sprite:error',
 };
 
@@ -54,7 +55,7 @@ export class SpriteService extends EventEmitter {
 
     this.client.on('spriteRestored', (data: any) => {
       this.telemetry.recordCounter('sprites.restored');
-      // No specific service-level event for restore yet, relying on status changes
+      this.emit(SpriteEvents.RESTORED, data);
     });
 
     this.client.on('spriteStatusChanged', (sprite: Sprite) => {

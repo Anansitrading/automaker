@@ -94,6 +94,10 @@ export class TelemetryService {
   public getToolStats(spriteName: string): ToolStats {
     return this.eventStore.getToolStats(spriteName);
   }
+
+  public getStore(): TelemetryStore {
+    return this.telemetryStore;
+  }
 }
 
 // Singleton instance

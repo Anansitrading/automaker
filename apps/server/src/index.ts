@@ -340,10 +340,16 @@ app.use('/api/sprites', createSpriteRoutes(spriteService));
 // Create HTTP server
 const server = createServer(app);
 
+import { createTelemetryWebSocketHandler } from './routes/telemetry/websocket.js';
+
 // WebSocket servers using noServer mode for proper multi-path support
 const wss = new WebSocketServer({ noServer: true });
 const terminalWss = new WebSocketServer({ noServer: true });
+const telemetryWss = new WebSocketServer({ noServer: true });
 const terminalService = getTerminalService();
+
+// Setup Telemetry WebSocket Handler
+telemetryWss.on('connection', createTelemetryWebSocketHandler(telemetryService, spriteService));
 
 /**
  * Authenticate WebSocket upgrade requests
@@ -401,6 +407,10 @@ server.on('upgrade', (request, socket, head) => {
   } else if (pathname === '/api/terminal/ws') {
     terminalWss.handleUpgrade(request, socket, head, (ws) => {
       terminalWss.emit('connection', ws, request);
+    });
+  } else if (pathname === '/api/telemetry/ws') {
+    telemetryWss.handleUpgrade(request, socket, head, (ws) => {
+      telemetryWss.emit('connection', ws, request);
     });
   } else {
     socket.destroy();
