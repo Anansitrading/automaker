@@ -21,6 +21,8 @@ import { ProviderFactory } from '../providers/provider-factory.js';
 import { createChatOptions, validateWorkingDirectory } from '../lib/sdk-options.js';
 import { PathNotAllowedError } from '@automaker/platform';
 import type { SettingsService } from './settings-service.js';
+import { SpriteService } from './sprite-service.js';
+
 import {
   getAutoLoadClaudeMdSetting,
   filterClaudeMdFromContext,
@@ -63,6 +65,7 @@ interface Session {
   reasoningEffort?: ReasoningEffort; // Reasoning effort for Codex models
   sdkSessionId?: string; // Claude SDK session ID for conversation continuity
   promptQueue: QueuedPrompt[]; // Queue of prompts to auto-run after current task
+  spriteId?: string; // ID of the sandbox sprite if enabled
 }
 
 interface SessionMetadata {
@@ -76,6 +79,7 @@ interface SessionMetadata {
   tags?: string[];
   model?: string;
   sdkSessionId?: string; // Claude SDK session ID for conversation continuity
+  spriteId?: string; // ID of the sandbox sprite if enabled
 }
 
 export class AgentService {
@@ -84,13 +88,16 @@ export class AgentService {
   private metadataFile: string;
   private events: EventEmitter;
   private settingsService: SettingsService | null = null;
+  private spriteService: SpriteService | null = null;
   private logger = createLogger('AgentService');
 
   constructor(dataDir: string, events: EventEmitter, settingsService?: SettingsService) {
     this.stateDir = path.join(dataDir, 'agent-sessions');
     this.metadataFile = path.join(dataDir, 'sessions-metadata.json');
     this.events = events;
+    this.events = events;
     this.settingsService = settingsService ?? null;
+    this.spriteService = new SpriteService();
   }
 
   async initialize(): Promise<void> {
@@ -138,6 +145,45 @@ export class AgentService {
       messages: session.messages,
       sessionId,
     };
+  }
+
+  /**
+   * Spawn a new agent with optional sandbox isolation
+   */
+  async spawnAgent({
+    sessionId,
+    workingDirectory,
+    useSandbox = false,
+  }: {
+    sessionId: string;
+    workingDirectory?: string;
+    useSandbox?: boolean;
+  }) {
+    // Start standard conversation setup
+    const result = await this.startConversation({ sessionId, workingDirectory });
+
+    // If sandbox requested, initialize it
+    if (useSandbox && this.spriteService) {
+      const session = this.sessions.get(sessionId);
+      if (session && !session.spriteId) {
+        try {
+          this.logger.info(`Creating sandbox sprite for session ${sessionId}...`);
+          const sprite = await this.spriteService.createSprite({
+            name: `agent-${sessionId}`,
+            // Default config for now, could be customizable
+          });
+
+          session.spriteId = sprite.id;
+          await this.updateSession(sessionId, { spriteId: sprite.id });
+          this.logger.info(`Sandbox created: ${sprite.id}`);
+        } catch (error) {
+          this.logger.error('Failed to create sandbox:', error);
+          throw new Error(`Failed to create sandbox: ${(error as Error).message}`);
+        }
+      }
+    }
+
+    return result;
   }
 
   /**
@@ -584,6 +630,19 @@ export class AgentService {
       session.abortController = null;
     }
 
+    // Auto-checkpoint if running in a sandbox
+    if (session.spriteId && this.spriteService) {
+      try {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const checkpointName = `auto-stop-${timestamp}`;
+        await this.spriteService.createCheckpoint(session.spriteId, checkpointName);
+        this.logger.info(`Auto-checkpoint created for session ${sessionId}: ${checkpointName}`);
+      } catch (error) {
+        this.logger.error(`Failed to auto-checkpoint session ${sessionId}:`, error);
+        // Don't fail the stop operation just because checkpoint failed
+      }
+    }
+
     return { success: true };
   }
 
@@ -746,6 +805,18 @@ export class AgentService {
       await secureFs.unlink(sessionFile);
     } catch {
       // File may not exist
+    }
+
+    // Cleanup sandbox if it exists
+    const session = this.sessions.get(sessionId);
+    if (session?.spriteId && this.spriteService) {
+      try {
+        this.logger.info(`Cleaning up sandbox for session ${sessionId}...`);
+        await this.spriteService.deleteSprite(session.spriteId);
+        this.logger.info(`Sandbox ${session.spriteId} deleted`);
+      } catch (error) {
+        this.logger.error(`Failed to cleanup sandbox for session ${sessionId}:`, error);
+      }
     }
 
     // Clear from memory
