@@ -17,8 +17,13 @@ describe('Onboarding API Integration', () => {
   const events: any[] = [];
 
   beforeAll(async () => {
-    // Connect to WebSocket
-    ws = new WebSocket(`${WS_URL}/api/events`);
+    // Connect to WebSocket with authentication (send both header and query param for robustness)
+    const apiKey = process.env.AUTOMAKER_API_KEY || 'test-ci-api-key';
+    ws = new WebSocket(`${WS_URL}/api/events?apiKey=${apiKey}`, {
+      headers: {
+        'x-api-key': apiKey,
+      },
+    });
 
     await new Promise((resolve, reject) => {
       ws.on('open', resolve);
