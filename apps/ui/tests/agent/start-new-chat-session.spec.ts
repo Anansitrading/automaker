@@ -72,8 +72,14 @@ test.describe('Agent Chat Session', () => {
     // Verify we're on the agent view
     await expect(page.locator('[data-testid="agent-view"]')).toBeVisible({ timeout: 10000 });
 
-    // Click new session button
+    // Click new session button (opens the form)
     await clickNewSessionButton(page);
+
+    // Provide a session name and submit (press Enter)
+    const nameInput = page.getByPlaceholder('Session name...');
+    await expect(nameInput).toBeVisible();
+    await nameInput.fill('My New Session');
+    await nameInput.press('Enter');
 
     // Wait for new session to appear in the list
     await waitForNewSession(page, { timeout: 10000 });
