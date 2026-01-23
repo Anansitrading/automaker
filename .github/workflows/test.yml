@@ -28,6 +28,9 @@ jobs:
         env:
           NODE_ENV: test
 
+      - name: Build packages
+        run: npm run build:packages
+
       - name: Start backend server
         run: nohup npm run dev:test --workspace=apps/server &
         env:
@@ -35,7 +38,7 @@ jobs:
           NODE_ENV: test
 
       - name: Wait for backend
-        run: npx wait-on tcp:3008
+        run: npx -y wait-on tcp:3008 --timeout 60000
 
       - name: Run server tests with coverage
         run: npm run test:server:coverage
