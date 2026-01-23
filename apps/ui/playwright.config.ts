@@ -58,6 +58,8 @@ export default defineConfig({
                     ALLOWED_ROOT_DIRECTORY: '',
                     // Simulate containerized environment to skip sandbox confirmation dialogs
                     IS_CONTAINERIZED: 'true',
+                    // Enable TEST_MODE to activate mocks in ClaudeProvider and SpriteApiClient
+                    TEST_MODE: 'true',
                   },
                 },
               ]),

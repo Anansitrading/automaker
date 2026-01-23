@@ -129,6 +129,20 @@ export class ClaudeProvider extends BaseProvider {
 
     // Execute via Claude Agent SDK
     try {
+      // Mock response for tests to avoid external API calls and process spawning
+      if (process.env.TEST_MODE === 'true' || process.env.NODE_ENV === 'test') {
+        yield {
+          type: 'assistant',
+          role: 'assistant',
+          content: 'This is a mock response from ClaudeProvider in test mode.',
+          id: `msg_mock_${Date.now()}`,
+          model: model,
+          stop_reason: 'end_turn',
+          usage: { input_tokens: 10, output_tokens: 20 },
+        } as ProviderMessage;
+        return;
+      }
+
       const stream = query({ prompt: promptPayload, options: sdkOptions });
 
       // Stream messages directly - they're already in the correct format
