@@ -130,7 +130,7 @@ export class ClaudeProvider extends BaseProvider {
     // Execute via Claude Agent SDK
     try {
       // Mock response for tests to avoid external API calls and process spawning
-      if (process.env.TEST_MODE === 'true' || process.env.NODE_ENV === 'test') {
+      if (process.env.TEST_MODE === 'true') {
         yield {
           type: 'assistant',
           role: 'assistant',
@@ -185,7 +185,7 @@ export class ClaudeProvider extends BaseProvider {
   async detectInstallation(): Promise<InstallationStatus> {
     // Claude SDK is always available since it's a dependency
     const hasApiKey = !!process.env.ANTHROPIC_API_KEY;
-    const isTestMode = process.env.TEST_MODE === 'true' || process.env.NODE_ENV === 'test';
+    const isTestMode = process.env.TEST_MODE === 'true';
 
     const status: InstallationStatus = {
       installed: true,

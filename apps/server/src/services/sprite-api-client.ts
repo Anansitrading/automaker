@@ -50,7 +50,7 @@ export class SpriteApiClient extends EventEmitter {
     const token = spritesConfig.SPRITES_TOKEN || '';
 
     // In test mode, we don't need a token
-    const isTestMode = process.env.TEST_MODE === 'true' || process.env.NODE_ENV === 'test';
+    const isTestMode = process.env.TEST_MODE === 'true';
 
     if (!token && !isTestMode) {
       logger.warn('SPRITES_TOKEN is not configured. API calls will fail.');
@@ -70,7 +70,7 @@ export class SpriteApiClient extends EventEmitter {
    */
   private async request<T>(url: string, options: any = {}): Promise<T> {
     // Mock response for tests to avoid external API calls
-    if (process.env.TEST_MODE === 'true' || process.env.NODE_ENV === 'test') {
+    if (process.env.TEST_MODE === 'true') {
       logger.info(`[Test Mode] Mocking request to ${url}`);
       return this.getMockResponse<T>(url, options);
     }
