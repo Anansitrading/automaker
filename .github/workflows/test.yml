@@ -28,6 +28,15 @@ jobs:
         env:
           NODE_ENV: test
 
+      - name: Start backend server
+        run: nohup npm run dev:test --workspace=apps/server &
+        env:
+          PORT: 3008
+          NODE_ENV: test
+
+      - name: Wait for backend
+        run: npx wait-on tcp:3008
+
       - name: Run server tests with coverage
         run: npm run test:server:coverage
         env:
