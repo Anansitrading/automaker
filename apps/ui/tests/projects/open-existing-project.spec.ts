@@ -83,32 +83,37 @@ test.describe('Open Project', () => {
     // Intercept settings API BEFORE any navigation to prevent restoring a currentProject
     // AND inject our test project into the projects list
     await page.route('**/api/settings/global', async (route) => {
-      const response = await route.fetch();
-      const json = await response.json();
-      if (json.settings) {
-        // Remove currentProjectId to prevent restoring a project
-        json.settings.currentProjectId = null;
+      try {
+        const response = await route.fetch();
+        const json = await response.json();
+        if (json.settings) {
+          // Remove currentProjectId to prevent restoring a project
+          json.settings.currentProjectId = null;
 
-        // Inject the test project into settings
-        const testProject = {
-          id: projectId,
-          name: projectName,
-          path: projectPath,
-          lastOpened: new Date(Date.now() - 86400000).toISOString(),
-        };
+          // Inject the test project into settings
+          const testProject = {
+            id: projectId,
+            name: projectName,
+            path: projectPath,
+            lastOpened: new Date(Date.now() - 86400000).toISOString(),
+          };
 
-        // Add to existing projects (or create array)
-        const existingProjects = json.settings.projects || [];
-        const hasProject = existingProjects.some((p: any) => p.id === projectId);
-        if (!hasProject) {
-          json.settings.projects = [testProject, ...existingProjects];
+          // Add to existing projects (or create array)
+          const existingProjects = json.settings.projects || [];
+          const hasProject = existingProjects.some((p: any) => p.id === projectId);
+          if (!hasProject) {
+            json.settings.projects = [testProject, ...existingProjects];
+          }
         }
+        await route.fulfill({
+          status: response.status(),
+          headers: response.headers(),
+          json,
+        });
+      } catch (e) {
+        // If something goes wrong (e.g. invalid JSON), just continue with original response
+        await route.continue();
       }
-      await route.fulfill({
-        status: response.status(),
-        headers: response.headers(),
-        json,
-      });
     });
 
     // Now navigate to the app
