@@ -105,8 +105,12 @@ test.describe('Sandbox Execution', () => {
     const messageList = page.locator('[data-testid="message-list"]');
     await expect(messageList).toBeVisible();
 
-    // Check if we get a response (any response that isn't an error is good sign)
-    // Ideally we check for "Error: " to ensure it DIDN'T fail.
+    // In TEST_MODE (mocks), we get a static response. In real mode, we get actual command output.
+    // We verify that SOME response appeared (proving the pipeline works), not specific content.
     await expect(messageList).not.toContainText('Error: Failed to create sandbox');
+
+    // Verify that we got *some* assistant response (either mock text or real output)
+    const hasResponse = await page.locator('[data-testid="message-list"]').innerText();
+    expect(hasResponse.length).toBeGreaterThan(20); // Some content appeared
   });
 });
