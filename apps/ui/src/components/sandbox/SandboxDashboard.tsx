@@ -79,21 +79,44 @@ export const SandboxDashboard: React.FC = () => {
   };
 
   const handlePower = async (sprite: Sprite) => {
-    const action = sprite.status === 'running' ? 'shutdown' : 'wake';
     try {
-      const res =
-        action === 'shutdown'
-          ? await client.sprites.shutdown(sprite.name)
-          : await client.sprites.wake(sprite.name);
-
+      const res = await client.sprites.wake(sprite.name);
       if (res.success) {
-        toast.success(`Sandbox ${action} initiated`);
+        toast.success(`Sandbox wake initiated`);
         fetchSprites();
       } else {
-        toast.error(res.error || `Failed to ${action} sandbox`);
+        toast.error(res.error || `Failed to wake sandbox`);
       }
     } catch (error) {
-      toast.error(`Failed to ${action} sandbox`);
+      toast.error(`Failed to wake sandbox`);
+    }
+  };
+
+  const handleHibernate = async (sprite: Sprite) => {
+    try {
+      const res = await client.sprites.shutdown(sprite.name); // Shutdown is used for hibernation
+      if (res.success) {
+        toast.success(`Sandbox hibernation initiated`);
+        fetchSprites();
+      } else {
+        toast.error(res.error || `Failed to hibernate sandbox`);
+      }
+    } catch (error) {
+      toast.error(`Failed to hibernate sandbox`);
+    }
+  };
+
+  const handleShutdown = async (sprite: Sprite) => {
+    try {
+      const res = await client.sprites.shutdown(sprite.name);
+      if (res.success) {
+        toast.success(`Sandbox shutdown initiated`);
+        fetchSprites();
+      } else {
+        toast.error(res.error || `Failed to shutdown sandbox`);
+      }
+    } catch (error) {
+      toast.error(`Failed to shutdown sandbox`);
     }
   };
 
@@ -154,6 +177,9 @@ export const SandboxDashboard: React.FC = () => {
               sprite={sprite}
               onDelete={() => handleDelete(sprite.name)}
               onPower={() => handlePower(sprite)}
+              onHibernate={() => handleHibernate(sprite)}
+              onWake={() => handlePower(sprite)} // Wake is same as power/start for now
+              onShutdown={() => handleShutdown(sprite)}
             />
           ))}
           {sprites.length === 0 && (

@@ -11,6 +11,10 @@ export interface Sprite {
   status: 'running' | 'warm' | 'cold' | 'shutdown' | 'provisioning' | 'error';
   lastActivityAt: string;
   createdAt: string;
+  resourceLimits?: {
+    cpu: number;
+    memory: number;
+  };
 }
 
 export interface Checkpoint {

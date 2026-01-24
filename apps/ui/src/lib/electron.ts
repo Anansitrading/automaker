@@ -661,9 +661,13 @@ export interface EventHistoryAPI {
 export interface Sprite {
   id: string;
   name: string;
-  status: 'running' | 'hibernating' | 'provisioning' | 'error';
+  status: 'running' | 'warm' | 'cold' | 'shutdown' | 'provisioning' | 'error';
   lastActivityAt: string;
   createdAt: string;
+  resourceLimits?: {
+    cpu: number;
+    memory: number;
+  };
 }
 
 export interface SpriteConfig {

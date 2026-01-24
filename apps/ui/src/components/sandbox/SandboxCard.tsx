@@ -13,10 +13,13 @@ interface SandboxCardProps {
   sprite: Sprite;
   onDelete: () => void;
   onPower: () => void;
+  onHibernate: () => void;
+  onWake: () => void;
+  onShutdown: () => void;
 }
 
 export const SandboxCard: React.FC<SandboxCardProps> = React.memo(
-  ({ sprite, onDelete, onPower }) => {
+  ({ sprite, onDelete, onPower, onHibernate, onWake, onShutdown }) => {
     return (
       <Card className="flex flex-col hover:shadow-lg transition-shadow duration-200">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -46,19 +49,15 @@ export const SandboxCard: React.FC<SandboxCardProps> = React.memo(
         </CardContent>
 
         <CardFooter className="flex justify-between gap-2 pt-2 border-t bg-muted/20">
-          <div className="flex gap-1">
-            <SandboxActions sprite={sprite} onPower={onPower} />
-            <CheckpointsModal sprite={sprite} />
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onDelete}
-            title="Destroy"
-            className="h-8 w-8"
-          >
-            <Trash2 className="h-4 w-4 text-destructive" />
-          </Button>
+          <SandboxActions
+            sprite={sprite}
+            onPower={onPower}
+            onHibernate={onHibernate}
+            onWake={onWake}
+            onShutdown={onShutdown}
+            onDelete={onDelete}
+          />
+          <CheckpointsModal sprite={sprite} />
         </CardFooter>
       </Card>
     );
@@ -68,24 +67,37 @@ export const SandboxCard: React.FC<SandboxCardProps> = React.memo(
 SandboxCard.displayName = 'SandboxCard';
 
 const StatusBadge: React.FC<{ status: Sprite['status'] }> = ({ status }) => {
-  const styles = {
+  const styles: Record<string, string> = {
     running: 'bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/20',
-    hibernating: 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
-    provisioning: 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/20',
+    warm: 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
+    cold: 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/20',
+    shutdown: 'bg-slate-500/15 text-slate-700 dark:text-slate-400 border-slate-500/20',
+    provisioning: 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-500/20',
     error: 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/20',
   };
 
-  const icons = {
+  const icons: Record<string, string> = {
     running: '●',
-    hibernating: '◐',
-    provisioning: '◔',
+    warm: '◑',
+    cold: '❄',
+    shutdown: '○',
+    provisioning: '⚙',
     error: '✕',
+  };
+
+  const labels: Record<string, string> = {
+    running: 'Running',
+    warm: 'Hibernating (Warm)',
+    cold: 'Hibernating (Cold)',
+    shutdown: 'Off',
+    provisioning: 'Provisioning',
+    error: 'Error',
   };
 
   return (
     <Badge variant="outline" className={`${styles[status] || styles.error} capitalize`}>
       <span className="mr-1">{icons[status] || icons.error}</span>
-      {status}
+      {labels[status] || status}
     </Badge>
   );
 };
