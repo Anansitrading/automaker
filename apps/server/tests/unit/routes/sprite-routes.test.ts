@@ -17,6 +17,7 @@ describe('SpriteRoutes (Sandbox API)', () => {
       execCommand: vi.fn(),
       createCheckpoint: vi.fn(),
       restoreCheckpoint: vi.fn(),
+      listCheckpoints: vi.fn(),
       getConsoleUrl: vi.fn(),
       shutdownSprite: vi.fn(),
       wakeSprite: vi.fn(),
@@ -105,6 +106,19 @@ describe('SpriteRoutes (Sandbox API)', () => {
       expect(res.status).toBe(200);
       expect(res.body).toEqual(checkpoint);
       expect(mockSpriteService.createCheckpoint).toHaveBeenCalledWith('test-sandbox', 'backup');
+    });
+  });
+
+  describe('GET /sprites/:name/checkpoints', () => {
+    it('should list checkpoints', async () => {
+      const checkpoints = [{ id: 'bk1', name: 'backup' }];
+      vi.mocked(mockSpriteService.listCheckpoints).mockResolvedValue(checkpoints as any);
+
+      const res = await request(app).get('/sprites/test-sandbox/checkpoints');
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual(checkpoints);
+      expect(mockSpriteService.listCheckpoints).toHaveBeenCalledWith('test-sandbox');
     });
   });
 

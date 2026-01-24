@@ -242,6 +242,21 @@ export class SpriteService extends EventEmitter {
   }
 
   /**
+   * List checkpoints for a sprite
+   */
+  async listCheckpoints(id: string): Promise<Checkpoint[]> {
+    const start = Date.now();
+    try {
+      const checkpoints = await this.client.listCheckpoints(id);
+      this.telemetry.recordHistogram('sprites.checkpoint.list.duration', Date.now() - start);
+      return checkpoints;
+    } catch (error: any) {
+      this.handleError('listCheckpoints', error);
+      throw error;
+    }
+  }
+
+  /**
    * Execute command on sprite
    */
 

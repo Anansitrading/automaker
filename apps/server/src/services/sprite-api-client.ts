@@ -151,6 +151,20 @@ export class SpriteApiClient extends EventEmitter {
       return {} as T;
     }
 
+    if (
+      url.match(/^\/sprites\/[\w-]+\/checkpoints$/) &&
+      (options.method === 'GET' || !options.method)
+    ) {
+      return [
+        {
+          id: `ckpt-${Date.now()}`,
+          spriteId: 'mock-sprite',
+          name: 'mock-checkpoint-1',
+          createdAt: new Date().toISOString(),
+        },
+      ] as T;
+    }
+
     return {} as T;
   }
 
@@ -253,6 +267,15 @@ export class SpriteApiClient extends EventEmitter {
       method: 'POST',
     });
     this.emit('spriteRestored', { spriteId, checkpointId });
+  }
+
+  /**
+   * List checkpoints for a sprite
+   * API: GET /sprites/{id}/checkpoints
+   */
+  async listCheckpoints(spriteId: string): Promise<Checkpoint[]> {
+    logger.debug(`Listing checkpoints for sprite ${spriteId}`);
+    return this.request<Checkpoint[]>(`/sprites/${spriteId}/checkpoints`);
   }
 
   // ============================================================================

@@ -127,6 +127,18 @@ export function createSpriteRoutes(spriteService: SpriteService): Router {
     }
   });
 
+  // List Checkpoints
+  router.get('/:name/checkpoints', async (req, res) => {
+    try {
+      const { name } = req.params;
+      const checkpoints = await spriteService.listCheckpoints(name);
+      res.json(checkpoints);
+    } catch (error) {
+      logError(error, 'Failed to list checkpoints');
+      res.status(500).json({ error: 'Failed to list checkpoints' });
+    }
+  });
+
   // Restore Checkpoint
   router.post('/:name/checkpoints/:id/restore', async (req, res) => {
     try {
