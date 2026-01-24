@@ -962,6 +962,51 @@ export class AgentService {
     return true;
   }
 
+  /**
+   * Create a checkpoint of the agent's sandbox state
+   */
+  async checkpointAgent(sessionId: string, comment?: string): Promise<any> {
+    const session = this.sessions.get(sessionId);
+    if (!session) {
+      throw new Error(`Session ${sessionId} not found`);
+    }
+
+    if (!session.spriteId) {
+      throw new Error(`Session ${sessionId} is not running in a sandbox`);
+    }
+
+    if (!this.spriteService) {
+      throw new Error('SpriteService not available');
+    }
+
+    this.logger.info(`Creating checkpoint for session ${sessionId}...`);
+    const checkpoint = await this.spriteService.createCheckpoint(session.spriteId, comment);
+    this.logger.info(`Checkpoint created: ${checkpoint.id}`);
+    return checkpoint;
+  }
+
+  /**
+   * Restore agent's sandbox to a previous checkpoint
+   */
+  async restoreAgent(sessionId: string, checkpointId: string): Promise<void> {
+    const session = this.sessions.get(sessionId);
+    if (!session) {
+      throw new Error(`Session ${sessionId} not found`);
+    }
+
+    if (!session.spriteId) {
+      throw new Error(`Session ${sessionId} is not running in a sandbox`);
+    }
+
+    if (!this.spriteService) {
+      throw new Error('SpriteService not available');
+    }
+
+    this.logger.info(`Restoring session ${sessionId} to checkpoint ${checkpointId}...`);
+    await this.spriteService.restoreCheckpoint(session.spriteId, checkpointId);
+    this.logger.info(`Session ${sessionId} restored to checkpoint ${checkpointId}`);
+  }
+
   // Queue management methods
 
   /**
