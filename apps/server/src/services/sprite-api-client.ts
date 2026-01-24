@@ -43,23 +43,24 @@ export interface SpriteConfig {
 export class SpriteApiClient extends EventEmitter {
   private axiosInstance: AxiosInstance;
   private statusCache: Map<string, Sprite> = new Map();
+  private token: string;
 
   constructor() {
     super();
     const apiBase = spritesConfig.SPRITES_API_BASE || 'https://api.sprites.dev/v1';
-    const token = spritesConfig.SPRITES_TOKEN || '';
+    this.token = spritesConfig.SPRITES_TOKEN || '';
 
     // In test mode, we don't need a token
     const isTestMode = process.env.TEST_MODE === 'true';
 
-    if (!token && !isTestMode) {
+    if (!this.token && !isTestMode) {
       logger.warn('SPRITES_TOKEN is not configured. API calls will fail.');
     }
 
     this.axiosInstance = axios.create({
       baseURL: apiBase,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -292,6 +293,42 @@ export class SpriteApiClient extends EventEmitter {
     const apiBase = this.axiosInstance.defaults.baseURL || '';
     const baseUrl = apiBase.replace('/v1', '').replace('api.', '');
     return `${baseUrl}/dashboard/sprites/${spriteName}`;
+  }
+
+  /**
+   * Get WebSocket URL for console connection
+   */
+  getConsoleWebSocketUrl(
+    spriteName: string,
+    options?: {
+      cols?: number;
+      rows?: number;
+      sessionId?: string;
+    }
+  ): string {
+    const baseUrl =
+      this.axiosInstance.defaults.baseURL?.replace('https://', 'wss://') || 'wss://api.sprites.dev';
+    const url = new URL(`${baseUrl}/v1/sprites/${spriteName}/exec`);
+
+    url.searchParams.set('tty', 'true');
+    url.searchParams.set('stdin', 'true');
+    url.searchParams.set('cols', String(options?.cols || 80));
+    url.searchParams.set('rows', String(options?.rows || 24));
+
+    if (options?.sessionId) {
+      url.searchParams.set('id', options.sessionId);
+    }
+
+    return url.toString();
+  }
+
+  /**
+   * Get WebSocket headers for authentication
+   */
+  getWebSocketHeaders(): Record<string, string> {
+    return {
+      Authorization: `Bearer ${this.token}`,
+    };
   }
 
   /**

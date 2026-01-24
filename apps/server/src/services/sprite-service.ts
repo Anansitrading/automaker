@@ -75,6 +75,27 @@ export class SpriteService extends EventEmitter {
   }
 
   /**
+   * Get WebSocket URL for console connection
+   */
+  getConsoleWebSocketUrl(
+    spriteName: string,
+    options?: {
+      cols?: number;
+      rows?: number;
+      sessionId?: string;
+    }
+  ): string {
+    return this.client.getConsoleWebSocketUrl(spriteName, options);
+  }
+
+  /**
+   * Get WebSocket headers for authentication
+   */
+  getWebSocketHeaders(): Record<string, string> {
+    return this.client.getWebSocketHeaders();
+  }
+
+  /**
    * List all sprites
    */
   async listSprites(): Promise<Sprite[]> {

@@ -341,15 +341,20 @@ app.use('/api/sprites', createSpriteRoutes(spriteService));
 const server = createServer(app);
 
 import { createTelemetryWebSocketHandler } from './routes/telemetry/websocket.js';
+import { createConsoleWebSocketHandler } from './routes/sprite/console-websocket.js';
 
 // WebSocket servers using noServer mode for proper multi-path support
 const wss = new WebSocketServer({ noServer: true });
 const terminalWss = new WebSocketServer({ noServer: true });
 const telemetryWss = new WebSocketServer({ noServer: true });
+const consoleWss = new WebSocketServer({ noServer: true });
 const terminalService = getTerminalService();
 
 // Setup Telemetry WebSocket Handler
 telemetryWss.on('connection', createTelemetryWebSocketHandler(telemetryService, spriteService));
+
+// Setup Console WebSocket Handler
+consoleWss.on('connection', createConsoleWebSocketHandler(spriteService));
 
 /**
  * Authenticate WebSocket upgrade requests
@@ -411,6 +416,10 @@ server.on('upgrade', (request, socket, head) => {
   } else if (pathname === '/api/telemetry/ws') {
     telemetryWss.handleUpgrade(request, socket, head, (ws) => {
       telemetryWss.emit('connection', ws, request);
+    });
+  } else if (pathname.startsWith('/api/sandboxes/') && pathname.endsWith('/console')) {
+    consoleWss.handleUpgrade(request, socket, head, (ws) => {
+      consoleWss.emit('connection', ws, request);
     });
   } else {
     socket.destroy();

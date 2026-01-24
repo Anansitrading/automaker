@@ -1,0 +1,47 @@
+
+> @automaker/ui@0.12.0 pretest
+> node scripts/kill-test-servers.mjs && node scripts/setup-e2e-fixtures.mjs
+
+[KillTestServers] Checking for existing test servers...
+[KillTestServers] Done
+Setting up E2E test fixtures...
+Workspace root: C:\Users\justus\.gemini\antigravity\scratch\automaker
+Fixture path: C:\Users\justus\.gemini\antigravity\scratch\automaker\test\fixtures\projectA
+Test workspace dir: C:\Users\justus\AppData\Local\Temp\automaker-e2e-workspace
+Created fixture file: C:\Users\justus\.gemini\antigravity\scratch\automaker\test\fixtures\projectA\.automaker\app_spec.txt
+Reset server settings: C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\server\data\settings.json
+E2E test fixtures setup complete!
+
+> @automaker/ui@0.12.0 test
+> playwright test --reporter=line tests/agent/sandbox-execution.spec.ts
+
+[1A[2K[2m[WebServer] [22m(node:1340) DeprecationWarning: Calling start() is no longer necessary. It can be safely omitted.
+[2m[WebServer] [22m(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[GlobalSetup] Setup complete
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › tests\agent\sandbox-execution.spec.ts:46:7 › Sandbox Execution › should execute commands in the sandbox environment
+[1A[2K  1) [chromium] › tests\agent\sandbox-execution.spec.ts:46:7 › Sandbox Execution › should execute commands in the sandbox environment 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\justus\AppData\Local\ms-playwright\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+
+[1A[2K  1 failed
+    [chromium] › tests\agent\sandbox-execution.spec.ts:46:7 › Sandbox Execution › should execute commands in the sandbox environment 
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui
+npm error workspace @automaker/ui@0.12.0
+npm error location C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c playwright test --reporter=line tests/agent/sandbox-execution.spec.ts
