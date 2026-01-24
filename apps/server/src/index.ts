@@ -341,7 +341,7 @@ app.use('/api/sprites', createSpriteRoutes(spriteService));
 const server = createServer(app);
 
 import { createTelemetryWebSocketHandler } from './routes/telemetry/websocket.js';
-import { createConsoleWebSocketHandler } from './routes/sprite/console-websocket.js';
+import { createConsoleWebSocketHandler } from './routes/sandbox/console.js';
 
 // WebSocket servers using noServer mode for proper multi-path support
 const wss = new WebSocketServer({ noServer: true });
