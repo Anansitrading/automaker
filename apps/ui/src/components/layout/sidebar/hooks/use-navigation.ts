@@ -13,6 +13,7 @@ import {
   Network,
   Bell,
   Settings,
+  Box,
 } from 'lucide-react';
 import type { NavSection, NavItem } from '../types';
 import type { KeyboardShortcut } from '@/hooks/use-keyboard-shortcuts';
@@ -103,6 +104,11 @@ export function useNavigation({
   // Build navigation sections
   const navSections: NavSection[] = useMemo(() => {
     const allToolsItems: NavItem[] = [
+      {
+        id: 'sandboxes',
+        label: 'Sandboxes',
+        icon: Box,
+      },
       {
         id: 'ideation',
         label: 'Ideation',

@@ -1932,7 +1932,12 @@ export class HttpApiClient implements ElectronAPI {
       this.post(`/api/sprites/${name}/exec`, { command, timeout }),
     shutdown: (name: string) => this.post(`/api/sprites/${name}/shutdown`, {}),
     wake: (name: string) => this.post(`/api/sprites/${name}/wake`, {}),
-    getConsoleUrl: (name: string) => this.get(`/api/sprites/${name}/url`),
+    getConsoleUrl: (name: string) => this.get(`/api/sprites/${name}/console-url`),
+    listCheckpoints: (name: string) => this.get(`/api/sprites/${name}/checkpoints`),
+    createCheckpoint: (name: string, checkpointName?: string) =>
+      this.post(`/api/sprites/${name}/checkpoints`, { name: checkpointName }),
+    restoreCheckpoint: (name: string, checkpointId: string) =>
+      this.post(`/api/sprites/${name}/checkpoints/${checkpointId}/restore`, {}),
   };
 
   // GitHub API

@@ -680,6 +680,13 @@ export interface ExecResult {
   durationMs: number;
 }
 
+export interface Checkpoint {
+  id: string;
+  spriteId: string;
+  name: string;
+  createdAt: string;
+}
+
 export interface SpritesAPI {
   list: () => Promise<{ success: boolean; sprites?: Sprite[]; error?: string }>;
   get: (name: string) => Promise<{ success: boolean; sprite?: Sprite; error?: string }>;
@@ -693,6 +700,17 @@ export interface SpritesAPI {
   shutdown: (name: string) => Promise<{ success: boolean; error?: string }>;
   wake: (name: string) => Promise<{ success: boolean; error?: string }>;
   getConsoleUrl: (name: string) => Promise<{ success: boolean; url?: string; error?: string }>;
+  listCheckpoints: (
+    name: string
+  ) => Promise<{ success: boolean; checkpoints?: Checkpoint[]; error?: string }>;
+  createCheckpoint: (
+    name: string,
+    checkpointName?: string
+  ) => Promise<{ success: boolean; checkpoint?: Checkpoint; error?: string }>;
+  restoreCheckpoint: (
+    name: string,
+    checkpointId: string
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
 export interface ElectronAPI {
