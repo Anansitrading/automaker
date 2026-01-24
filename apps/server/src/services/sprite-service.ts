@@ -194,12 +194,38 @@ export class SpriteService extends EventEmitter {
   }
 
   /**
-   * Create a checkpoint of the sprite
+   * Restore a sprite to a checkpoint
    */
-  async createCheckpoint(id: string, name: string): Promise<Checkpoint> {
+  async restoreCheckpoint(id: string, checkpointId: string): Promise<void> {
     const start = Date.now();
     try {
-      const checkpoint = await this.client.createCheckpoint(id, name);
+      await this.client.restoreCheckpoint(id, checkpointId);
+      this.telemetry.recordHistogram('sprites.restore.duration', Date.now() - start);
+
+      // Standardized checkpoint:restored event is already emitted by helper, or we can emit here.
+      // SpriteApiClient emits 'spriteRestored', which SpriteService listens to and emits 'sprite:restored' (SpriteEvents.RESTORED).
+      // Let's add the standardized event here if not already covered.
+      // Looking at setupClientListeners:
+      // this.client.on('spriteRestored', (data: any) => { ... this.emit(SpriteEvents.RESTORED, data); });
+      // SpriteEvents.CHECKPOINT_RESTORED = 'checkpoint:restored' exists in the const but isn't used in setupClientListeners.
+
+      this.emit(SpriteEvents.CHECKPOINT_RESTORED, {
+        sandboxId: id,
+        checkpointId,
+      });
+    } catch (error: any) {
+      this.handleError('restoreCheckpoint', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create a checkpoint of the sprite
+   */
+  async createCheckpoint(id: string, comment?: string): Promise<Checkpoint> {
+    const start = Date.now();
+    try {
+      const checkpoint = await this.client.createCheckpoint(id, comment);
       this.telemetry.recordHistogram('sprites.checkpoint.duration', Date.now() - start);
 
       // Emit standardized checkpoint:created event

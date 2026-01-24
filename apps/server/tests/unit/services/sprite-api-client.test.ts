@@ -107,6 +107,27 @@ describe('SpriteApiClient', () => {
       expect(spy).toHaveBeenCalledWith(mockSprite);
     });
 
+    it('should restore checkpoint and emit event', async () => {
+      mockAxiosInstance.mockResolvedValueOnce({
+        data: {},
+        status: 204,
+      });
+
+      const spy = vi.fn();
+      client.on('spriteRestored', spy);
+
+      await client.restoreCheckpoint('s1', 'ckpt-1');
+
+      expect(mockAxiosInstance).toHaveBeenCalledWith(
+        expect.objectContaining({
+          method: 'POST',
+          url: '/sprites/s1/checkpoints/ckpt-1/restore',
+        })
+      );
+
+      expect(spy).toHaveBeenCalledWith({ spriteId: 's1', checkpointId: 'ckpt-1' });
+    });
+
     it('should delete a sprite and emit event', async () => {
       mockAxiosInstance.mockResolvedValueOnce({
         data: {},
@@ -125,6 +146,33 @@ describe('SpriteApiClient', () => {
         })
       );
       expect(spy).toHaveBeenCalledWith('s1');
+    });
+  });
+
+  describe('Checkpointing', () => {
+    it('should create checkpoint', async () => {
+      const mockCheckpoint = {
+        id: 'ckpt-1',
+        spriteId: 's1',
+        name: 'test-checkpoint',
+        createdAt: new Date().toISOString(),
+      };
+
+      mockAxiosInstance.mockResolvedValueOnce({
+        data: mockCheckpoint,
+        status: 201,
+      });
+
+      const checkpoint = await client.createCheckpoint('s1', 'test comment');
+
+      expect(checkpoint).toEqual(mockCheckpoint);
+      expect(mockAxiosInstance).toHaveBeenCalledWith(
+        expect.objectContaining({
+          method: 'POST',
+          url: '/sprites/s1/checkpoint',
+          data: JSON.stringify({ comment: 'test comment' }),
+        })
+      );
     });
   });
 

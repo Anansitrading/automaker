@@ -138,13 +138,17 @@ export class SpriteApiClient extends EventEmitter {
       return {} as T;
     }
 
-    if (url.match(/^\/sprites\/[\w-]+\/checkpoints$/)) {
+    if (url.match(/^\/sprites\/[\w-]+\/checkpoint$/)) {
       return {
         id: `ckpt-${Date.now()}`,
         spriteId: 'mock-sprite',
         name: 'mock-checkpoint',
         createdAt: new Date().toISOString(),
       } as T;
+    }
+
+    if (url.match(/^\/sprites\/[\w-]+\/checkpoints\/[\w-]+\/restore$/)) {
+      return {} as T;
     }
 
     return {} as T;
@@ -229,23 +233,24 @@ export class SpriteApiClient extends EventEmitter {
 
   /**
    * Create a checkpoint of the current sprite state
+   * API: POST /sprites/{name}/checkpoint
    */
-  async createCheckpoint(spriteId: string, name: string): Promise<Checkpoint> {
-    logger.info(`Creating checkpoint '${name}' for sprite ${spriteId}`);
-    return this.request<Checkpoint>(`/sprites/${spriteId}/checkpoints`, {
+  async createCheckpoint(spriteId: string, comment?: string): Promise<Checkpoint> {
+    logger.info(`Creating checkpoint for sprite ${spriteId} with comment: ${comment}`);
+    return this.request<Checkpoint>(`/sprites/${spriteId}/checkpoint`, {
       method: 'POST',
-      data: JSON.stringify({ name }),
+      data: JSON.stringify({ comment }),
     });
   }
 
   /**
    * Restore a sprite to a specified checkpoint
+   * API: POST /sprites/{name}/checkpoints/{id}/restore
    */
   async restoreCheckpoint(spriteId: string, checkpointId: string): Promise<void> {
     logger.info(`Restoring sprite ${spriteId} to checkpoint ${checkpointId}`);
-    await this.request(`/sprites/${spriteId}/restore`, {
+    await this.request(`/sprites/${spriteId}/checkpoints/${checkpointId}/restore`, {
       method: 'POST',
-      data: JSON.stringify({ checkpointId }),
     });
     this.emit('spriteRestored', { spriteId, checkpointId });
   }

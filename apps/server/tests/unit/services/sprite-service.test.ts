@@ -14,6 +14,8 @@ vi.mock('../../../src/services/sprite-api-client.js', () => {
       shutdownSprite = vi.fn();
       wakeSprite = vi.fn();
       execCommand = vi.fn();
+      createCheckpoint = vi.fn();
+      restoreCheckpoint = vi.fn();
       getConsoleUrl = vi.fn();
     },
   };
@@ -101,5 +103,33 @@ describe('SpriteService', () => {
 
     expect(emitSpy).toHaveBeenCalledWith(SpriteEvents.RESTORED, mockData);
     expect(telemetry.recordCounter).toHaveBeenCalledWith('sprites.restored');
+  });
+
+  it('should create checkpoint and record telemetry', async () => {
+    const mockCheckpoint = { id: 'cp1', name: 'test-ckpt' };
+    const client = (service as any).client;
+    client.createCheckpoint.mockResolvedValue(mockCheckpoint);
+
+    const result = await service.createCheckpoint('s1', 'test comment');
+
+    expect(result).toEqual(mockCheckpoint);
+    expect(client.createCheckpoint).toHaveBeenCalledWith('s1', 'test comment');
+    expect(telemetry.recordHistogram).toHaveBeenCalledWith(
+      'sprites.checkpoint.duration',
+      expect.any(Number)
+    );
+  });
+
+  it('should restore checkpoint and record telemetry', async () => {
+    const client = (service as any).client;
+    client.restoreCheckpoint.mockResolvedValue(undefined);
+
+    await service.restoreCheckpoint('s1', 'cp1');
+
+    expect(client.restoreCheckpoint).toHaveBeenCalledWith('s1', 'cp1');
+    expect(telemetry.recordHistogram).toHaveBeenCalledWith(
+      'sprites.restore.duration',
+      expect.any(Number)
+    );
   });
 });
