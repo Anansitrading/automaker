@@ -171,6 +171,17 @@ export class SettingsService {
       logger.info('Migrated legacy sandboxEnabled setting to sandbox.enabled');
     }
 
+    // Migration: Add phase tracking to sandbox settings
+    if (result.sandbox && !result.sandbox.phase) {
+      result.sandbox.phase = {
+        currentPhase: 'A',
+        phaseActivatedAt: new Date().toISOString(),
+        autoAdvanceEnabled: false,
+      };
+      needsSave = true;
+      logger.info('Added phase tracking to sandbox settings');
+    }
+
     // Update version if any migration occurred
     if (needsSave) {
       result.version = SETTINGS_VERSION;

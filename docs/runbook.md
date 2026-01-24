@@ -66,3 +66,77 @@ If sandboxes are stuck or consuming excessive resources:
 1.  Shut down the AutoMaker server.
 2.  Log in to the Sprites.dev dashboard (if applicable) or use the API manually to list and delete sprites.
 3.  **Note**: Deleting a sprite is destructive and irreversible. Ensure you have checkpoints if needed.
+
+## Rollout Phases
+
+AutoMaker uses a phased approach to progressively enable sandbox infrastructure:
+
+### Phase A: Infrastructure Deployment (Current Default)
+
+- Sandbox infrastructure available but not active by default
+- Manual opt-in required via session creation
+- Testing and validation period
+
+### Phase B: Auto-Mode Enablement
+
+- Auto-mode sessions use sandboxes by default
+- Manual agent sessions remain host-based
+- Recommended after successful Phase A testing
+
+### Phase C: Full Agent Enablement
+
+- All agent sessions use sandboxes by default
+- Host execution available via explicit opt-out
+- Production readiness validated
+
+### Phase D: Deprecation (Future)
+
+- Non-sandboxed execution marked as deprecated
+- Warning messages for opt-out usage
+- Preparation for mandatory sandbox execution
+
+### Checking Current Phase
+
+View current phase in `settings.json`:
+
+```json
+{
+  "sandbox": {
+    "phase": {
+      "currentPhase": "A",
+      "phaseActivatedAt": "2026-01-24T13:00:00.000Z"
+    }
+  }
+}
+```
+
+### Advancing to Next Phase
+
+**Prerequisites:**
+
+- Review sandbox stability metrics
+- Confirm user acceptance
+- Test rollback procedures
+
+**Update Phase** (direct edit):
+
+```json
+{
+  "sandbox": {
+    "phase": {
+      "currentPhase": "B",
+      "phaseActivatedAt": "2026-01-24T14:00:00.000Z"
+    }
+  }
+}
+```
+
+**Restart Server** and monitor:
+
+- Watch logs for sandbox provisioning
+- Track error rates
+- Validate user workflows
+
+### Rolling Back
+
+Change `currentPhase` back to previous value. The kill-switch (`enabled: false`) provides instant rollback at any time.

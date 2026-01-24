@@ -106,6 +106,66 @@ export class AgentService {
   }
 
   /**
+   * Determine if sandbox should be used by default based on rollout phase
+   * @param isAutoMode - Whether this is an auto-mode session
+   * @param explicitUseSandbox - Explicit useSandbox parameter from caller
+   * @param settings - Global settings containing phase information
+   * @returns Effective useSandbox value respecting phase and overrides
+   */
+  private getSandboxDefaultForPhase(
+    isAutoMode: boolean,
+    explicitUseSandbox: boolean | undefined,
+    settings: any
+  ): boolean {
+    // Explicit parameter always wins
+    if (explicitUseSandbox !== undefined) {
+      return explicitUseSandbox;
+    }
+
+    // Check kill-switch first
+    if (!settings.sandbox?.enabled) {
+      return false;
+    }
+
+    // Phase-based defaults
+    const phase = settings.sandbox?.phase?.currentPhase ?? 'A';
+
+    switch (phase) {
+      case 'A':
+        // Infrastructure deployed - manual opt-in only
+        // Use existing settings (defaultForAutoMode/defaultForAgents)
+        return isAutoMode
+          ? (settings.sandbox?.defaultForAutoMode ?? false)
+          : (settings.sandbox?.defaultForAgents ?? false);
+
+      case 'B':
+        // Auto-mode enabled by default
+        return isAutoMode ? true : (settings.sandbox?.defaultForAgents ?? false);
+
+      case 'C':
+        // All agents enabled by default
+        return true;
+
+      case 'D':
+        // Deprecation phase - warn about non-sandbox use but still allow opt-out
+        if (!explicitUseSandbox) {
+          this.logger.warn(
+            'Non-sandboxed execution is deprecated and will be removed in a future release. ' +
+              'Please update your workflows to use sandboxes.'
+          );
+        }
+        return true;
+
+      default:
+        // Unknown phase - fall back to Phase A behavior
+        this.logger.warn(`Unknown rollout phase: ${phase}, falling back to Phase A defaults`);
+        return isAutoMode
+          ? (settings.sandbox?.defaultForAutoMode ?? false)
+          : (settings.sandbox?.defaultForAgents ?? false);
+    }
+  }
+
+  /**
    * Start or resume a conversation
    */
   async startConversation({
@@ -196,31 +256,34 @@ export class AgentService {
   async spawnAgent({
     sessionId,
     workingDirectory,
-    useSandbox = false,
+    useSandbox,
+    isAutoMode = false,
   }: {
     sessionId: string;
     workingDirectory?: string;
     useSandbox?: boolean;
+    isAutoMode?: boolean;
   }) {
     // Start standard conversation setup
     const result = await this.startConversation({ sessionId, workingDirectory });
 
-    // Check global sandbox kill switch
-    let globalSandboxEnabled = true;
+    // Get settings for phase-aware defaults
+    let effectiveUseSandbox = useSandbox ?? false;
     if (this.settingsService) {
       const settings = await this.settingsService.getGlobalSettings();
-      globalSandboxEnabled = settings.sandbox?.enabled ?? false;
-    }
+      effectiveUseSandbox = this.getSandboxDefaultForPhase(isAutoMode, useSandbox, settings);
 
-    if (useSandbox && !globalSandboxEnabled) {
-      this.logger.warn(
-        `Sandbox execution globally disabled. spawnAgent will use host execution for ${sessionId}.`
-      );
-      useSandbox = false;
+      // Kill-switch check (redundant but explicit for clarity)
+      if (effectiveUseSandbox && !settings.sandbox?.enabled) {
+        this.logger.warn(
+          `Sandbox execution globally disabled. spawnAgent will use host execution for ${sessionId}.`
+        );
+        effectiveUseSandbox = false;
+      }
     }
 
     // If sandbox requested, initialize it
-    if (useSandbox && this.spriteService) {
+    if (effectiveUseSandbox && this.spriteService) {
       const session = this.sessions.get(sessionId);
       if (session && !session.spriteId) {
         try {
@@ -780,7 +843,8 @@ export class AgentService {
     projectPath?: string,
     workingDirectory?: string,
     model?: string,
-    useSandbox = false
+    useSandbox?: boolean,
+    isAutoMode = false
   ): Promise<SessionMetadata> {
     const sessionId = this.generateId();
     const metadata = await this.loadMetadata();
@@ -797,6 +861,13 @@ export class AgentService {
       validateWorkingDirectory(projectPath);
     }
 
+    // Get phase-aware default for useSandbox
+    let effectiveUseSandbox = useSandbox ?? false;
+    if (this.settingsService) {
+      const settings = await this.settingsService.getGlobalSettings();
+      effectiveUseSandbox = this.getSandboxDefaultForPhase(isAutoMode, useSandbox, settings);
+    }
+
     const session: SessionMetadata = {
       id: sessionId,
       name,
@@ -805,7 +876,7 @@ export class AgentService {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       model,
-      useSandbox,
+      useSandbox: effectiveUseSandbox,
     };
 
     metadata[sessionId] = session;

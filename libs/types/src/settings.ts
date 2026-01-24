@@ -26,6 +26,27 @@ export interface SandboxResourceLimits {
 }
 
 /**
+ * Sandbox rollout phases for gradual adoption
+ * - A: Infrastructure deployed, manual opt-in only
+ * - B: Auto-mode enabled by default, manual agents opt-in
+ * - C: All agents enabled by default, host execution opt-out
+ * - D: Non-sandboxed execution deprecated (future)
+ */
+export type SandboxRolloutPhase = 'A' | 'B' | 'C' | 'D';
+
+/**
+ * Phase metadata for tracking progression
+ */
+export interface SandboxPhaseMetadata {
+  /** Current active phase */
+  currentPhase: SandboxRolloutPhase;
+  /** ISO timestamp when current phase was activated */
+  phaseActivatedAt: string;
+  /** Manual override for auto-advancement (default: false) */
+  autoAdvanceEnabled?: boolean;
+}
+
+/**
  * Sandbox configuration settings
  */
 export interface SandboxSettings {
@@ -37,6 +58,8 @@ export interface SandboxSettings {
   defaultForAutoMode: boolean;
   /** Resource usage limits */
   resourceLimits: SandboxResourceLimits;
+  /** Phase tracking for gradual rollout */
+  phase: SandboxPhaseMetadata;
 }
 import type { CodexSandboxMode, CodexApprovalPolicy } from './codex.js';
 import type { ReasoningEffort } from './provider.js';
@@ -936,6 +959,11 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
       maxCpu: 4,
       maxMemory: 8192,
       maxDisk: 50,
+    },
+    phase: {
+      currentPhase: 'A',
+      phaseActivatedAt: new Date().toISOString(),
+      autoAdvanceEnabled: false,
     },
   },
 };

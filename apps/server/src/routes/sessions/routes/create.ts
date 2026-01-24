@@ -9,12 +9,13 @@ import { getErrorMessage, logError } from '../common.js';
 export function createCreateHandler(agentService: AgentService) {
   return async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, projectPath, workingDirectory, model, useSandbox } = req.body as {
+      const { name, projectPath, workingDirectory, model, useSandbox, isAutoMode } = req.body as {
         name: string;
         projectPath?: string;
         workingDirectory?: string;
         model?: string;
         useSandbox?: boolean;
+        isAutoMode?: boolean;
       };
 
       if (!name) {
@@ -27,7 +28,8 @@ export function createCreateHandler(agentService: AgentService) {
         projectPath,
         workingDirectory,
         model,
-        useSandbox
+        useSandbox,
+        isAutoMode ?? false
       );
       res.json({ success: true, session });
     } catch (error) {
