@@ -120,8 +120,32 @@ export class AgentService {
       const metadata = await this.loadMetadata();
       const sessionMetadata = metadata[sessionId];
 
+      // Check global sandbox kill switch
+      let globalSandboxEnabled = true;
+      if (this.settingsService) {
+        const settings = await this.settingsService.getGlobalSettings();
+        globalSandboxEnabled = settings.sandboxEnabled ?? true;
+      }
+
+      if (sessionMetadata?.useSandbox && !globalSandboxEnabled) {
+        this.logger.warn(
+          `Sandbox execution globally disabled. Session ${sessionId} will override useSandbox to false.`
+        );
+        // We don't update persistence here to allow "rollback" of the setting itself later,
+        // effectively "pausing" sandbox use without forgetting user preference.
+        // But we need to ensure the runtime session knows to use local execution.
+        // Since session object is created below, we will handle it there if possible?
+        // Actually, session object doesn't have useSandbox flag, it relies on looking up metadata or just having spriteId?
+        // Let's verify Session interface.
+      }
+
       // Auto-provision sandbox if enabled but missing
-      if (sessionMetadata?.useSandbox && !sessionMetadata.spriteId && this.spriteService) {
+      if (
+        globalSandboxEnabled &&
+        sessionMetadata?.useSandbox &&
+        !sessionMetadata.spriteId &&
+        this.spriteService
+      ) {
         try {
           this.logger.info(`Auto-provisioning missing sandbox for session ${sessionId}...`);
           const sprite = await this.spriteService.createSprite({
@@ -154,6 +178,7 @@ export class AgentService {
         workingDirectory: resolvedWorkingDirectory,
         sdkSessionId: sessionMetadata?.sdkSessionId, // Load persisted SDK session ID
         promptQueue,
+        spriteId: globalSandboxEnabled ? sessionMetadata?.spriteId : undefined,
       });
     }
 
@@ -179,6 +204,20 @@ export class AgentService {
   }) {
     // Start standard conversation setup
     const result = await this.startConversation({ sessionId, workingDirectory });
+
+    // Check global sandbox kill switch
+    let globalSandboxEnabled = true;
+    if (this.settingsService) {
+      const settings = await this.settingsService.getGlobalSettings();
+      globalSandboxEnabled = settings.sandboxEnabled ?? true;
+    }
+
+    if (useSandbox && !globalSandboxEnabled) {
+      this.logger.warn(
+        `Sandbox execution globally disabled. spawnAgent will use host execution for ${sessionId}.`
+      );
+      useSandbox = false;
+    }
 
     // If sandbox requested, initialize it
     if (useSandbox && this.spriteService) {

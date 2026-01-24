@@ -650,6 +650,14 @@ export interface GlobalSettings {
    * @see EventHook for configuration details
    */
   eventHooks?: EventHook[];
+
+  // Sandbox Configuration
+  /**
+   * Global kill-switch for sandbox execution.
+   * If false, all agents will use host-based execution regardless of session settings.
+   * @default true
+   */
+  sandboxEnabled?: boolean;
 }
 
 /**
@@ -896,6 +904,7 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
   skillsSources: ['user', 'project'],
   enableSubagents: true,
   subagentsSources: ['user', 'project'],
+  sandboxEnabled: true,
 };
 
 /** Default credentials (empty strings - user must provide API keys) */
