@@ -15,10 +15,10 @@ try {
   const originalContent = content;
 
   // Convert git+ssh://git@github.com/ to git+https://github.com/
-  content = content.replace(/git\+ssh:\/\/git@github\.com\//g, 'git+https://github.com/');
+  content = content.replace(/git\+ssh:\/\/git@/g, 'git+https://');
 
-  // Also handle other potential git+ssh patterns (e.g., git+ssh://git@gitlab.com/)
-  content = content.replace(/git\+ssh:\/\/git@([^/]+)\//g, 'git+https://$1/');
+  // Also handle patterns without git@ if they exist
+  content = content.replace(/git\+ssh:\/\//g, 'git+https://');
 
   if (content !== originalContent) {
     writeFileSync(lockfilePath, content, 'utf8');

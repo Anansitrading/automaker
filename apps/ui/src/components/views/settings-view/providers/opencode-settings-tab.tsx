@@ -121,7 +121,7 @@ export function OpencodeSettingsTab() {
       }
     };
     loadDynamicContent();
-  }, [cliStatus?.success, cliStatus?.status]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [cliStatus?.success, cliStatus?.status]);
 
   useEffect(() => {
     const refreshModelsForNewProviders = async () => {
