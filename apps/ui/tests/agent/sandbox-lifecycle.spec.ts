@@ -44,6 +44,9 @@ test.describe('Sandbox Lifecycle', () => {
   });
 
   test('should wake up a hibernating sprite upon user interaction', async ({ page, request }) => {
+    // Skip in TEST_MODE as mocks don't manage real sprite lifecycle
+    test.skip(process.env.TEST_MODE === 'true', 'Requires real sprite lifecycle management');
+
     // 1. Setup and Authenticate
     await setupRealProject(page, projectPath, projectName, { setAsCurrent: true });
     await authenticateForTests(page);

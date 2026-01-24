@@ -45,6 +45,9 @@ test.describe('Sandbox Console', () => {
   });
 
   test('should receive real-time stream events during sandbox execution', async ({ page }) => {
+    // Skip in TEST_MODE as mocks don't generate real WebSocket events
+    test.skip(process.env.TEST_MODE === 'true', 'Requires real agent execution');
+
     await setupRealProject(page, projectPath, projectName, { setAsCurrent: true });
     await authenticateForTests(page);
     await page.goto('/');

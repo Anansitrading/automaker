@@ -48,6 +48,9 @@ test.describe('Sandbox File Sync', () => {
   });
 
   test('should allow reading and writing files in the sandbox', async ({ page }) => {
+    // Skip in TEST_MODE as mocks don't perform real file operations
+    test.skip(process.env.TEST_MODE === 'true', 'Requires real sandbox file operations');
+
     await setupRealProject(page, projectPath, projectName, { setAsCurrent: true });
     await authenticateForTests(page);
     await page.goto('/');
