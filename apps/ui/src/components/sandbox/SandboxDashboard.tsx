@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Sprite } from '@/lib/electron';
-import { getHttpApiClient } from '@/lib/http-api-client';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,111 +11,33 @@ import {
   DialogTrigger,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { toast } from 'sonner';
 import { SandboxCard } from './SandboxCard';
+import { useSandboxes, useCreateSandbox, useSandboxOperations } from '@/hooks/useSandbox';
 
 export const SandboxDashboard: React.FC = () => {
-  const [sprites, setSprites] = useState<Sprite[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
   const [newSpriteName, setNewSpriteName] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const client = getHttpApiClient();
+  const { data: sprites = [], isLoading, refetch } = useSandboxes();
+  const { mutate: createSandbox, isPending: creating } = useCreateSandbox();
+  const { deleteSandbox, shutdownSandbox, wakeSandbox } = useSandboxOperations();
 
-  const fetchSprites = React.useCallback(async () => {
-    try {
-      const res = await client.sprites.list();
-      if (res.success && res.sprites) {
-        setSprites(res.sprites);
-      }
-    } catch (error) {
-      console.error('Failed to fetch sprites:', error);
-      toast.error('Failed to fetch sandboxes');
-    } finally {
-      setLoading(false);
-    }
-  }, [client.sprites]);
-
-  useEffect(() => {
-    fetchSprites();
-    const interval = setInterval(fetchSprites, 5000);
-    return () => clearInterval(interval);
-  }, [fetchSprites]);
-
-  const handleCreate = async () => {
+  const handleCreate = () => {
     if (!newSpriteName.trim()) return;
-    setCreating(true);
-    try {
-      const res = await client.sprites.create({ name: newSpriteName });
-      if (res.success) {
-        toast.success(`Sandbox '${newSpriteName}' created`);
-        setNewSpriteName('');
-        fetchSprites();
-      } else {
-        toast.error(res.error || 'Failed to create sandbox');
+    createSandbox(
+      { name: newSpriteName },
+      {
+        onSuccess: () => {
+          setNewSpriteName('');
+          setIsDialogOpen(false);
+        },
       }
-    } catch (error) {
-      toast.error('Failed to create sandbox');
-    } finally {
-      setCreating(false);
-    }
+    );
   };
 
-  const handleDelete = async (name: string) => {
+  const handleDelete = (name: string) => {
     if (!confirm(`Are you sure you want to destroy '${name}'?`)) return;
-    try {
-      const res = await client.sprites.delete(name);
-      if (res.success) {
-        toast.success(`Sandbox '${name}' destroyed`);
-        fetchSprites();
-      } else {
-        toast.error(res.error || 'Failed to destroy sandbox');
-      }
-    } catch (error) {
-      toast.error('Failed to destroy sandbox');
-    }
-  };
-
-  const handlePower = async (sprite: Sprite) => {
-    try {
-      const res = await client.sprites.wake(sprite.name);
-      if (res.success) {
-        toast.success(`Sandbox wake initiated`);
-        fetchSprites();
-      } else {
-        toast.error(res.error || `Failed to wake sandbox`);
-      }
-    } catch (error) {
-      toast.error(`Failed to wake sandbox`);
-    }
-  };
-
-  const handleHibernate = async (sprite: Sprite) => {
-    try {
-      const res = await client.sprites.shutdown(sprite.name); // Shutdown is used for hibernation
-      if (res.success) {
-        toast.success(`Sandbox hibernation initiated`);
-        fetchSprites();
-      } else {
-        toast.error(res.error || `Failed to hibernate sandbox`);
-      }
-    } catch (error) {
-      toast.error(`Failed to hibernate sandbox`);
-    }
-  };
-
-  const handleShutdown = async (sprite: Sprite) => {
-    try {
-      const res = await client.sprites.shutdown(sprite.name);
-      if (res.success) {
-        toast.success(`Sandbox shutdown initiated`);
-        fetchSprites();
-      } else {
-        toast.error(res.error || `Failed to shutdown sandbox`);
-      }
-    } catch (error) {
-      toast.error(`Failed to shutdown sandbox`);
-    }
+    deleteSandbox.mutate(name);
   };
 
   return (
@@ -128,11 +48,11 @@ export const SandboxDashboard: React.FC = () => {
           <p className="text-muted-foreground">Manage your isolated Sprite sandboxes.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => fetchSprites()}>
+          <Button variant="outline" size="sm" onClick={() => refetch()}>
             <RefreshCw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button size="sm">
                 <Plus className="mr-2 h-4 w-4" />
@@ -165,7 +85,7 @@ export const SandboxDashboard: React.FC = () => {
         </div>
       </div>
 
-      {loading && sprites.length === 0 ? (
+      {isLoading ? (
         <div className="flex items-center justify-center p-12">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
@@ -176,10 +96,10 @@ export const SandboxDashboard: React.FC = () => {
               key={sprite.id}
               sprite={sprite}
               onDelete={() => handleDelete(sprite.name)}
-              onPower={() => handlePower(sprite)}
-              onHibernate={() => handleHibernate(sprite)}
-              onWake={() => handlePower(sprite)} // Wake is same as power/start for now
-              onShutdown={() => handleShutdown(sprite)}
+              onPower={() => wakeSandbox.mutate(sprite.name)}
+              onHibernate={() => shutdownSandbox.mutate(sprite.name)} // Using shutdown for hibernate for now
+              onWake={() => wakeSandbox.mutate(sprite.name)}
+              onShutdown={() => shutdownSandbox.mutate(sprite.name)}
             />
           ))}
           {sprites.length === 0 && (
