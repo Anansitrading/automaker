@@ -205,10 +205,16 @@ const events: EventEmitter = createEventEmitter();
 
 // Create services
 // Note: settingsService is created first so it can be injected into other services
+// Initialize Sprite API Client
+const spriteApiClient = new SpriteApiClient();
+
+// Initialize Sprite Service
+const spriteService = new SpriteService();
+
 const settingsService = new SettingsService(DATA_DIR);
 const agentService = new AgentService(DATA_DIR, events, settingsService);
 const featureLoader = new FeatureLoader();
-const autoModeService = new AutoModeService(events, settingsService);
+const autoModeService = new AutoModeService(events, settingsService, spriteService);
 const claudeUsageService = new ClaudeUsageService();
 const codexAppServerService = new CodexAppServerService();
 const codexModelCacheService = new CodexModelCacheService(DATA_DIR, codexAppServerService);
@@ -232,12 +238,6 @@ eventHookService.initialize(events, settingsService, eventHistoryService);
 
 // Initialize Telemetry Service
 const telemetryService = getTelemetryService();
-
-// Initialize Sprite API Client
-const spriteApiClient = new SpriteApiClient();
-
-// Initialize Sprite Service
-const spriteService = new SpriteService();
 
 // Initialize Onboarding Service
 const onboardingService = new OnboardingService(spriteApiClient);

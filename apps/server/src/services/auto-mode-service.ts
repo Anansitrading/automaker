@@ -57,6 +57,7 @@ import {
 } from '../lib/sdk-options.js';
 import { FeatureLoader } from './feature-loader.js';
 import type { SettingsService } from './settings-service.js';
+import { SpriteService } from './sprite-service.js';
 import { pipelineService, PipelineService } from './pipeline-service.js';
 import {
   getAutoLoadClaudeMdSetting,
@@ -272,13 +273,19 @@ export class AutoModeService {
   private config: AutoModeConfig | null = null;
   private pendingApprovals = new Map<string, PendingApproval>();
   private settingsService: SettingsService | null = null;
+  private spriteService: SpriteService | null = null;
   // Track consecutive failures to detect quota/API issues
   private consecutiveFailures: { timestamp: number; error: string }[] = [];
   private pausedDueToFailures = false;
 
-  constructor(events: EventEmitter, settingsService?: SettingsService) {
+  constructor(
+    events: EventEmitter,
+    settingsService?: SettingsService,
+    spriteService?: SpriteService
+  ) {
     this.events = events;
     this.settingsService = settingsService ?? null;
+    this.spriteService = spriteService ?? null;
   }
 
   /**
@@ -513,6 +520,9 @@ export class AutoModeService {
       await this.saveExecutionState(projectPath);
     }
 
+    let spriteId: string | null = null;
+    let preCheckpointId: string | null = null;
+
     try {
       // Validate that project path is allowed using centralized validation
       validateWorkingDirectory(projectPath);
@@ -577,6 +587,26 @@ export class AutoModeService {
 
       // Update feature status to in_progress
       await this.updateFeatureStatus(projectPath, featureId, 'in_progress');
+
+      // Setup Sandbox (if AutoMode and enabled)
+      // Check global sandbox setting (default to true)
+      const globalSettings = await this.settingsService?.getGlobalSettings();
+      const sandboxEnabled = globalSettings?.sandbox?.enabled ?? true;
+
+      if (this.spriteService && isAutoMode && sandboxEnabled) {
+        // Derive branch name from feature (already loaded) or default
+        const targetBranch = feature.branchName || `feature/${featureId}`;
+        spriteId = await this.ensureSandbox(featureId, projectPath, targetBranch);
+
+        if (spriteId) {
+          logger.info(`Sandbox created/ready: ${spriteId}`);
+          // Create "before" checkpoint
+          const cp = await this.spriteService.createCheckpoint(spriteId, 'pre-implementation');
+          preCheckpointId = cp.id;
+        }
+      } else if (isAutoMode && !sandboxEnabled) {
+        logger.info(`Sandbox creation skipped (globally disabled) for feature ${featureId}`);
+      }
 
       // Load autoLoadClaudeMd setting to determine context loading strategy
       const autoLoadClaudeMd = await getAutoLoadClaudeMdSetting(
@@ -680,6 +710,25 @@ export class AutoModeService {
         );
       }
 
+      // Verify in Sandbox
+      if (spriteId && this.spriteService) {
+        logger.info(`Syncing changes to sandbox ${spriteId}...`);
+        const targetBranch = feature.branchName || `feature/${featureId}`;
+
+        await this.syncToSandbox(spriteId, workDir, targetBranch);
+
+        await this.spriteService.createCheckpoint(spriteId, 'post-implementation');
+
+        if (!feature.skipTests) {
+          logger.info(`Running verification in sandbox ${spriteId}...`);
+          const verifyResult = await this.runVerificationInSandbox(spriteId, projectPath);
+
+          if (!verifyResult.passed) {
+            throw new Error(verifyResult.message);
+          }
+        }
+      }
+
       // Determine final status based on testing mode:
       // - skipTests=false (automated testing): go directly to 'verified' (no manual verify needed)
       // - skipTests=true (manual verification): go to 'waiting_approval' for manual review
@@ -741,6 +790,15 @@ export class AutoModeService {
         });
       } else {
         logger.error(`Feature ${featureId} failed:`, error);
+
+        // Restore Sandbox on failure
+        if (spriteId && preCheckpointId && this.spriteService) {
+          logger.info(`Restoring sandbox ${spriteId} to checkpoint ${preCheckpointId}`);
+          await this.spriteService.restoreCheckpoint(spriteId, preCheckpointId).catch((err) => {
+            logger.error('Failed to restore sandbox:', err);
+          });
+        }
+
         await this.updateFeatureStatus(projectPath, featureId, 'backlog');
         this.emitAutoModeEvent('auto_mode_error', {
           featureId,
@@ -766,6 +824,14 @@ export class AutoModeService {
       }
     } finally {
       logger.info(`Feature ${featureId} execution ended, cleaning up runningFeatures`);
+
+      // Hibernate Sandbox (cleanup)
+      if (spriteId && this.spriteService) {
+        await this.spriteService.shutdownSprite(spriteId).catch((err) => {
+          logger.error('Failed to shutdown sandbox:', err);
+        });
+      }
+
       logger.info(
         `Pending approvals at cleanup: ${Array.from(this.pendingApprovals.keys()).join(', ') || 'none'}`
       );
@@ -2071,6 +2137,120 @@ Format your response as a structured markdown document.`;
     } catch {
       return null;
     }
+  }
+
+  /**
+   * Ensure a sandbox exists for the feature
+   */
+  private async ensureSandbox(
+    featureId: string,
+    projectPath: string,
+    branchName: string
+  ): Promise<string | null> {
+    if (!this.spriteService) return null;
+
+    // Use feature ID as sprite name (sanitized)
+    const spriteName = `automaker-${featureId.toLowerCase().replace(/[^a-z0-9-]/g, '-')}`;
+
+    try {
+      const sprites = await this.spriteService.listSprites();
+      const existing = sprites.find((s) => s.name === spriteName);
+
+      if (existing) {
+        if (existing.status === 'shutdown' || existing.status === 'cold') {
+          await this.spriteService.wakeSprite(existing.id);
+        }
+        return existing.id;
+      }
+
+      // Get repo URL
+      let repoUrl = '';
+      try {
+        const { stdout } = await execAsync('git config --get remote.origin.url', {
+          cwd: projectPath,
+        });
+        repoUrl = stdout.trim();
+      } catch (e) {
+        logger.warn('Could not determine repo URL, sandbox will be empty', e);
+      }
+
+      // Create
+      const sprite = await this.spriteService.createSprite({
+        name: spriteName,
+        repoUrl: repoUrl || undefined,
+        branch: branchName,
+      });
+
+      return sprite.id;
+    } catch (error) {
+      logger.error('Failed to ensure sandbox:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Sync local worktree changes to sandbox
+   */
+  private async syncToSandbox(
+    spriteId: string,
+    localWorkDir: string,
+    branchName: string
+  ): Promise<void> {
+    if (!this.spriteService) return;
+
+    try {
+      // 1. Push local changes to origin
+      // Assumes we have push access. If not, this will throw and we'll fall back or fail.
+      await execAsync(`git push origin ${branchName}`, { cwd: localWorkDir });
+
+      // 2. Pull in sandbox
+      await this.spriteService.execCommand(
+        spriteId,
+        `git fetch origin && git reset --hard origin/${branchName}`
+      );
+    } catch (error) {
+      logger.error('Failed to sync to sandbox:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Run verification checks in the sandbox
+   */
+  private async runVerificationInSandbox(
+    spriteId: string,
+    projectPath: string
+  ): Promise<{ passed: boolean; message: string }> {
+    if (!this.spriteService) return { passed: false, message: 'Sandbox service not available' };
+
+    // Standard verification checks
+    // We could read these from package.json or settings in the future
+    const checks = [
+      { cmd: 'npm install', name: 'Install Dependencies', timeout: 300000 }, // 5 min for install
+      { cmd: 'npm run lint', name: 'Lint' },
+      { cmd: 'npm run typecheck', name: 'Type check' },
+      { cmd: 'npm test', name: 'Tests' },
+      { cmd: 'npm run build', name: 'Build' },
+    ];
+
+    for (const check of checks) {
+      try {
+        const result = await this.spriteService.execCommand(spriteId, check.cmd, check.timeout);
+        if (result.exitCode !== 0) {
+          return {
+            passed: false,
+            message: `Verification failed: ${check.name} (Exit code ${result.exitCode})\n${result.stderr || result.stdout}`,
+          };
+        }
+      } catch (error) {
+        return {
+          passed: false,
+          message: `Verification error: ${check.name} - ${(error as Error).message}`,
+        };
+      }
+    }
+
+    return { passed: true, message: 'All verification checks passed in sandbox' };
   }
 
   private async loadFeature(projectPath: string, featureId: string): Promise<Feature | null> {
