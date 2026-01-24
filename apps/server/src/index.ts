@@ -348,6 +348,7 @@ const wss = new WebSocketServer({ noServer: true });
 const terminalWss = new WebSocketServer({ noServer: true });
 const telemetryWss = new WebSocketServer({ noServer: true });
 const consoleWss = new WebSocketServer({ noServer: true });
+const mockConsoleWss = new WebSocketServer({ noServer: true });
 const terminalService = getTerminalService();
 terminalService.setSpriteApiClient(spriteApiClient);
 
@@ -422,9 +423,35 @@ server.on('upgrade', (request, socket, head) => {
     consoleWss.handleUpgrade(request, socket, head, (ws) => {
       consoleWss.emit('connection', ws, request);
     });
+  } else if (pathname === '/api/mock-console') {
+    mockConsoleWss.handleUpgrade(request, socket, head, (ws) => {
+      mockConsoleWss.emit('connection', ws, request);
+    });
   } else {
     socket.destroy();
   }
+});
+
+// Mock Console WebSocket connection handler (Echo Loopback)
+mockConsoleWss.on('connection', (ws: WebSocket) => {
+  ws.on('message', (data) => {
+    // Echo back whatever is received
+    // If JSON resize/control, we could handle it, but for now simple loopback is enough for basic connectivity test
+    // Parse to see if it's input
+    try {
+      const msg = JSON.parse(data.toString());
+      if (msg.type === 'input' && typeof msg.data === 'string') {
+        // Echo back as "data" type response (simulating PTY output)
+        ws.send(JSON.stringify({ type: 'data', data: msg.data }));
+      }
+    } catch (e) {
+      // Echo raw if failed (or ignore)
+    }
+  });
+  // Simulate initial connection
+  ws.send(
+    JSON.stringify({ type: 'connected', sessionId: 'mock-session', sandboxName: 'mock-sandbox' })
+  );
 });
 
 // Events WebSocket connection handler

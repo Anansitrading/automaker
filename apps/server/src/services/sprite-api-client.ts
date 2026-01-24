@@ -313,6 +313,13 @@ export class SpriteApiClient extends EventEmitter {
   ): string {
     const baseUrl =
       this.axiosInstance.defaults.baseURL?.replace('https://', 'wss://') || 'wss://api.sprites.dev';
+
+    // In test mode, route to local mock console
+    if (process.env.TEST_MODE === 'true') {
+      const port = process.env.PORT || '3008';
+      return `ws://localhost:${port}/api/mock-console`;
+    }
+
     const url = new URL(`${baseUrl}/v1/sprites/${spriteName}/exec`);
 
     url.searchParams.set('tty', 'true');
