@@ -20,6 +20,12 @@ export const SpriteEvents = {
   STATUS_CHANGED: 'sprite:status_changed',
   RESTORED: 'sprite:restored',
   ERROR: 'sprite:error',
+  // Standardized sandbox events for WebSocket
+  SANDBOX_CREATED: 'sandbox:created',
+  SANDBOX_DESTROYED: 'sandbox:destroyed',
+  CHECKPOINT_CREATED: 'checkpoint:created',
+  CHECKPOINT_RESTORED: 'checkpoint:restored',
+  EXEC_OUTPUT: 'exec:output',
 };
 
 /**
@@ -108,6 +114,13 @@ export class SpriteService extends EventEmitter {
       logger.info(`Sprite '${config.name}' created in ${duration}ms`);
       this.telemetry.recordHistogram('sprites.create.duration', duration);
 
+      // Emit standardized sandbox:created event
+      this.emit(SpriteEvents.SANDBOX_CREATED, {
+        sandboxId: sprite.id,
+        name: sprite.name,
+        config,
+      });
+
       return sprite;
     } catch (error: any) {
       this.handleError('createSprite', error);
@@ -118,9 +131,15 @@ export class SpriteService extends EventEmitter {
   /**
    * Delete a sprite
    */
-  async deleteSprite(id: string): Promise<void> {
+  async deleteSprite(id: string, reason: string = 'manual'): Promise<void> {
     try {
       await this.client.deleteSprite(id);
+
+      // Emit standardized sandbox:destroyed event
+      this.emit(SpriteEvents.SANDBOX_DESTROYED, {
+        sandboxId: id,
+        reason,
+      });
     } catch (error: any) {
       this.handleError('deleteSprite', error);
       throw error;
@@ -161,6 +180,13 @@ export class SpriteService extends EventEmitter {
     try {
       const checkpoint = await this.client.createCheckpoint(id, name);
       this.telemetry.recordHistogram('sprites.checkpoint.duration', Date.now() - start);
+
+      // Emit standardized checkpoint:created event
+      this.emit(SpriteEvents.CHECKPOINT_CREATED, {
+        sandboxId: id,
+        checkpointId: checkpoint.id,
+      });
+
       return checkpoint;
     } catch (error: any) {
       this.handleError('createCheckpoint', error);
@@ -177,6 +203,13 @@ export class SpriteService extends EventEmitter {
     try {
       const result = await this.client.execCommand(id, command, timeout);
       this.telemetry.recordHistogram('sprites.exec.duration', Date.now() - start);
+
+      // Emit standardized exec:output event
+      this.emit(SpriteEvents.EXEC_OUTPUT, {
+        sandboxId: id,
+        output: result,
+      });
+
       return result;
     } catch (error: any) {
       this.handleError('execCommand', error);

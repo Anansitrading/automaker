@@ -14,7 +14,13 @@ type TelemetryMessageType =
   | 'sprite_shutdown'
   | 'sprite_woken'
   | 'checkpoint_restored'
-  | 'pong';
+  | 'pong'
+  // Standardized sandbox events
+  | 'sandbox:created'
+  | 'sandbox:destroyed'
+  | 'checkpoint:created'
+  | 'checkpoint:restored'
+  | 'exec:output';
 
 interface TelemetryMessage {
   type: TelemetryMessageType;
@@ -57,6 +63,27 @@ export function createTelemetryWebSocketHandler(
   // We can add it later when SpriteService exposes it.
   spriteService.on(SpriteEvents.RESTORED, (data) => {
     broadcast({ type: 'checkpoint_restored', payload: data });
+  });
+
+  // Subscribe to standardized sandbox events
+  spriteService.on(SpriteEvents.SANDBOX_CREATED, (data) => {
+    broadcast({ type: 'sandbox:created', payload: data });
+  });
+
+  spriteService.on(SpriteEvents.SANDBOX_DESTROYED, (data) => {
+    broadcast({ type: 'sandbox:destroyed', payload: data });
+  });
+
+  spriteService.on(SpriteEvents.CHECKPOINT_CREATED, (data) => {
+    broadcast({ type: 'checkpoint:created', payload: data });
+  });
+
+  spriteService.on(SpriteEvents.CHECKPOINT_RESTORED, (data) => {
+    broadcast({ type: 'checkpoint:restored', payload: data });
+  });
+
+  spriteService.on(SpriteEvents.EXEC_OUTPUT, (data) => {
+    broadcast({ type: 'exec:output', payload: data });
   });
 
   function broadcast(message: TelemetryMessage) {
