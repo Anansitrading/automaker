@@ -945,7 +945,17 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
   codexEnableImages: DEFAULT_CODEX_ENABLE_IMAGES,
   codexAdditionalDirs: DEFAULT_CODEX_ADDITIONAL_DIRS,
   codexThreadId: undefined,
-  mcpServers: [],
+  mcpServers: [
+    {
+      id: 'automaker-sandbox',
+      name: 'automaker-sandbox',
+      description: 'Automaker Sandbox Environment (Internal)',
+      type: 'stdio',
+      command: 'node', // In dev: 'tsx', in prod: 'node'
+      args: ['apps/server/src/mcp/index.ts'], // Adjust path as needed for dev/prod
+      enabled: true,
+    },
+  ],
   defaultEditorCommand: null,
   enableSkills: true,
   skillsSources: ['user', 'project'],

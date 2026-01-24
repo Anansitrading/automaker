@@ -450,6 +450,7 @@ Once authenticated, Automaker will automatically detect and use your CLI credent
 - 📊 **Usage Tracking** - Monitor Claude API usage with detailed metrics
 - 🔊 **Audio Notifications** - Optional completion sounds (mutable in settings)
 - 💾 **Auto-save** - All work automatically persisted to `.automaker/` directory
+- 🔌 **MCP Server** - Extend Claude with Automaker capabilities ([Learn how](./docs/MCP_INTEGRATION.md))
 
 ## Tech Stack
 
