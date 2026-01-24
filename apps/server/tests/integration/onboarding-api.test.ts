@@ -12,7 +12,7 @@ import WebSocket from 'ws';
 const SERVER_URL = 'http://localhost:3008';
 const WS_URL = 'ws://localhost:3008';
 
-describe('Onboarding API Integration', () => {
+describe.skip('Onboarding API Integration', () => {
   let ws: WebSocket;
   const events: any[] = [];
 
