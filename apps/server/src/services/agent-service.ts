@@ -124,7 +124,7 @@ export class AgentService {
       let globalSandboxEnabled = true;
       if (this.settingsService) {
         const settings = await this.settingsService.getGlobalSettings();
-        globalSandboxEnabled = settings.sandboxEnabled ?? true;
+        globalSandboxEnabled = settings.sandbox?.enabled ?? false;
       }
 
       if (sessionMetadata?.useSandbox && !globalSandboxEnabled) {
@@ -209,7 +209,7 @@ export class AgentService {
     let globalSandboxEnabled = true;
     if (this.settingsService) {
       const settings = await this.settingsService.getGlobalSettings();
-      globalSandboxEnabled = settings.sandboxEnabled ?? true;
+      globalSandboxEnabled = settings.sandbox?.enabled ?? false;
     }
 
     if (useSandbox && !globalSandboxEnabled) {

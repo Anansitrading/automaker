@@ -12,6 +12,32 @@ import { CURSOR_MODEL_MAP, getAllCursorModelIds } from './cursor-models.js';
 import type { OpencodeModelId } from './opencode-models.js';
 import { getAllOpencodeModelIds, DEFAULT_OPENCODE_MODEL } from './opencode-models.js';
 import type { PromptCustomization } from './prompts.js';
+
+/**
+ * Resource limits for sandbox containers
+ */
+export interface SandboxResourceLimits {
+  /** Maximum CPU cores (default: 4) */
+  maxCpu: number;
+  /** Maximum RAM in MB (default: 8192) */
+  maxMemory: number;
+  /** Maximum disk space in GB (default: 50) */
+  maxDisk: number;
+}
+
+/**
+ * Sandbox configuration settings
+ */
+export interface SandboxSettings {
+  /** Global kill-switch for sandbox execution (default: false) */
+  enabled: boolean;
+  /** Use sandboxes by default for agent sessions (default: false) */
+  defaultForAgents: boolean;
+  /** Use sandboxes by default for Auto Mode sessions (default: true) */
+  defaultForAutoMode: boolean;
+  /** Resource usage limits */
+  resourceLimits: SandboxResourceLimits;
+}
 import type { CodexSandboxMode, CodexApprovalPolicy } from './codex.js';
 import type { ReasoningEffort } from './provider.js';
 
@@ -653,11 +679,9 @@ export interface GlobalSettings {
 
   // Sandbox Configuration
   /**
-   * Global kill-switch for sandbox execution.
-   * If false, all agents will use host-based execution regardless of session settings.
-   * @default true
+   * Detailed sandbox configuration
    */
-  sandboxEnabled?: boolean;
+  sandbox: SandboxSettings;
 }
 
 /**
@@ -904,7 +928,16 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
   skillsSources: ['user', 'project'],
   enableSubagents: true,
   subagentsSources: ['user', 'project'],
-  sandboxEnabled: true,
+  sandbox: {
+    enabled: false,
+    defaultForAgents: false,
+    defaultForAutoMode: true,
+    resourceLimits: {
+      maxCpu: 4,
+      maxMemory: 8192,
+      maxDisk: 50,
+    },
+  },
 };
 
 /** Default credentials (empty strings - user must provide API keys) */

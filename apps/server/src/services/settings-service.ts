@@ -159,6 +159,18 @@ export class SettingsService {
       needsSave = true;
     }
 
+    // Migration: sandboxEnabled (legacy) -> sandbox.enabled
+    // This handles the interim "kill switch" setting we briefly introduced
+    if ('sandboxEnabled' in settings) {
+      if (!result.sandbox) {
+        result.sandbox = { ...DEFAULT_GLOBAL_SETTINGS.sandbox };
+      }
+      result.sandbox.enabled = !!(settings as any).sandboxEnabled;
+      delete (settings as any).sandboxEnabled;
+      needsSave = true;
+      logger.info('Migrated legacy sandboxEnabled setting to sandbox.enabled');
+    }
+
     // Update version if any migration occurred
     if (needsSave) {
       result.version = SETTINGS_VERSION;
