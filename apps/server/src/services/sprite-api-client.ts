@@ -8,7 +8,7 @@ const logger = createLogger('SpriteApiClient');
 export interface Sprite {
   id: string;
   name: string;
-  status: 'running' | 'hibernating' | 'provisioning' | 'error';
+  status: 'running' | 'warm' | 'cold' | 'shutdown' | 'provisioning' | 'error';
   lastActivityAt: string;
   createdAt: string;
 }
@@ -268,7 +268,7 @@ export class SpriteApiClient extends EventEmitter {
 
     const sprite = this.statusCache.get(spriteId);
     if (sprite) {
-      sprite.status = 'hibernating';
+      sprite.status = 'shutdown';
       this.emit('spriteStatusChanged', sprite);
     }
   }

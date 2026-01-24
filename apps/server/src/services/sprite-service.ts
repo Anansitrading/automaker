@@ -66,9 +66,9 @@ export class SpriteService extends EventEmitter {
 
     this.client.on('spriteStatusChanged', (sprite: Sprite) => {
       this.emit(SpriteEvents.STATUS_CHANGED, sprite);
-      if (sprite.status === 'hibernating') {
+      if (sprite.status === 'shutdown') {
         this.emit(SpriteEvents.SHUTDOWN, sprite.id);
-      } else if (sprite.status === 'running') {
+      } else if (sprite.status === 'running' || sprite.status === 'warm') {
         this.emit(SpriteEvents.WOKEN, sprite.id);
       }
     });

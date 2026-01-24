@@ -40,8 +40,8 @@ describe('SpriteApiClient', () => {
   describe('Sprite CRUD', () => {
     it('should list sprites and update cache', async () => {
       const mockSprites = [
-        { id: 's1', name: 'sprite1', status: 'running' },
-        { id: 's2', name: 'sprite2', status: 'hibernating' },
+        { id: 's1', name: 'sprite1', status: 'running' as const },
+        { id: 's2', name: 'sprite2', status: 'shutdown' as const },
       ];
 
       mockAxiosInstance.mockResolvedValueOnce({
