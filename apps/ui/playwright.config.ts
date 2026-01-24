@@ -74,6 +74,8 @@ export default defineConfig({
               VITE_SKIP_SETUP: 'true',
               // Always skip electron plugin during tests - prevents duplicate server spawning
               VITE_SKIP_ELECTRON: 'true',
+              // Set TEST_MODE for test runner context (used by test.skip() conditions)
+              TEST_MODE: 'true',
             },
           },
         ],
