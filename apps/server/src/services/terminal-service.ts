@@ -9,6 +9,8 @@ import * as pty from 'node-pty';
 import { EventEmitter } from 'events';
 import * as os from 'os';
 import * as path from 'path';
+import WebSocket from 'ws';
+import type { SpriteApiClient } from './sprite-api-client.js';
 // secureFs is used for user-controllable paths (working directory validation)
 // to enforce ALLOWED_ROOT_DIRECTORY security boundary
 import * as secureFs from '../lib/secure-fs.js';
@@ -61,6 +63,168 @@ export interface TerminalOptions {
   cols?: number;
   rows?: number;
   env?: Record<string, string>;
+  sandboxId?: string; // Optional sandbox ID to route to
+}
+
+/**
+ * Simple IEvent implementation for node-pty compatibility
+ */
+class Emitter<T> {
+  private listeners: Array<(e: T) => any> = [];
+
+  event = (listener: (e: T) => any): pty.IDisposable => {
+    this.listeners.push(listener);
+    return {
+      dispose: () => {
+        const index = this.listeners.indexOf(listener);
+        if (index > -1) this.listeners.splice(index, 1);
+      },
+    };
+  };
+
+  fire(data: T): void {
+    this.listeners.forEach((l) => l(data));
+  }
+}
+
+/**
+ * Virtual PTY implementation that sets up a WebSocket bridge to a remote PTY context
+ */
+class VirtualPty implements pty.IPty {
+  pid: number = -1;
+  cols: number;
+  rows: number;
+  process: string;
+  handleFlowControl: boolean = false;
+
+  private _ws: WebSocket | null = null;
+  private _onData = new Emitter<string>();
+  private _onExit = new Emitter<{ exitCode: number; signal?: number }>();
+
+  constructor(
+    wsUrl: string,
+    cols: number = 80,
+    rows: number = 24,
+    headers: Record<string, string>
+  ) {
+    this.cols = cols;
+    this.rows = rows;
+    this.process = 'virtual-process';
+
+    // Connect to WebSocket
+    this._ws = new WebSocket(wsUrl, {
+      headers,
+    });
+
+    this._ws.on('open', () => {
+      // Socket open
+    });
+
+    this._ws.on('message', (data) => {
+      this._onData.fire(data.toString());
+    });
+
+    this._ws.on('close', () => {
+      this._onExit.fire({ exitCode: 0 });
+    });
+
+    this._ws.on('error', (err) => {
+      // Treat connection error as exit
+      this._onExit.fire({ exitCode: 1 });
+    });
+  }
+
+  // IPty Interface Implementation
+
+  get onData(): pty.IEvent<string> {
+    return this._onData.event;
+  }
+
+  get onExit(): pty.IEvent<{ exitCode: number; signal?: number }> {
+    return this._onExit.event;
+  }
+
+  on(event: string, listener: (...args: any[]) => void): void {
+    // Basic EventEmitter implementation for compatibility if needed
+    if (event === 'data') {
+      this._onData.event(listener);
+    } else if (event === 'exit') {
+      this._onExit.event((e) => listener(e.exitCode, e.signal));
+    }
+  }
+
+  resize(cols: number, rows: number): void {
+    this.cols = cols;
+    this.rows = rows;
+    // Note: Standard raw stream via WS might not support in-band resize.
+    this.write(JSON.stringify({ type: 'resize', cols, rows }));
+  }
+
+  write(data: string): void {
+    if (this._ws && this._ws.readyState === WebSocket.OPEN) {
+      this._ws.send(data);
+    }
+  }
+
+  kill(signal?: string): void {
+    if (this._ws) {
+      this._ws.close();
+      this._ws = null;
+    }
+    this._onExit.fire({ exitCode: 0 });
+  }
+
+  clear(): void {
+    // No-op
+  }
+
+  // Legacy/Unused methods required by interface
+  pause(): void {}
+  resume(): void {}
+  addListener(event: string, listener: (...args: any[]) => void): this {
+    this.on(event, listener);
+    return this;
+  }
+  removeListener(event: string, listener: (...args: any[]) => void): this {
+    return this;
+  }
+  removeAllListeners(event?: string): this {
+    return this;
+  }
+  once(event: string, listener: (...args: any[]) => void): this {
+    this.on(event, listener);
+    return this;
+  }
+  emit(event: string, ...args: any[]): boolean {
+    return false;
+  }
+  off(event: string, listener: (...args: any[]) => void): this {
+    return this;
+  }
+  eventNames(): (string | symbol)[] {
+    return [];
+  }
+  listenerCount(event: string | symbol): number {
+    return 0;
+  }
+  listeners(event: string | symbol): Function[] {
+    return [];
+  }
+  prependListener(event: string, listener: (...args: any[]) => void): this {
+    return this;
+  }
+  prependOnceListener(event: string, listener: (...args: any[]) => void): this {
+    return this;
+  }
+  rawListeners(event: string | symbol): Function[] {
+    return [];
+  }
+  getMaxListeners(): number {
+    return 10;
+  }
+  setMaxListeners(n: number): this {
+    return this;
+  }
 }
 
 type DataCallback = (sessionId: string, data: string) => void;
@@ -77,6 +241,14 @@ export class TerminalService extends EventEmitter {
     !!(process.versions && (process.versions as Record<string, string>).electron) ||
     !!process.env.ELECTRON_RUN_AS_NODE;
   private useConptyFallback = false; // Track if we need to use winpty fallback on Windows
+  private spriteApiClient: SpriteApiClient | null = null;
+
+  /**
+   * Inject SpriteApiClient for sandbox support
+   */
+  setSpriteApiClient(client: SpriteApiClient) {
+    this.spriteApiClient = client;
+  }
 
   /**
    * Kill a PTY process with platform-specific handling.
@@ -312,6 +484,49 @@ export class TerminalService extends EventEmitter {
     }
 
     const id = `term-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+    const cols = options.cols || 80;
+    const rows = options.rows || 24;
+
+    // Handle Sandbox Session
+    if (options.sandboxId) {
+      if (!this.spriteApiClient) {
+        logger.error('Cannot create sandbox terminal: SpriteApiClient not initialized');
+        return null;
+      }
+
+      logger.info(`Creating sandbox session ${id} for sandbox ${options.sandboxId}`);
+
+      try {
+        const url = this.spriteApiClient.getConsoleWebSocketUrl(options.sandboxId, {
+          cols,
+          rows,
+          sessionId: id,
+        });
+        const headers = this.spriteApiClient.getWebSocketHeaders();
+
+        const virtualPty = new VirtualPty(url, cols, rows, headers);
+
+        const session: TerminalSession = {
+          id,
+          pty: virtualPty,
+          cwd: '/workspace', // Sandbox default
+          createdAt: new Date(),
+          shell: 'sandbox-shell',
+          scrollbackBuffer: '',
+          outputBuffer: '',
+          flushTimeout: null,
+          resizeInProgress: false,
+          resizeDebounceTimeout: null,
+        };
+
+        this.setupSessionEvents(id, session, virtualPty);
+        this.sessions.set(id, session);
+        return session;
+      } catch (error) {
+        logger.error(`Failed to create sandbox terminal:`, error);
+        return null;
+      }
+    }
 
     const { shell: detectedShell, args: shellArgs } = this.detectShell();
     const shell = options.shell || detectedShell;
@@ -348,8 +563,8 @@ export class TerminalService extends EventEmitter {
     // Build PTY spawn options
     const ptyOptions: pty.IPtyForkOptions = {
       name: 'xterm-256color',
-      cols: options.cols || 80,
-      rows: options.rows || 24,
+      cols,
+      rows,
       cwd,
       env,
     };
@@ -413,8 +628,18 @@ export class TerminalService extends EventEmitter {
       resizeDebounceTimeout: null,
     };
 
+    this.setupSessionEvents(id, session, ptyProcess);
     this.sessions.set(id, session);
 
+    // Log success
+    logger.info(`Session ${id} created successfully`);
+    return session;
+  }
+
+  /**
+   * Setup common event handlers for both local and virtual PTYs
+   */
+  private setupSessionEvents(id: string, session: TerminalSession, ptyProcess: pty.IPty) {
     // Flush buffered output to clients (throttled)
     const flushOutput = () => {
       if (session.outputBuffer.length === 0) return;
@@ -461,7 +686,9 @@ export class TerminalService extends EventEmitter {
     });
 
     // Handle exit
-    ptyProcess.onExit(({ exitCode }) => {
+    ptyProcess.onExit((event) => {
+      // event matches { exitCode: number, signal?: number }
+      const exitCode = event.exitCode;
       const exitMessage =
         exitCode === undefined || exitCode === null
           ? 'Session terminated'
@@ -471,9 +698,6 @@ export class TerminalService extends EventEmitter {
       this.exitCallbacks.forEach((cb) => cb(id, exitCode));
       this.emit('exit', id, exitCode);
     });
-
-    logger.info(`Session ${id} created successfully`);
-    return session;
   }
 
   /**

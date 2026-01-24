@@ -349,6 +349,7 @@ const terminalWss = new WebSocketServer({ noServer: true });
 const telemetryWss = new WebSocketServer({ noServer: true });
 const consoleWss = new WebSocketServer({ noServer: true });
 const terminalService = getTerminalService();
+terminalService.setSpriteApiClient(spriteApiClient);
 
 // Setup Telemetry WebSocket Handler
 telemetryWss.on('connection', createTelemetryWebSocketHandler(telemetryService, spriteService));
