@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
         require: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
       },
     },
   },
@@ -96,10 +98,7 @@ const eslintConfig = defineConfig([
         Audio: 'readonly',
         Image: 'readonly',
         Option: 'readonly',
-        File: 'readonly',
-        FileList: 'readonly',
-        FileReader: 'readonly',
-        Blob: 'readonly',
+
         FormData: 'readonly',
         URL: 'readonly',
         URLSearchParams: 'readonly',
@@ -109,23 +108,21 @@ const eslintConfig = defineConfig([
         RequestInit: 'readonly',
         RequestCache: 'readonly',
         XMLHttpRequest: 'readonly',
-        WebSocket: 'readonly',
+
         Notification: 'readonly',
         Storage: 'readonly',
         History: 'readonly',
         Location: 'readonly',
-        Navigator: 'readonly',
+
         Screen: 'readonly',
         Performance: 'readonly',
         Crypto: 'readonly',
         // Common Functions
-        atob: 'readonly',
+
         btoa: 'readonly',
-        prompt: 'readonly',
-        confirm: 'readonly',
+
         alert: 'readonly',
-        getComputedStyle: 'readonly',
-        requestAnimationFrame: 'readonly',
+
         cancelAnimationFrame: 'readonly',
         requestIdleCallback: 'readonly',
         cancelIdleCallback: 'readonly',

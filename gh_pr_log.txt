@@ -1,0 +1,350 @@
+build	Set up job	﻿2026-01-25T00:47:08.9876186Z Current runner version: '2.331.0'
+build	Set up job	2026-01-25T00:47:08.9912995Z ##[group]Runner Image Provisioner
+build	Set up job	2026-01-25T00:47:08.9914472Z Hosted Compute Agent
+build	Set up job	2026-01-25T00:47:08.9915451Z Version: 20260115.477
+build	Set up job	2026-01-25T00:47:08.9916411Z Commit: 4b342d620503cbe250a3154040964899ea7c9b00
+build	Set up job	2026-01-25T00:47:08.9917683Z Build Date: 2026-01-15T22:32:41Z
+build	Set up job	2026-01-25T00:47:08.9918932Z Worker ID: {aceea3ad-75af-4a7b-be74-ab43deaffdac}
+build	Set up job	2026-01-25T00:47:08.9920140Z Azure Region: eastus2
+build	Set up job	2026-01-25T00:47:08.9921049Z ##[endgroup]
+build	Set up job	2026-01-25T00:47:08.9923686Z ##[group]Operating System
+build	Set up job	2026-01-25T00:47:08.9924632Z Ubuntu
+build	Set up job	2026-01-25T00:47:08.9925455Z 24.04.3
+build	Set up job	2026-01-25T00:47:08.9926204Z LTS
+build	Set up job	2026-01-25T00:47:08.9926877Z ##[endgroup]
+build	Set up job	2026-01-25T00:47:08.9927847Z ##[group]Runner Image
+build	Set up job	2026-01-25T00:47:08.9929101Z Image: ubuntu-24.04
+build	Set up job	2026-01-25T00:47:08.9929974Z Version: 20260119.4.1
+build	Set up job	2026-01-25T00:47:08.9931818Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260119.4/images/ubuntu/Ubuntu2404-Readme.md
+build	Set up job	2026-01-25T00:47:08.9934708Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260119.4
+build	Set up job	2026-01-25T00:47:08.9936401Z ##[endgroup]
+build	Set up job	2026-01-25T00:47:08.9941323Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2026-01-25T00:47:08.9944559Z Actions: write
+build	Set up job	2026-01-25T00:47:08.9945446Z ArtifactMetadata: write
+build	Set up job	2026-01-25T00:47:08.9946646Z Attestations: write
+build	Set up job	2026-01-25T00:47:08.9947486Z Checks: write
+build	Set up job	2026-01-25T00:47:08.9948310Z Contents: write
+build	Set up job	2026-01-25T00:47:08.9950057Z Deployments: write
+build	Set up job	2026-01-25T00:47:08.9950990Z Discussions: write
+build	Set up job	2026-01-25T00:47:08.9951975Z Issues: write
+build	Set up job	2026-01-25T00:47:08.9952827Z Metadata: read
+build	Set up job	2026-01-25T00:47:08.9953699Z Models: read
+build	Set up job	2026-01-25T00:47:08.9954535Z Packages: write
+build	Set up job	2026-01-25T00:47:08.9955529Z Pages: write
+build	Set up job	2026-01-25T00:47:08.9956429Z PullRequests: write
+build	Set up job	2026-01-25T00:47:08.9957390Z RepositoryProjects: write
+build	Set up job	2026-01-25T00:47:08.9958348Z SecurityEvents: write
+build	Set up job	2026-01-25T00:47:08.9959407Z Statuses: write
+build	Set up job	2026-01-25T00:47:08.9960344Z ##[endgroup]
+build	Set up job	2026-01-25T00:47:08.9963091Z Secret source: Actions
+build	Set up job	2026-01-25T00:47:08.9964657Z Prepare workflow directory
+build	Set up job	2026-01-25T00:47:09.0436151Z Prepare all required actions
+build	Set up job	2026-01-25T00:47:09.0493923Z Getting action download info
+build	Set up job	2026-01-25T00:47:09.2265737Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build	Set up job	2026-01-25T00:47:09.4450920Z Complete job name: build
+build	Checkout code	﻿2026-01-25T00:47:09.5360469Z ##[group]Run actions/checkout@v4
+build	Checkout code	2026-01-25T00:47:09.5361328Z with:
+build	Checkout code	2026-01-25T00:47:09.5361734Z   repository: Anansitrading/automaker
+build	Checkout code	2026-01-25T00:47:09.5362434Z   token: ***
+build	Checkout code	2026-01-25T00:47:09.5362803Z   ssh-strict: true
+build	Checkout code	2026-01-25T00:47:09.5363187Z   ssh-user: git
+build	Checkout code	2026-01-25T00:47:09.5363571Z   persist-credentials: true
+build	Checkout code	2026-01-25T00:47:09.5364008Z   clean: true
+build	Checkout code	2026-01-25T00:47:09.5364392Z   sparse-checkout-cone-mode: true
+build	Checkout code	2026-01-25T00:47:09.5364858Z   fetch-depth: 1
+build	Checkout code	2026-01-25T00:47:09.5365451Z   fetch-tags: false
+build	Checkout code	2026-01-25T00:47:09.5365948Z   show-progress: true
+build	Checkout code	2026-01-25T00:47:09.5366337Z   lfs: false
+build	Checkout code	2026-01-25T00:47:09.5366853Z   submodules: false
+build	Checkout code	2026-01-25T00:47:09.5367324Z   set-safe-directory: true
+build	Checkout code	2026-01-25T00:47:09.5367990Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:09.6443411Z Syncing repository: Anansitrading/automaker
+build	Checkout code	2026-01-25T00:47:09.6445435Z ##[group]Getting Git version info
+build	Checkout code	2026-01-25T00:47:09.6446154Z Working directory is '/home/runner/work/automaker/automaker'
+build	Checkout code	2026-01-25T00:47:09.6447185Z [command]/usr/bin/git version
+build	Checkout code	2026-01-25T00:47:09.6533035Z git version 2.52.0
+build	Checkout code	2026-01-25T00:47:09.6560598Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:09.6575917Z Temporarily overriding HOME='/home/runner/work/_temp/70373c9e-1aa7-4f93-8f22-e29d6fbded47' before making global git config changes
+build	Checkout code	2026-01-25T00:47:09.6589267Z Adding repository directory to the temporary git global config as a safe directory
+build	Checkout code	2026-01-25T00:47:09.6590551Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/automaker/automaker
+build	Checkout code	2026-01-25T00:47:09.6631724Z Deleting the contents of '/home/runner/work/automaker/automaker'
+build	Checkout code	2026-01-25T00:47:09.6635492Z ##[group]Initializing the repository
+build	Checkout code	2026-01-25T00:47:09.6639659Z [command]/usr/bin/git init /home/runner/work/automaker/automaker
+build	Checkout code	2026-01-25T00:47:09.6764054Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	Checkout code	2026-01-25T00:47:09.6765702Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	Checkout code	2026-01-25T00:47:09.6767117Z hint: to use in all of your new repositories, which will suppress this warning,
+build	Checkout code	2026-01-25T00:47:09.6768157Z hint: call:
+build	Checkout code	2026-01-25T00:47:09.6768984Z hint:
+build	Checkout code	2026-01-25T00:47:09.6769791Z hint: 	git config --global init.defaultBranch <name>
+build	Checkout code	2026-01-25T00:47:09.6770772Z hint:
+build	Checkout code	2026-01-25T00:47:09.6771624Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	Checkout code	2026-01-25T00:47:09.6772667Z hint: 'development'. The just-created branch can be renamed via this command:
+build	Checkout code	2026-01-25T00:47:09.6773631Z hint:
+build	Checkout code	2026-01-25T00:47:09.6774320Z hint: 	git branch -m <name>
+build	Checkout code	2026-01-25T00:47:09.6775090Z hint:
+build	Checkout code	2026-01-25T00:47:09.6776111Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	Checkout code	2026-01-25T00:47:09.6777524Z Initialized empty Git repository in /home/runner/work/automaker/automaker/.git/
+build	Checkout code	2026-01-25T00:47:09.6780204Z [command]/usr/bin/git remote add origin https://github.com/Anansitrading/automaker
+build	Checkout code	2026-01-25T00:47:09.6811939Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:09.6812689Z ##[group]Disabling automatic garbage collection
+build	Checkout code	2026-01-25T00:47:09.6815841Z [command]/usr/bin/git config --local gc.auto 0
+build	Checkout code	2026-01-25T00:47:09.6842979Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:09.6843668Z ##[group]Setting up auth
+build	Checkout code	2026-01-25T00:47:09.6849623Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Checkout code	2026-01-25T00:47:09.6880683Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Checkout code	2026-01-25T00:47:09.7227148Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Checkout code	2026-01-25T00:47:09.7256501Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Checkout code	2026-01-25T00:47:09.7471749Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Checkout code	2026-01-25T00:47:09.7502272Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Checkout code	2026-01-25T00:47:09.7784427Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	Checkout code	2026-01-25T00:47:09.7788048Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:09.7789744Z ##[group]Fetching the repository
+build	Checkout code	2026-01-25T00:47:09.7792309Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +7c668744efd58bc4a1a4d3bb283ff113083c8334:refs/remotes/origin/main
+build	Checkout code	2026-01-25T00:47:10.5912631Z From https://github.com/Anansitrading/automaker
+build	Checkout code	2026-01-25T00:47:10.5913455Z  * [new ref]         7c668744efd58bc4a1a4d3bb283ff113083c8334 -> origin/main
+build	Checkout code	2026-01-25T00:47:10.5947514Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:10.5948500Z ##[group]Determining the checkout info
+build	Checkout code	2026-01-25T00:47:10.5949874Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:10.5955301Z [command]/usr/bin/git sparse-checkout disable
+build	Checkout code	2026-01-25T00:47:10.5996680Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	Checkout code	2026-01-25T00:47:10.6024174Z ##[group]Checking out the ref
+build	Checkout code	2026-01-25T00:47:10.6027790Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build	Checkout code	2026-01-25T00:47:10.8117554Z Switched to a new branch 'main'
+build	Checkout code	2026-01-25T00:47:10.8119382Z branch 'main' set up to track 'origin/main'.
+build	Checkout code	2026-01-25T00:47:10.8144096Z ##[endgroup]
+build	Checkout code	2026-01-25T00:47:10.8182880Z [command]/usr/bin/git log -1 --format=%H
+build	Checkout code	2026-01-25T00:47:10.8204866Z 7c668744efd58bc4a1a4d3bb283ff113083c8334
+build	Setup project	﻿2026-01-25T00:47:10.8499862Z Prepare all required actions
+build	Setup project	2026-01-25T00:47:10.8500582Z Getting action download info
+build	Setup project	2026-01-25T00:47:10.9716279Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build	Setup project	2026-01-25T00:47:11.0756084Z ##[group]Run ./.github/actions/setup-project
+build	Setup project	2026-01-25T00:47:11.0756429Z with:
+build	Setup project	2026-01-25T00:47:11.0756649Z   check-lockfile: true
+build	Setup project	2026-01-25T00:47:11.0756889Z   node-version: 22
+build	Setup project	2026-01-25T00:47:11.0757117Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:11.0882772Z ##[group]Run actions/setup-node@v4
+build	Setup project	2026-01-25T00:47:11.0883077Z with:
+build	Setup project	2026-01-25T00:47:11.0883307Z   node-version: 22
+build	Setup project	2026-01-25T00:47:11.0883539Z   cache: npm
+build	Setup project	2026-01-25T00:47:11.0883814Z   cache-dependency-path: package-lock.json
+build	Setup project	2026-01-25T00:47:11.0884130Z   always-auth: false
+build	Setup project	2026-01-25T00:47:11.0884362Z   check-latest: false
+build	Setup project	2026-01-25T00:47:11.0884717Z   token: ***
+build	Setup project	2026-01-25T00:47:11.0884928Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:11.2626012Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+build	Setup project	2026-01-25T00:47:11.2632263Z ##[group]Environment details
+build	Setup project	2026-01-25T00:47:13.8953149Z node: v22.22.0
+build	Setup project	2026-01-25T00:47:13.8953587Z npm: 10.9.4
+build	Setup project	2026-01-25T00:47:13.8953850Z yarn: 1.22.22
+build	Setup project	2026-01-25T00:47:13.8954891Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:13.8978135Z [command]/opt/hostedtoolcache/node/22.22.0/x64/bin/npm config get cache
+build	Setup project	2026-01-25T00:47:14.1545557Z /home/runner/.npm
+build	Setup project	2026-01-25T00:47:14.2454262Z npm cache is not found
+build	Setup project	2026-01-25T00:47:14.2596004Z ##[group]Run npm run lint:lockfile
+build	Setup project	2026-01-25T00:47:14.2596362Z [36;1mnpm run lint:lockfile[0m
+build	Setup project	2026-01-25T00:47:14.2641105Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Setup project	2026-01-25T00:47:14.2641456Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:14.3978356Z 
+build	Setup project	2026-01-25T00:47:14.3984955Z > automaker@0.12.0rc lint:lockfile
+build	Setup project	2026-01-25T00:47:14.3985506Z > node scripts/lint-lockfile.mjs
+build	Setup project	2026-01-25T00:47:14.4054215Z 
+build	Setup project	2026-01-25T00:47:14.4362928Z ✓ No git+ssh:// URLs found in package-lock.json
+build	Setup project	2026-01-25T00:47:14.4479504Z ##[group]Run git config --global url."https://github.com/".insteadOf "git@github.com:"
+build	Setup project	2026-01-25T00:47:14.4480195Z [36;1mgit config --global url."https://github.com/".insteadOf "git@github.com:"[0m
+build	Setup project	2026-01-25T00:47:14.4514322Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Setup project	2026-01-25T00:47:14.4514657Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:14.4603644Z ##[group]Run npm install --ignore-scripts --force
+build	Setup project	2026-01-25T00:47:14.4603982Z [36;1mnpm install --ignore-scripts --force[0m
+build	Setup project	2026-01-25T00:47:14.4633789Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Setup project	2026-01-25T00:47:14.4634121Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:14.5404025Z npm warn using --force Recommended protections disabled.
+build	Setup project	2026-01-25T00:47:19.0330165Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+build	Setup project	2026-01-25T00:47:20.5313302Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+build	Setup project	2026-01-25T00:47:20.7516025Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+build	Setup project	2026-01-25T00:47:22.1363673Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+build	Setup project	2026-01-25T00:47:22.8142563Z npm warn deprecated tar@6.2.1: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
+build	Setup project	2026-01-25T00:47:27.2293090Z npm warn deprecated tar@7.5.3: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
+build	Setup project	2026-01-25T00:47:36.2582081Z 
+build	Setup project	2026-01-25T00:47:36.2583247Z added 1384 packages, and audited 1394 packages in 22s
+build	Setup project	2026-01-25T00:47:36.2583765Z 
+build	Setup project	2026-01-25T00:47:36.2584571Z 333 packages are looking for funding
+build	Setup project	2026-01-25T00:47:36.2585335Z   run `npm fund` for details
+build	Setup project	2026-01-25T00:47:36.2755750Z 
+build	Setup project	2026-01-25T00:47:36.2756038Z 6 high severity vulnerabilities
+build	Setup project	2026-01-25T00:47:36.2756253Z 
+build	Setup project	2026-01-25T00:47:36.2756478Z To address issues that do not require attention, run:
+build	Setup project	2026-01-25T00:47:36.2756782Z   npm audit fix
+build	Setup project	2026-01-25T00:47:36.2756907Z 
+build	Setup project	2026-01-25T00:47:36.2757121Z To address all issues (including breaking changes), run:
+build	Setup project	2026-01-25T00:47:36.2757438Z   npm audit fix --force
+build	Setup project	2026-01-25T00:47:36.2757569Z 
+build	Setup project	2026-01-25T00:47:36.2757675Z Run `npm audit` for details.
+build	Setup project	2026-01-25T00:47:36.3668472Z ##[group]Run npm install --no-save --force --ignore-scripts \
+build	Setup project	2026-01-25T00:47:36.3669143Z [36;1mnpm install --no-save --force --ignore-scripts \[0m
+build	Setup project	2026-01-25T00:47:36.3669476Z [36;1m  @rollup/rollup-linux-x64-gnu@4.53.3 \[0m
+build	Setup project	2026-01-25T00:47:36.3669786Z [36;1m  @tailwindcss/oxide-linux-x64-gnu@4.1.17[0m
+build	Setup project	2026-01-25T00:47:36.3701346Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Setup project	2026-01-25T00:47:36.3701699Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:36.4475755Z npm warn using --force Recommended protections disabled.
+build	Setup project	2026-01-25T00:47:38.1233887Z 
+build	Setup project	2026-01-25T00:47:38.1235082Z added 2 packages, changed 2 packages, and audited 1396 packages in 2s
+build	Setup project	2026-01-25T00:47:38.1235654Z 
+build	Setup project	2026-01-25T00:47:38.1235918Z 333 packages are looking for funding
+build	Setup project	2026-01-25T00:47:38.1236951Z   run `npm fund` for details
+build	Setup project	2026-01-25T00:47:38.1413154Z 
+build	Setup project	2026-01-25T00:47:38.1414082Z 6 high severity vulnerabilities
+build	Setup project	2026-01-25T00:47:38.1414840Z 
+build	Setup project	2026-01-25T00:47:38.1420883Z To address issues that do not require attention, run:
+build	Setup project	2026-01-25T00:47:38.1423560Z   npm audit fix
+build	Setup project	2026-01-25T00:47:38.1423800Z 
+build	Setup project	2026-01-25T00:47:38.1424230Z To address all issues (including breaking changes), run:
+build	Setup project	2026-01-25T00:47:38.1424844Z   npm audit fix --force
+build	Setup project	2026-01-25T00:47:38.1425108Z 
+build	Setup project	2026-01-25T00:47:38.1425301Z Run `npm audit` for details.
+build	Setup project	2026-01-25T00:47:38.1622309Z ##[group]Run npm run build:packages
+build	Setup project	2026-01-25T00:47:38.1622812Z [36;1mnpm run build:packages[0m
+build	Setup project	2026-01-25T00:47:38.1669206Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Setup project	2026-01-25T00:47:38.1669839Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:38.2610098Z 
+build	Setup project	2026-01-25T00:47:38.2610686Z > automaker@0.12.0rc build:packages
+build	Setup project	2026-01-25T00:47:38.2613456Z > npm run build -w @automaker/types && npm run build -w @automaker/platform && npm run build -w @automaker/utils && npm run build -w @automaker/prompts -w @automaker/model-resolver -w @automaker/dependency-resolver && npm run build -w @automaker/git-utils
+build	Setup project	2026-01-25T00:47:38.2614587Z 
+build	Setup project	2026-01-25T00:47:38.3721045Z 
+build	Setup project	2026-01-25T00:47:38.3721616Z > @automaker/types@1.0.0 build
+build	Setup project	2026-01-25T00:47:38.3722052Z > tsc
+build	Setup project	2026-01-25T00:47:38.3722168Z 
+build	Setup project	2026-01-25T00:47:39.5675503Z 
+build	Setup project	2026-01-25T00:47:39.5676113Z > @automaker/platform@1.0.0 build
+build	Setup project	2026-01-25T00:47:39.5676560Z > tsc
+build	Setup project	2026-01-25T00:47:39.5676724Z 
+build	Setup project	2026-01-25T00:47:40.9116055Z 
+build	Setup project	2026-01-25T00:47:40.9116920Z > @automaker/utils@1.0.0 build
+build	Setup project	2026-01-25T00:47:40.9117700Z > tsc
+build	Setup project	2026-01-25T00:47:40.9118154Z 
+build	Setup project	2026-01-25T00:47:42.1360252Z 
+build	Setup project	2026-01-25T00:47:42.1360859Z > @automaker/prompts@1.0.0 build
+build	Setup project	2026-01-25T00:47:42.1361396Z > tsc
+build	Setup project	2026-01-25T00:47:42.1361553Z 
+build	Setup project	2026-01-25T00:47:42.9610759Z 
+build	Setup project	2026-01-25T00:47:42.9611392Z > @automaker/model-resolver@1.0.0 build
+build	Setup project	2026-01-25T00:47:42.9611999Z > tsc
+build	Setup project	2026-01-25T00:47:42.9612175Z 
+build	Setup project	2026-01-25T00:47:43.6702846Z 
+build	Setup project	2026-01-25T00:47:43.6703548Z > @automaker/dependency-resolver@1.0.0 build
+build	Setup project	2026-01-25T00:47:43.6704076Z > tsc
+build	Setup project	2026-01-25T00:47:43.6704261Z 
+build	Setup project	2026-01-25T00:47:44.5556687Z 
+build	Setup project	2026-01-25T00:47:44.5557531Z > @automaker/git-utils@1.0.0 build
+build	Setup project	2026-01-25T00:47:44.5558083Z > tsc
+build	Setup project	2026-01-25T00:47:44.5558295Z 
+build	Setup project	2026-01-25T00:47:45.3840649Z ##[group]Run npm rebuild node-pty
+build	Setup project	2026-01-25T00:47:45.3840985Z [36;1mnpm rebuild node-pty[0m
+build	Setup project	2026-01-25T00:47:45.3872041Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Setup project	2026-01-25T00:47:45.3872372Z ##[endgroup]
+build	Setup project	2026-01-25T00:47:51.6355110Z rebuilt dependencies successfully
+build	Run build:electron (dir only - faster CI)	﻿2026-01-25T00:47:51.6527174Z ##[group]Run npm run build:electron:dir
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.6527641Z [36;1mnpm run build:electron:dir[0m
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.6560171Z shell: /usr/bin/bash -e {0}
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.6560415Z ##[endgroup]
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.7477301Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.7477920Z > automaker@0.12.0rc build:electron:dir
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.7478980Z > npm run build:packages && npm run build:electron:dir --workspace=apps/ui
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.7479513Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.8400817Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.8401234Z > automaker@0.12.0rc build:packages
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.8402662Z > npm run build -w @automaker/types && npm run build -w @automaker/platform && npm run build -w @automaker/utils && npm run build -w @automaker/prompts -w @automaker/model-resolver -w @automaker/dependency-resolver && npm run build -w @automaker/git-utils
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.8403663Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.9545502Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.9546109Z > @automaker/types@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.9546663Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:51.9546865Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:53.0353418Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:53.0354058Z > @automaker/platform@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:53.0354457Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:53.0354569Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:54.3549320Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:54.3550002Z > @automaker/utils@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:54.3550609Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:54.3550827Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:55.4691135Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:55.4692016Z > @automaker/prompts@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:55.4692744Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:55.4692964Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.2827384Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.2828118Z > @automaker/model-resolver@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.2828821Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.2828996Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.9955359Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.9956037Z > @automaker/dependency-resolver@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.9956587Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:56.9956760Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:57.8745889Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:57.8746615Z > @automaker/git-utils@1.0.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:57.8746965Z > tsc
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:57.8747076Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8113470Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8114323Z > @automaker/ui@0.12.0 build:electron:dir
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8115161Z > node scripts/prepare-server.mjs && vite build && electron-builder --dir
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8115561Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8414439Z 🔧 Preparing server for Electron bundling...
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8414988Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.8417085Z 📦 Building server TypeScript...
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.9604349Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.9604901Z > @automaker/server@0.12.0 build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.9605340Z > tsc && npm run copy-assets
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:47:58.9605536Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7501309Z ##[error]src/routes/metrics.ts(2,32): error TS2307: Cannot find module '../../services/telemetry-store.js' or its corresponding type declarations.
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7864178Z npm error Lifecycle script `build` failed with error:
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7864791Z npm error code 2
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7865399Z npm error path /home/runner/work/automaker/automaker/apps/server
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7865968Z npm error workspace @automaker/server@0.12.0
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7866931Z npm error location /home/runner/work/automaker/automaker/apps/server
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7867760Z npm error command failed
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7868377Z npm error command sh -c tsc && npm run copy-assets
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7929637Z node:internal/errors:983
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7930138Z   const err = new Error(message);
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7930582Z               ^
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7930793Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7931057Z Error: Command failed: npm run build
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7931634Z     at genericNodeError (node:internal/errors:983:15)
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7932017Z     at wrappedFn (node:internal/errors:537:14)
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7932399Z     at checkExecSyncError (node:child_process:916:11)
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7932783Z     at execSync (node:child_process:988:15)
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7933284Z     at file:///home/runner/work/automaker/automaker/apps/ui/scripts/prepare-server.mjs:44:1
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7933838Z     at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7934366Z     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7935398Z     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7935819Z   status: 2,
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7936005Z   signal: null,
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7936231Z   output: [ null, null, null ],
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7936473Z   pid: 2689,
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7936656Z   stdout: null,
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7936843Z   stderr: null
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7937020Z }
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7937121Z 
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7937200Z Node.js v22.22.0
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7980727Z npm error Lifecycle script `build:electron:dir` failed with error:
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7981471Z npm error code 1
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7982125Z npm error path /home/runner/work/automaker/automaker/apps/ui
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7983540Z npm error workspace @automaker/ui@0.12.0
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7984375Z npm error location /home/runner/work/automaker/automaker/apps/ui
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7985090Z npm error command failed
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.7986095Z npm error command sh -c node scripts/prepare-server.mjs && vite build && electron-builder --dir
+build	Run build:electron (dir only - faster CI)	2026-01-25T00:48:05.8108148Z ##[error]Process completed with exit code 1.
+build	Post Setup project	﻿2026-01-25T00:48:05.8210556Z Post job cleanup.
+build	Post Checkout code	﻿2026-01-25T00:48:05.8284316Z Post job cleanup.
+build	Post Checkout code	2026-01-25T00:48:05.9209190Z [command]/usr/bin/git version
+build	Post Checkout code	2026-01-25T00:48:05.9244631Z git version 2.52.0
+build	Post Checkout code	2026-01-25T00:48:05.9282077Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/f74bb511-ebe3-4432-91ca-0f0920c0f911/.gitconfig'
+build	Post Checkout code	2026-01-25T00:48:05.9291605Z Temporarily overriding HOME='/home/runner/work/_temp/f74bb511-ebe3-4432-91ca-0f0920c0f911' before making global git config changes
+build	Post Checkout code	2026-01-25T00:48:05.9293195Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Checkout code	2026-01-25T00:48:05.9297631Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/automaker/automaker
+build	Post Checkout code	2026-01-25T00:48:05.9334236Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Post Checkout code	2026-01-25T00:48:05.9367045Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Post Checkout code	2026-01-25T00:48:05.9603902Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Checkout code	2026-01-25T00:48:05.9625811Z http.https://github.com/.extraheader
+build	Post Checkout code	2026-01-25T00:48:05.9639432Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	Post Checkout code	2026-01-25T00:48:05.9672623Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Post Checkout code	2026-01-25T00:48:05.9915396Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Post Checkout code	2026-01-25T00:48:05.9948722Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Complete job	﻿2026-01-25T00:48:06.0318866Z Cleaning up orphan processes

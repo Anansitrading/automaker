@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { TelemetryStore } from '../../services/telemetry-store.js';
+import { TelemetryStore } from '../services/telemetry/telemetry-store.js';
 import { createLogger } from '@automaker/utils';
 
 const router = Router();

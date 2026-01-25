@@ -4,7 +4,7 @@ import { SpriteApiClient } from './sprite-api-client.js';
 import { LocalSpriteProvider } from './local-sprite-provider.js';
 import { SpriteProvider } from '../interfaces/sprite-provider.js';
 import type { Sprite, SpriteConfig, Checkpoint, ExecResult } from './sprite-api-client.js';
-import { TelemetryStore } from './telemetry-store.js';
+import { TelemetryStore } from './telemetry/telemetry-store.js';
 
 const logger = createLogger('SpriteService');
 

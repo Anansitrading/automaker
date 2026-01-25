@@ -1,0 +1,415 @@
+test	Set up job	﻿2026-01-25T00:47:09.0948244Z Current runner version: '2.331.0'
+test	Set up job	2026-01-25T00:47:09.0982832Z ##[group]Runner Image Provisioner
+test	Set up job	2026-01-25T00:47:09.0984050Z Hosted Compute Agent
+test	Set up job	2026-01-25T00:47:09.0984971Z Version: 20260115.477
+test	Set up job	2026-01-25T00:47:09.0985944Z Commit: 4b342d620503cbe250a3154040964899ea7c9b00
+test	Set up job	2026-01-25T00:47:09.0987303Z Build Date: 2026-01-15T22:32:41Z
+test	Set up job	2026-01-25T00:47:09.0988412Z Worker ID: {ac7b713b-9633-474c-aa8f-6d77cd7bba12}
+test	Set up job	2026-01-25T00:47:09.0989501Z Azure Region: eastus2
+test	Set up job	2026-01-25T00:47:09.0990289Z ##[endgroup]
+test	Set up job	2026-01-25T00:47:09.0993017Z ##[group]Operating System
+test	Set up job	2026-01-25T00:47:09.0993919Z Ubuntu
+test	Set up job	2026-01-25T00:47:09.0994612Z 24.04.3
+test	Set up job	2026-01-25T00:47:09.0995355Z LTS
+test	Set up job	2026-01-25T00:47:09.0996277Z ##[endgroup]
+test	Set up job	2026-01-25T00:47:09.0997049Z ##[group]Runner Image
+test	Set up job	2026-01-25T00:47:09.0998098Z Image: ubuntu-24.04
+test	Set up job	2026-01-25T00:47:09.0998872Z Version: 20260119.4.1
+test	Set up job	2026-01-25T00:47:09.1000421Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260119.4/images/ubuntu/Ubuntu2404-Readme.md
+test	Set up job	2026-01-25T00:47:09.1003205Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260119.4
+test	Set up job	2026-01-25T00:47:09.1004832Z ##[endgroup]
+test	Set up job	2026-01-25T00:47:09.1009435Z ##[group]GITHUB_TOKEN Permissions
+test	Set up job	2026-01-25T00:47:09.1012232Z Actions: write
+test	Set up job	2026-01-25T00:47:09.1013145Z ArtifactMetadata: write
+test	Set up job	2026-01-25T00:47:09.1013993Z Attestations: write
+test	Set up job	2026-01-25T00:47:09.1014920Z Checks: write
+test	Set up job	2026-01-25T00:47:09.1015624Z Contents: write
+test	Set up job	2026-01-25T00:47:09.1016662Z Deployments: write
+test	Set up job	2026-01-25T00:47:09.1017539Z Discussions: write
+test	Set up job	2026-01-25T00:47:09.1018347Z Issues: write
+test	Set up job	2026-01-25T00:47:09.1019026Z Metadata: read
+test	Set up job	2026-01-25T00:47:09.1019929Z Models: read
+test	Set up job	2026-01-25T00:47:09.1020704Z Packages: write
+test	Set up job	2026-01-25T00:47:09.1021492Z Pages: write
+test	Set up job	2026-01-25T00:47:09.1022423Z PullRequests: write
+test	Set up job	2026-01-25T00:47:09.1023264Z RepositoryProjects: write
+test	Set up job	2026-01-25T00:47:09.1024191Z SecurityEvents: write
+test	Set up job	2026-01-25T00:47:09.1025564Z Statuses: write
+test	Set up job	2026-01-25T00:47:09.1026699Z ##[endgroup]
+test	Set up job	2026-01-25T00:47:09.1029610Z Secret source: Actions
+test	Set up job	2026-01-25T00:47:09.1031348Z Prepare workflow directory
+test	Set up job	2026-01-25T00:47:09.1496694Z Prepare all required actions
+test	Set up job	2026-01-25T00:47:09.1553570Z Getting action download info
+test	Set up job	2026-01-25T00:47:09.3857944Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+test	Set up job	2026-01-25T00:47:09.5852463Z Complete job name: test
+test	Checkout code	﻿2026-01-25T00:47:09.6661684Z ##[group]Run actions/checkout@v4
+test	Checkout code	2026-01-25T00:47:09.6662547Z with:
+test	Checkout code	2026-01-25T00:47:09.6662961Z   repository: Anansitrading/automaker
+test	Checkout code	2026-01-25T00:47:09.6663648Z   token: ***
+test	Checkout code	2026-01-25T00:47:09.6664019Z   ssh-strict: true
+test	Checkout code	2026-01-25T00:47:09.6664401Z   ssh-user: git
+test	Checkout code	2026-01-25T00:47:09.6664784Z   persist-credentials: true
+test	Checkout code	2026-01-25T00:47:09.6665212Z   clean: true
+test	Checkout code	2026-01-25T00:47:09.6665604Z   sparse-checkout-cone-mode: true
+test	Checkout code	2026-01-25T00:47:09.6666340Z   fetch-depth: 1
+test	Checkout code	2026-01-25T00:47:09.6666722Z   fetch-tags: false
+test	Checkout code	2026-01-25T00:47:09.6667114Z   show-progress: true
+test	Checkout code	2026-01-25T00:47:09.6667510Z   lfs: false
+test	Checkout code	2026-01-25T00:47:09.6667885Z   submodules: false
+test	Checkout code	2026-01-25T00:47:09.6668274Z   set-safe-directory: true
+test	Checkout code	2026-01-25T00:47:09.6668938Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:09.7773372Z Syncing repository: Anansitrading/automaker
+test	Checkout code	2026-01-25T00:47:09.7775403Z ##[group]Getting Git version info
+test	Checkout code	2026-01-25T00:47:09.7776635Z Working directory is '/home/runner/work/automaker/automaker'
+test	Checkout code	2026-01-25T00:47:09.7777630Z [command]/usr/bin/git version
+test	Checkout code	2026-01-25T00:47:09.7860156Z git version 2.52.0
+test	Checkout code	2026-01-25T00:47:09.7887066Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:09.7901569Z Temporarily overriding HOME='/home/runner/work/_temp/3cf69464-1bda-435e-9393-14c75f37e320' before making global git config changes
+test	Checkout code	2026-01-25T00:47:09.7903028Z Adding repository directory to the temporary git global config as a safe directory
+test	Checkout code	2026-01-25T00:47:09.7913999Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/automaker/automaker
+test	Checkout code	2026-01-25T00:47:09.7958261Z Deleting the contents of '/home/runner/work/automaker/automaker'
+test	Checkout code	2026-01-25T00:47:09.7962119Z ##[group]Initializing the repository
+test	Checkout code	2026-01-25T00:47:09.7966232Z [command]/usr/bin/git init /home/runner/work/automaker/automaker
+test	Checkout code	2026-01-25T00:47:09.8111454Z hint: Using 'master' as the name for the initial branch. This default branch name
+test	Checkout code	2026-01-25T00:47:09.8113238Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test	Checkout code	2026-01-25T00:47:09.8114746Z hint: to use in all of your new repositories, which will suppress this warning,
+test	Checkout code	2026-01-25T00:47:09.8116207Z hint: call:
+test	Checkout code	2026-01-25T00:47:09.8116797Z hint:
+test	Checkout code	2026-01-25T00:47:09.8117462Z hint: 	git config --global init.defaultBranch <name>
+test	Checkout code	2026-01-25T00:47:09.8118078Z hint:
+test	Checkout code	2026-01-25T00:47:09.8118702Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test	Checkout code	2026-01-25T00:47:09.8119724Z hint: 'development'. The just-created branch can be renamed via this command:
+test	Checkout code	2026-01-25T00:47:09.8120459Z hint:
+test	Checkout code	2026-01-25T00:47:09.8120838Z hint: 	git branch -m <name>
+test	Checkout code	2026-01-25T00:47:09.8121287Z hint:
+test	Checkout code	2026-01-25T00:47:09.8122275Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test	Checkout code	2026-01-25T00:47:09.8123589Z Initialized empty Git repository in /home/runner/work/automaker/automaker/.git/
+test	Checkout code	2026-01-25T00:47:09.8128828Z [command]/usr/bin/git remote add origin https://github.com/Anansitrading/automaker
+test	Checkout code	2026-01-25T00:47:09.8166325Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:09.8167098Z ##[group]Disabling automatic garbage collection
+test	Checkout code	2026-01-25T00:47:09.8170270Z [command]/usr/bin/git config --local gc.auto 0
+test	Checkout code	2026-01-25T00:47:09.8199588Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:09.8200268Z ##[group]Setting up auth
+test	Checkout code	2026-01-25T00:47:09.8206712Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Checkout code	2026-01-25T00:47:09.8239233Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Checkout code	2026-01-25T00:47:09.8610619Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Checkout code	2026-01-25T00:47:09.8642686Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Checkout code	2026-01-25T00:47:09.8868062Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Checkout code	2026-01-25T00:47:09.8899420Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Checkout code	2026-01-25T00:47:09.9134294Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test	Checkout code	2026-01-25T00:47:09.9171255Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:09.9172099Z ##[group]Fetching the repository
+test	Checkout code	2026-01-25T00:47:09.9180670Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +7c668744efd58bc4a1a4d3bb283ff113083c8334:refs/remotes/origin/main
+test	Checkout code	2026-01-25T00:47:10.7529925Z From https://github.com/Anansitrading/automaker
+test	Checkout code	2026-01-25T00:47:10.7532360Z  * [new ref]         7c668744efd58bc4a1a4d3bb283ff113083c8334 -> origin/main
+test	Checkout code	2026-01-25T00:47:10.7565084Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:10.7566609Z ##[group]Determining the checkout info
+test	Checkout code	2026-01-25T00:47:10.7568116Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:10.7572012Z [command]/usr/bin/git sparse-checkout disable
+test	Checkout code	2026-01-25T00:47:10.7614692Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test	Checkout code	2026-01-25T00:47:10.7640743Z ##[group]Checking out the ref
+test	Checkout code	2026-01-25T00:47:10.7646250Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+test	Checkout code	2026-01-25T00:47:10.9791349Z Switched to a new branch 'main'
+test	Checkout code	2026-01-25T00:47:10.9793382Z branch 'main' set up to track 'origin/main'.
+test	Checkout code	2026-01-25T00:47:10.9812762Z ##[endgroup]
+test	Checkout code	2026-01-25T00:47:10.9850649Z [command]/usr/bin/git log -1 --format=%H
+test	Checkout code	2026-01-25T00:47:10.9872986Z 7c668744efd58bc4a1a4d3bb283ff113083c8334
+test	Setup project	﻿2026-01-25T00:47:11.0171833Z Prepare all required actions
+test	Setup project	2026-01-25T00:47:11.0172611Z Getting action download info
+test	Setup project	2026-01-25T00:47:11.1354656Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+test	Setup project	2026-01-25T00:47:11.2469184Z ##[group]Run ./.github/actions/setup-project
+test	Setup project	2026-01-25T00:47:11.2469578Z with:
+test	Setup project	2026-01-25T00:47:11.2469791Z   check-lockfile: true
+test	Setup project	2026-01-25T00:47:11.2470053Z   rebuild-node-pty-path: apps/server
+test	Setup project	2026-01-25T00:47:11.2470341Z   node-version: 22
+test	Setup project	2026-01-25T00:47:11.2470568Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:11.2604337Z ##[group]Run actions/setup-node@v4
+test	Setup project	2026-01-25T00:47:11.2604688Z with:
+test	Setup project	2026-01-25T00:47:11.2604897Z   node-version: 22
+test	Setup project	2026-01-25T00:47:11.2605114Z   cache: npm
+test	Setup project	2026-01-25T00:47:11.2605358Z   cache-dependency-path: package-lock.json
+test	Setup project	2026-01-25T00:47:11.2605670Z   always-auth: false
+test	Setup project	2026-01-25T00:47:11.2605913Z   check-latest: false
+test	Setup project	2026-01-25T00:47:11.2606469Z   token: ***
+test	Setup project	2026-01-25T00:47:11.2606681Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:11.4435834Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+test	Setup project	2026-01-25T00:47:11.4443480Z ##[group]Environment details
+test	Setup project	2026-01-25T00:47:13.7965701Z node: v22.22.0
+test	Setup project	2026-01-25T00:47:13.7966475Z npm: 10.9.4
+test	Setup project	2026-01-25T00:47:13.7966769Z yarn: 1.22.22
+test	Setup project	2026-01-25T00:47:13.7967903Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:13.7996221Z [command]/opt/hostedtoolcache/node/22.22.0/x64/bin/npm config get cache
+test	Setup project	2026-01-25T00:47:14.0347268Z /home/runner/.npm
+test	Setup project	2026-01-25T00:47:14.1523143Z npm cache is not found
+test	Setup project	2026-01-25T00:47:14.1745936Z ##[group]Run npm run lint:lockfile
+test	Setup project	2026-01-25T00:47:14.1746591Z [36;1mnpm run lint:lockfile[0m
+test	Setup project	2026-01-25T00:47:14.1793749Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test	Setup project	2026-01-25T00:47:14.1794106Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:14.3150931Z 
+test	Setup project	2026-01-25T00:47:14.3160112Z > automaker@0.12.0rc lint:lockfile
+test	Setup project	2026-01-25T00:47:14.3160715Z > node scripts/lint-lockfile.mjs
+test	Setup project	2026-01-25T00:47:14.3160927Z 
+test	Setup project	2026-01-25T00:47:14.3501648Z ✓ No git+ssh:// URLs found in package-lock.json
+test	Setup project	2026-01-25T00:47:14.3627847Z ##[group]Run git config --global url."https://github.com/".insteadOf "git@github.com:"
+test	Setup project	2026-01-25T00:47:14.3628539Z [36;1mgit config --global url."https://github.com/".insteadOf "git@github.com:"[0m
+test	Setup project	2026-01-25T00:47:14.3662414Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test	Setup project	2026-01-25T00:47:14.3662756Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:14.3757401Z ##[group]Run npm install --ignore-scripts --force
+test	Setup project	2026-01-25T00:47:14.3757774Z [36;1mnpm install --ignore-scripts --force[0m
+test	Setup project	2026-01-25T00:47:14.3788801Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test	Setup project	2026-01-25T00:47:14.3789142Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:14.4562239Z npm warn using --force Recommended protections disabled.
+test	Setup project	2026-01-25T00:47:18.9554237Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+test	Setup project	2026-01-25T00:47:20.6573217Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+test	Setup project	2026-01-25T00:47:20.9761574Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+test	Setup project	2026-01-25T00:47:22.3774481Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+test	Setup project	2026-01-25T00:47:23.1778494Z npm warn deprecated tar@6.2.1: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
+test	Setup project	2026-01-25T00:47:28.3554289Z npm warn deprecated tar@7.5.3: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
+test	Setup project	2026-01-25T00:47:37.7428272Z 
+test	Setup project	2026-01-25T00:47:37.7431350Z added 1384 packages, and audited 1394 packages in 23s
+test	Setup project	2026-01-25T00:47:37.7432774Z 
+test	Setup project	2026-01-25T00:47:37.7432993Z 333 packages are looking for funding
+test	Setup project	2026-01-25T00:47:37.7433393Z   run `npm fund` for details
+test	Setup project	2026-01-25T00:47:37.7630562Z 
+test	Setup project	2026-01-25T00:47:37.7631534Z 6 high severity vulnerabilities
+test	Setup project	2026-01-25T00:47:37.7632995Z 
+test	Setup project	2026-01-25T00:47:37.7633408Z To address issues that do not require attention, run:
+test	Setup project	2026-01-25T00:47:37.7633960Z   npm audit fix
+test	Setup project	2026-01-25T00:47:37.7634164Z 
+test	Setup project	2026-01-25T00:47:37.7634530Z To address all issues (including breaking changes), run:
+test	Setup project	2026-01-25T00:47:37.7635088Z   npm audit fix --force
+test	Setup project	2026-01-25T00:47:37.7635323Z 
+test	Setup project	2026-01-25T00:47:37.7635508Z Run `npm audit` for details.
+test	Setup project	2026-01-25T00:47:37.8535704Z ##[group]Run npm install --no-save --force --ignore-scripts \
+test	Setup project	2026-01-25T00:47:37.8536447Z [36;1mnpm install --no-save --force --ignore-scripts \[0m
+test	Setup project	2026-01-25T00:47:37.8536955Z [36;1m  @rollup/rollup-linux-x64-gnu@4.53.3 \[0m
+test	Setup project	2026-01-25T00:47:37.8537430Z [36;1m  @tailwindcss/oxide-linux-x64-gnu@4.1.17[0m
+test	Setup project	2026-01-25T00:47:37.8572503Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test	Setup project	2026-01-25T00:47:37.8572834Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:37.9402432Z npm warn using --force Recommended protections disabled.
+test	Setup project	2026-01-25T00:47:39.7380537Z 
+test	Setup project	2026-01-25T00:47:39.7381422Z added 2 packages, changed 2 packages, and audited 1396 packages in 2s
+test	Setup project	2026-01-25T00:47:39.7381992Z 
+test	Setup project	2026-01-25T00:47:39.7382259Z 333 packages are looking for funding
+test	Setup project	2026-01-25T00:47:39.7383120Z   run `npm fund` for details
+test	Setup project	2026-01-25T00:47:39.7574289Z 
+test	Setup project	2026-01-25T00:47:39.7575288Z 6 high severity vulnerabilities
+test	Setup project	2026-01-25T00:47:39.7575840Z 
+test	Setup project	2026-01-25T00:47:39.7576703Z To address issues that do not require attention, run:
+test	Setup project	2026-01-25T00:47:39.7578496Z   npm audit fix
+test	Setup project	2026-01-25T00:47:39.7580216Z 
+test	Setup project	2026-01-25T00:47:39.7580639Z To address all issues (including breaking changes), run:
+test	Setup project	2026-01-25T00:47:39.7581213Z   npm audit fix --force
+test	Setup project	2026-01-25T00:47:39.7581484Z 
+test	Setup project	2026-01-25T00:47:39.7581673Z Run `npm audit` for details.
+test	Setup project	2026-01-25T00:47:39.7781798Z ##[group]Run npm run build:packages
+test	Setup project	2026-01-25T00:47:39.7782120Z [36;1mnpm run build:packages[0m
+test	Setup project	2026-01-25T00:47:39.7813825Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test	Setup project	2026-01-25T00:47:39.7814172Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:39.8805521Z 
+test	Setup project	2026-01-25T00:47:39.8806560Z > automaker@0.12.0rc build:packages
+test	Setup project	2026-01-25T00:47:39.8808643Z > npm run build -w @automaker/types && npm run build -w @automaker/platform && npm run build -w @automaker/utils && npm run build -w @automaker/prompts -w @automaker/model-resolver -w @automaker/dependency-resolver && npm run build -w @automaker/git-utils
+test	Setup project	2026-01-25T00:47:39.8809938Z 
+test	Setup project	2026-01-25T00:47:39.9998677Z 
+test	Setup project	2026-01-25T00:47:39.9999321Z > @automaker/types@1.0.0 build
+test	Setup project	2026-01-25T00:47:39.9999807Z > tsc
+test	Setup project	2026-01-25T00:47:39.9999946Z 
+test	Setup project	2026-01-25T00:47:41.1971951Z 
+test	Setup project	2026-01-25T00:47:41.1972825Z > @automaker/platform@1.0.0 build
+test	Setup project	2026-01-25T00:47:41.1973396Z > tsc
+test	Setup project	2026-01-25T00:47:41.1973628Z 
+test	Setup project	2026-01-25T00:47:42.5533364Z 
+test	Setup project	2026-01-25T00:47:42.5534058Z > @automaker/utils@1.0.0 build
+test	Setup project	2026-01-25T00:47:42.5534642Z > tsc
+test	Setup project	2026-01-25T00:47:42.5534785Z 
+test	Setup project	2026-01-25T00:47:43.7921501Z 
+test	Setup project	2026-01-25T00:47:43.7922143Z > @automaker/prompts@1.0.0 build
+test	Setup project	2026-01-25T00:47:43.7922866Z > tsc
+test	Setup project	2026-01-25T00:47:43.7923050Z 
+test	Setup project	2026-01-25T00:47:44.6324469Z 
+test	Setup project	2026-01-25T00:47:44.6325093Z > @automaker/model-resolver@1.0.0 build
+test	Setup project	2026-01-25T00:47:44.6325512Z > tsc
+test	Setup project	2026-01-25T00:47:44.6325646Z 
+test	Setup project	2026-01-25T00:47:45.3629466Z 
+test	Setup project	2026-01-25T00:47:45.3630166Z > @automaker/dependency-resolver@1.0.0 build
+test	Setup project	2026-01-25T00:47:45.3630645Z > tsc
+test	Setup project	2026-01-25T00:47:45.3630767Z 
+test	Setup project	2026-01-25T00:47:46.2977218Z 
+test	Setup project	2026-01-25T00:47:46.2977999Z > @automaker/git-utils@1.0.0 build
+test	Setup project	2026-01-25T00:47:46.2978596Z > tsc
+test	Setup project	2026-01-25T00:47:46.2978816Z 
+test	Setup project	2026-01-25T00:47:47.1407826Z ##[group]Run npm rebuild node-pty
+test	Setup project	2026-01-25T00:47:47.1408124Z [36;1mnpm rebuild node-pty[0m
+test	Setup project	2026-01-25T00:47:47.1439524Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+test	Setup project	2026-01-25T00:47:47.1439871Z ##[endgroup]
+test	Setup project	2026-01-25T00:47:53.8457548Z rebuilt dependencies successfully
+test	Run package tests	﻿2026-01-25T00:47:53.8649054Z ##[group]Run npm run test:packages
+test	Run package tests	2026-01-25T00:47:53.8649378Z [36;1mnpm run test:packages[0m
+test	Run package tests	2026-01-25T00:47:53.8681254Z shell: /usr/bin/bash -e {0}
+test	Run package tests	2026-01-25T00:47:53.8681514Z env:
+test	Run package tests	2026-01-25T00:47:53.8681688Z   NODE_ENV: test
+test	Run package tests	2026-01-25T00:47:53.8681888Z ##[endgroup]
+test	Run package tests	2026-01-25T00:47:53.9685404Z 
+test	Run package tests	2026-01-25T00:47:53.9686262Z > automaker@0.12.0rc test:packages
+test	Run package tests	2026-01-25T00:47:53.9686997Z > vitest run --project='!server'
+test	Run package tests	2026-01-25T00:47:53.9687316Z 
+test	Run package tests	2026-01-25T00:47:54.3172175Z 
+test	Run package tests	2026-01-25T00:47:54.3174617Z [1m[46m RUN [49m[22m [36mv4.0.16 [39m[90m/home/runner/work/automaker/automaker[39m
+test	Run package tests	2026-01-25T00:47:54.3175199Z 
+test	Run package tests	2026-01-25T00:47:54.6682551Z  [32m✓[39m [30m[46m dependency-resolver [49m[39m tests/resolver.test.ts [2m([22m[2m48 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:54.8120893Z  [32m✓[39m [30m[45m model-resolver [49m[39m tests/resolver.test.ts [2m([22m[2m62 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:54.9907256Z [90mstderr[2m | tests/diff.test.ts[2m > [22m[2mdiff.ts[2m > [22m[2mgenerateSyntheticDiffForNewFile[2m > [22m[2mshould handle file not found error
+test	Run package tests	2026-01-25T00:47:54.9910615Z [22m[39m[31mERROR[0m [34m[GitUtils][0m Failed to generate synthetic diff for /tmp/git-utils-test-E8dETS/nonexistent.txt: Error: ENOENT: no such file or directory, stat '/tmp/git-utils-test-E8dETS/nonexistent.txt'
+test	Run package tests	2026-01-25T00:47:54.9912700Z [90m    at Object.stat (node:internal/fs/promises:1029:18)[39m
+test	Run package tests	2026-01-25T00:47:54.9913934Z     at [90m/home/runner/work/automaker/automaker/[39mlibs/platform/dist/secure-fs.js:92:24 {
+test	Run package tests	2026-01-25T00:47:54.9914886Z   errno: [33m-2[39m,
+test	Run package tests	2026-01-25T00:47:54.9915356Z   code: [32m'ENOENT'[39m,
+test	Run package tests	2026-01-25T00:47:54.9915856Z   syscall: [32m'stat'[39m,
+test	Run package tests	2026-01-25T00:47:54.9916952Z   path: [32m'/tmp/git-utils-test-E8dETS/nonexistent.txt'[39m
+test	Run package tests	2026-01-25T00:47:54.9917525Z }
+test	Run package tests	2026-01-25T00:47:54.9917700Z 
+test	Run package tests	2026-01-25T00:47:55.0081383Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2minitAllowedPaths[2m > [22m[2mshould load ALLOWED_ROOT_DIRECTORY if set
+test	Run package tests	2026-01-25T00:47:55.0083170Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /projects
+test	Run package tests	2026-01-25T00:47:55.0083656Z 
+test	Run package tests	2026-01-25T00:47:55.0097973Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2minitAllowedPaths[2m > [22m[2mshould load DATA_DIR if set
+test	Run package tests	2026-01-25T00:47:55.0100224Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0126742Z [Security] ✓ DATA_DIR configured: /data/directory
+test	Run package tests	2026-01-25T00:47:55.0127612Z 
+test	Run package tests	2026-01-25T00:47:55.0129543Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2minitAllowedPaths[2m > [22m[2mshould load both ALLOWED_ROOT_DIRECTORY and DATA_DIR if both set
+test	Run package tests	2026-01-25T00:47:55.0131568Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /projects
+test	Run package tests	2026-01-25T00:47:55.0132824Z [Security] ✓ DATA_DIR configured: /app/data
+test	Run package tests	2026-01-25T00:47:55.0133485Z 
+test	Run package tests	2026-01-25T00:47:55.0135138Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2minitAllowedPaths[2m > [22m[2mshould handle missing environment variables gracefully
+test	Run package tests	2026-01-25T00:47:55.0137872Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0138474Z 
+test	Run package tests	2026-01-25T00:47:55.0169798Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2misPathAllowed[2m > [22m[2mshould allow paths within ALLOWED_ROOT_DIRECTORY
+test	Run package tests	2026-01-25T00:47:55.0171818Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /allowed
+test	Run package tests	2026-01-25T00:47:55.0172695Z 
+test	Run package tests	2026-01-25T00:47:55.0174209Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2misPathAllowed[2m > [22m[2mshould deny paths outside ALLOWED_ROOT_DIRECTORY
+test	Run package tests	2026-01-25T00:47:55.0183359Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /allowed
+test	Run package tests	2026-01-25T00:47:55.0184123Z 
+test	Run package tests	2026-01-25T00:47:55.0186247Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2misPathAllowed[2m > [22m[2mshould always allow DATA_DIR paths
+test	Run package tests	2026-01-25T00:47:55.0188446Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /projects
+test	Run package tests	2026-01-25T00:47:55.0189672Z [Security] ✓ DATA_DIR configured: /app/data
+test	Run package tests	2026-01-25T00:47:55.0190644Z 
+test	Run package tests	2026-01-25T00:47:55.0213223Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2misPathAllowed[2m > [22m[2mshould allow all paths when no restrictions configured
+test	Run package tests	2026-01-25T00:47:55.0221215Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0221849Z 
+test	Run package tests	2026-01-25T00:47:55.0223236Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2misPathAllowed[2m > [22m[2mshould allow all paths when only DATA_DIR is configured
+test	Run package tests	2026-01-25T00:47:55.0224984Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0226314Z [Security] ✓ DATA_DIR configured: /data
+test	Run package tests	2026-01-25T00:47:55.0226684Z 
+test	Run package tests	2026-01-25T00:47:55.0239806Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mvalidatePath[2m > [22m[2mshould return resolved path for allowed paths
+test	Run package tests	2026-01-25T00:47:55.0243415Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /allowed
+test	Run package tests	2026-01-25T00:47:55.0247336Z 
+test	Run package tests	2026-01-25T00:47:55.0252526Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mvalidatePath[2m > [22m[2mshould throw error for paths outside allowed directories
+test	Run package tests	2026-01-25T00:47:55.0255506Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /allowed
+test	Run package tests	2026-01-25T00:47:55.0267000Z 
+test	Run package tests	2026-01-25T00:47:55.0268211Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mvalidatePath[2m > [22m[2mshould resolve relative paths
+test	Run package tests	2026-01-25T00:47:55.0270239Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /home/runner/work/automaker/automaker
+test	Run package tests	2026-01-25T00:47:55.0270927Z 
+test	Run package tests	2026-01-25T00:47:55.0286779Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mvalidatePath[2m > [22m[2mshould not throw when no restrictions configured
+test	Run package tests	2026-01-25T00:47:55.0288704Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0289285Z 
+test	Run package tests	2026-01-25T00:47:55.0325107Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mgetAllowedPaths[2m > [22m[2mshould return empty array when no paths configured
+test	Run package tests	2026-01-25T00:47:55.0328319Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0328949Z 
+test	Run package tests	2026-01-25T00:47:55.0337604Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mgetAllowedPaths[2m > [22m[2mshould return configured paths
+test	Run package tests	2026-01-25T00:47:55.0341675Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /projects
+test	Run package tests	2026-01-25T00:47:55.0342546Z [Security] ✓ DATA_DIR configured: /data
+test	Run package tests	2026-01-25T00:47:55.0342954Z 
+test	Run package tests	2026-01-25T00:47:55.0344356Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mgetAllowedRootDirectory[2m > [22m[2mshould return the configured root directory
+test	Run package tests	2026-01-25T00:47:55.0346154Z [22m[39m[Security] ✓ ALLOWED_ROOT_DIRECTORY configured: /projects
+test	Run package tests	2026-01-25T00:47:55.0346638Z 
+test	Run package tests	2026-01-25T00:47:55.0348002Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mgetAllowedRootDirectory[2m > [22m[2mshould return null when not configured
+test	Run package tests	2026-01-25T00:47:55.0349714Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0350290Z 
+test	Run package tests	2026-01-25T00:47:55.0351493Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mgetDataDirectory[2m > [22m[2mshould return the configured data directory
+test	Run package tests	2026-01-25T00:47:55.0353331Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0354205Z [Security] ✓ DATA_DIR configured: /data
+test	Run package tests	2026-01-25T00:47:55.0354598Z 
+test	Run package tests	2026-01-25T00:47:55.0355281Z [90mstdout[2m | tests/security.test.ts[2m > [22m[2msecurity.ts[2m > [22m[2mgetDataDirectory[2m > [22m[2mshould return null when not configured
+test	Run package tests	2026-01-25T00:47:55.0356526Z [22m[39m[Security] ⚠️  ALLOWED_ROOT_DIRECTORY not set - allowing access to all paths
+test	Run package tests	2026-01-25T00:47:55.0356870Z 
+test	Run package tests	2026-01-25T00:47:55.0368376Z  [32m✓[39m [30m[46m platform [49m[39m tests/security.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.0447630Z  [32m✓[39m [30m[42m git-utils [49m[39m tests/diff.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 84[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.2483284Z  [32m✓[39m [30m[46m platform [49m[39m tests/paths.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.2644306Z  [32m✓[39m [30m[46m platform [49m[39m tests/node-finder.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.3272951Z  [32m✓[39m [30m[46m platform [49m[39m tests/subprocess.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 421[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.4111634Z  [32m✓[39m [30m[46m platform [49m[39m tests/secure-fs.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.5411764Z  [32m✓[39m [30m[42m prompts [49m[39m tests/enhancement.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.6729023Z  [32m✓[39m [30m[45m utils [49m[39m tests/error-handler.test.ts [2m([22m[2m64 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.7494340Z  [32m✓[39m [30m[45m utils [49m[39m tests/atomic-writer.test.ts [2m([22m[2m38 tests[22m[2m)[22m[32m 114[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.8836295Z  [32m✓[39m [30m[45m utils [49m[39m tests/logger.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.9477821Z [90mstderr[2m | tests/prompt-builder.test.ts[2m > [22m[2mprompt-builder.ts[2m > [22m[2mbuildPromptWithImages - edge cases[2m > [22m[2mshould skip failed image loads
+test	Run package tests	2026-01-25T00:47:55.9480878Z [22m[39m[ImageHandler] Failed to load image /tmp/prompt-builder-test-smQMiQ/nonexistent.png: Error: ENOENT: no such file or directory, open '/tmp/prompt-builder-test-smQMiQ/nonexistent.png'
+test	Run package tests	2026-01-25T00:47:55.9482733Z [90m    at open (node:internal/fs/promises:636:25)[39m
+test	Run package tests	2026-01-25T00:47:55.9483675Z [90m    at Object.readFile (node:internal/fs/promises:1235:14)[39m
+test	Run package tests	2026-01-25T00:47:55.9484810Z     at [90m/home/runner/work/automaker/automaker/[39mlibs/platform/dist/secure-fs.js:92:24 {
+test	Run package tests	2026-01-25T00:47:55.9485648Z   errno: [33m-2[39m,
+test	Run package tests	2026-01-25T00:47:55.9486253Z   code: [32m'ENOENT'[39m,
+test	Run package tests	2026-01-25T00:47:55.9486735Z   syscall: [32m'open'[39m,
+test	Run package tests	2026-01-25T00:47:55.9487472Z   path: [32m'/tmp/prompt-builder-test-smQMiQ/nonexistent.png'[39m
+test	Run package tests	2026-01-25T00:47:55.9488049Z }
+test	Run package tests	2026-01-25T00:47:55.9488210Z 
+test	Run package tests	2026-01-25T00:47:55.9559628Z  [32m✓[39m [30m[45m utils [49m[39m tests/conversation-utils.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:55.9582872Z  [32m✓[39m [30m[45m utils [49m[39m tests/prompt-builder.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:56.1239038Z [90mstderr[2m | tests/image-handler.test.ts[2m > [22m[2mimage-handler.ts[2m > [22m[2mconvertImagesToContentBlocks[2m > [22m[2mshould skip images that fail to load
+test	Run package tests	2026-01-25T00:47:56.1244545Z [22m[39m[ImageHandler] Failed to load image /tmp/image-handler-test-DbEPZR/nonexistent.png: Error: ENOENT: no such file or directory, open '/tmp/image-handler-test-DbEPZR/nonexistent.png'
+test	Run package tests	2026-01-25T00:47:56.1245545Z [90m    at open (node:internal/fs/promises:636:25)[39m
+test	Run package tests	2026-01-25T00:47:56.1246438Z [90m    at Object.readFile (node:internal/fs/promises:1235:14)[39m
+test	Run package tests	2026-01-25T00:47:56.1247563Z     at [90m/home/runner/work/automaker/automaker/[39mlibs/platform/dist/secure-fs.js:92:24 {
+test	Run package tests	2026-01-25T00:47:56.1248982Z   errno: [33m-2[39m,
+test	Run package tests	2026-01-25T00:47:56.1249399Z   code: [32m'ENOENT'[39m,
+test	Run package tests	2026-01-25T00:47:56.1249827Z   syscall: [32m'open'[39m,
+test	Run package tests	2026-01-25T00:47:56.1250531Z   path: [32m'/tmp/image-handler-test-DbEPZR/nonexistent.png'[39m
+test	Run package tests	2026-01-25T00:47:56.1251085Z }
+test	Run package tests	2026-01-25T00:47:56.1251233Z 
+test	Run package tests	2026-01-25T00:47:56.1357881Z  [32m✓[39m [30m[45m utils [49m[39m tests/image-handler.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:56.1747044Z  [32m✓[39m [30m[45m utils [49m[39m tests/fs-utils.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+test	Run package tests	2026-01-25T00:47:56.1777975Z 
+test	Run package tests	2026-01-25T00:47:56.1783875Z [2m Test Files [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+test	Run package tests	2026-01-25T00:47:56.1785218Z [2m      Tests [22m [1m[32m492 passed[39m[22m[90m (492)[39m
+test	Run package tests	2026-01-25T00:47:56.1786253Z [2m   Start at [22m 00:47:54
+test	Run package tests	2026-01-25T00:47:56.1788119Z [2m   Duration [22m 1.85s[2m (transform 1.17s, setup 0ms, import 1.80s, tests 995ms, environment 3ms)[22m
+test	Run package tests	2026-01-25T00:47:56.1789053Z 
+test	Build server	﻿2026-01-25T00:47:56.2114986Z ##[group]Run npm run build --workspace=apps/server
+test	Build server	2026-01-25T00:47:56.2115394Z [36;1mnpm run build --workspace=apps/server[0m
+test	Build server	2026-01-25T00:47:56.2148323Z shell: /usr/bin/bash -e {0}
+test	Build server	2026-01-25T00:47:56.2148588Z ##[endgroup]
+test	Build server	2026-01-25T00:47:56.3349377Z 
+test	Build server	2026-01-25T00:47:56.3349812Z > @automaker/server@0.12.0 build
+test	Build server	2026-01-25T00:47:56.3350291Z > tsc && npm run copy-assets
+test	Build server	2026-01-25T00:47:56.3350537Z 
+test	Build server	2026-01-25T00:48:03.7036688Z ##[error]src/routes/metrics.ts(2,32): error TS2307: Cannot find module '../../services/telemetry-store.js' or its corresponding type declarations.
+test	Build server	2026-01-25T00:48:03.7431699Z npm error Lifecycle script `build` failed with error:
+test	Build server	2026-01-25T00:48:03.7432380Z npm error code 2
+test	Build server	2026-01-25T00:48:03.7433069Z npm error path /home/runner/work/automaker/automaker/apps/server
+test	Build server	2026-01-25T00:48:03.7433844Z npm error workspace @automaker/server@0.12.0
+test	Build server	2026-01-25T00:48:03.7434688Z npm error location /home/runner/work/automaker/automaker/apps/server
+test	Build server	2026-01-25T00:48:03.7435410Z npm error command failed
+test	Build server	2026-01-25T00:48:03.7436375Z npm error command sh -c tsc && npm run copy-assets
+test	Build server	2026-01-25T00:48:03.7513848Z ##[error]Process completed with exit code 2.
+test	Print server logs on failure	﻿2026-01-25T00:48:03.7563768Z ##[group]Run cat server.log
+test	Print server logs on failure	2026-01-25T00:48:03.7564067Z [36;1mcat server.log[0m
+test	Print server logs on failure	2026-01-25T00:48:03.7597384Z shell: /usr/bin/bash -e {0}
+test	Print server logs on failure	2026-01-25T00:48:03.7618554Z ##[endgroup]
+test	Print server logs on failure	2026-01-25T00:48:03.7684363Z cat: server.log: No such file or directory
+test	Print server logs on failure	2026-01-25T00:48:03.7689229Z ##[error]Process completed with exit code 1.
+test	Post Setup project	﻿2026-01-25T00:48:03.7782044Z Post job cleanup.
+test	Post Checkout code	﻿2026-01-25T00:48:03.7857667Z Post job cleanup.
+test	Post Checkout code	2026-01-25T00:48:03.8839466Z [command]/usr/bin/git version
+test	Post Checkout code	2026-01-25T00:48:03.8878763Z git version 2.52.0
+test	Post Checkout code	2026-01-25T00:48:03.8919367Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/78265d5a-c3e3-44e1-b6aa-da7766d67492/.gitconfig'
+test	Post Checkout code	2026-01-25T00:48:03.8929306Z Temporarily overriding HOME='/home/runner/work/_temp/78265d5a-c3e3-44e1-b6aa-da7766d67492' before making global git config changes
+test	Post Checkout code	2026-01-25T00:48:03.8930809Z Adding repository directory to the temporary git global config as a safe directory
+test	Post Checkout code	2026-01-25T00:48:03.8944635Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/automaker/automaker
+test	Post Checkout code	2026-01-25T00:48:03.8986520Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Post Checkout code	2026-01-25T00:48:03.9021354Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Post Checkout code	2026-01-25T00:48:03.9297327Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Post Checkout code	2026-01-25T00:48:03.9324056Z http.https://github.com/.extraheader
+test	Post Checkout code	2026-01-25T00:48:03.9341826Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+test	Post Checkout code	2026-01-25T00:48:03.9379908Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Post Checkout code	2026-01-25T00:48:03.9638650Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Post Checkout code	2026-01-25T00:48:03.9682170Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Complete job	﻿2026-01-25T00:48:04.0077558Z Cleaning up orphan processes

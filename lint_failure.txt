@@ -1,0 +1,429 @@
+
+> automaker@0.12.0rc lint
+> npm run lint --workspace=apps/ui
+
+
+> @automaker/ui@0.12.0 lint
+> npx eslint
+
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\eslint.config.mjs
+   99:9  error  Duplicate key 'File'                   no-dupe-keys
+  100:9  error  Duplicate key 'FileList'               no-dupe-keys
+  101:9  error  Duplicate key 'FileReader'             no-dupe-keys
+  102:9  error  Duplicate key 'Blob'                   no-dupe-keys
+  112:9  error  Duplicate key 'WebSocket'              no-dupe-keys
+  117:9  error  Duplicate key 'Navigator'              no-dupe-keys
+  122:9  error  Duplicate key 'atob'                   no-dupe-keys
+  124:9  error  Duplicate key 'prompt'                 no-dupe-keys
+  125:9  error  Duplicate key 'confirm'                no-dupe-keys
+  127:9  error  Duplicate key 'getComputedStyle'       no-dupe-keys
+  128:9  error  Duplicate key 'requestAnimationFrame'  no-dupe-keys
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\scripts\kill-test-servers.mjs
+  32:20  error  'error' is defined but never used  no-unused-vars
+  36:40  error  'setTimeout' is not defined        no-undef
+  47:38  error  'setTimeout' is not defined        no-undef
+  50:12  error  'error' is defined but never used  no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\dialogs\file-browser-dialog.tsx
+  43:7  warning  'MAX_RECENT_FOLDERS' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\dialogs\new-project-modal.tsx
+  202:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\layout\project-switcher\components\edit-project-dialog.tsx
+  28:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\layout\project-switcher\components\notification-bell.tsx
+  6:31  warning  'ExternalLink' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\layout\project-switcher\components\project-context-menu.tsx
+  202:10  warning  'removeConfirmed' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\onboarding\onboarding-wizard.tsx
+  112:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  157:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\sandbox\SandboxActions.tsx
+  4:38  warning  'Sun' is defined but never used       @typescript-eslint/no-unused-vars
+  4:43  warning  'RotateCw' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\sandbox\SandboxCard.tsx
+  5:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+  6:10  warning  'Trash2' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\shared\model-override-trigger.tsx
+   2:10  warning  'Settings2' is defined but never used           @typescript-eslint/no-unused-vars
+   4:10  warning  'Button' is defined but never used              @typescript-eslint/no-unused-vars
+   5:10  warning  'Popover' is defined but never used             @typescript-eslint/no-unused-vars
+   5:19  warning  'PopoverContent' is defined but never used      @typescript-eslint/no-unused-vars
+   5:35  warning  'PopoverTrigger' is defined but never used      @typescript-eslint/no-unused-vars
+  77:9   warning  'iconSizes' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\shared\use-model-override.ts
+  43:10  warning  'extractModel' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\ui\collapsible.tsx
+  1:13  warning  'React' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\ui\log-viewer.tsx
+   1:29  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+  24:3   warning  'Play' is defined but never used       @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\ui\task-progress-panel.tsx
+   38:10  warning  'currentTaskId' is assigned a value but never used                       @typescript-eslint/no-unused-vars
+   55:22  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+   55:39  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+   57:46  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+   63:60  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  238:33  warning  'index' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\usage-popover.tsx
+  327:9  warning  'maxPercentage' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  328:9  warning  'isStale' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\agent-tools-view.tsx
+   9:3   warning  'FileText' is defined but never used       @typescript-eslint/no-unused-vars
+  10:3   warning  'FolderOpen' is defined but never used     @typescript-eslint/no-unused-vars
+  32:11  warning  'ToolExecution' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\agent-view.tsx
+  66:12  warning  'agentError' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\analysis-view.tsx
+  647:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view.tsx
+    32:15  warning  'ModelAlias' is defined but never used                                 @typescript-eslint/no-unused-vars
+    32:27  warning  'CursorModelId' is defined but never used                              @typescript-eslint/no-unused-vars
+   103:5   warning  'useWorktrees' is assigned a value but never used                      @typescript-eslint/no-unused-vars
+   117:9   warning  'showInitScriptIndicatorByProject' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   122:9   warning  'shortcuts' is assigned a value but never used                         @typescript-eslint/no-unused-vars
+   335:57  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   338:67  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+   471:5   warning  'handleCommitFeature' is assigned a value but never used               @typescript-eslint/no-unused-vars
+   472:5   warning  'handleMergeFeature' is assigned a value but never used                @typescript-eslint/no-unused-vars
+  1228:55  warning  Unexpected any. Specify a different type                               @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\components\kanban-card\agent-info-panel.tsx
+  152:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\components\kanban-card\card-actions.tsx
+  38:3  warning  'hasContext' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\components\kanban-card\card-badges.tsx
+  89:5  warning  Unused eslint-disable directive (no problems were reported from 'no-undef')
+  95:7  warning  Unused eslint-disable directive (no problems were reported from 'no-undef')
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\components\list-view\list-view.tsx
+  11:10  warning  'getStatusLabel' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\dialogs\add-feature-dialog.tsx
+  32:3  warning  'ModelAlias' is defined but never used         @typescript-eslint/no-unused-vars
+  41:3  warning  'TestingTabContent' is defined but never used  @typescript-eslint/no-unused-vars
+  59:7  warning  'logger' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\dialogs\agent-output-modal.tsx
+   78:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  290:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\dialogs\edit-feature-dialog.tsx
+  29:46  warning  'useAppStore' is defined but never used        @typescript-eslint/no-unused-vars
+  32:3   warning  'TestingTabContent' is defined but never used  @typescript-eslint/no-unused-vars
+  46:7   warning  'logger' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\dialogs\follow-up-dialog.tsx
+   1:10  warning  'useState' is defined but never used         @typescript-eslint/no-unused-vars
+  24:8   warning  'EnhancementMode' is defined but never used  @typescript-eslint/no-unused-vars
+  28:7   warning  'logger' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\dialogs\mass-edit-dialog.tsx
+  208:9  warning  'modelAllowsThinking' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\hooks\use-board-column-features.ts
+  48:11  warning  'effectiveWorktreePath' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\hooks\use-board-drag-drop.ts
+  21:3  warning  'currentProject' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\hooks\use-board-effects.ts
+  13:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  37:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\hooks\use-board-features.ts
+   2:23  warning  'Feature' is defined but never used       @typescript-eslint/no-unused-vars
+  62:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\kanban-board.tsx
+  13:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\shared\model-constants.ts
+  1:15  warning  'ModelAlias' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\shared\model-selector.tsx
+   7:15  warning  'ModelAlias' is defined but never used           @typescript-eslint/no-unused-vars
+  10:47  warning  'stripProviderPrefix' is defined but never used  @typescript-eslint/no-unused-vars
+  74:53  warning  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\board-view\worktree-panel\worktree-panel.tsx
+  52:5  warning  'getWorktreeKey' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\chat-history.tsx
+  65:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\context-view.tsx
+  108:9  warning  'getImagesPath' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\github-issues-view.tsx
+  44:9  warning  'validationModelString' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\github-issues-view\hooks\use-issue-validation.ts
+  22:10  warning  'extractModel' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\graph-view-page.tsx
+   14:3   warning  'useBoardBackground' is defined but never used           @typescript-eslint/no-unused-vars
+  230:64  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  231:10  warning  'followUpPreviewMap' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\graph-view\components\graph-controls.tsx
+  10:3  warning  'GitBranch' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\graph-view\hooks\use-graph-layout.ts
+  3:10  warning  'Node' is defined but never used  @typescript-eslint/no-unused-vars
+  3:16  warning  'Edge' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\interview-view.tsx
+  326:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\notifications-view.tsx
+   5:10  warning  'useEffect' is defined but never used                  @typescript-eslint/no-unused-vars
+  11:46  warning  'CardHeader' is defined but never used                 @typescript-eslint/no-unused-vars
+  44:5   warning  'setNotifications' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  45:5   warning  'setUnreadCount' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\project-settings-view\project-identity-section.tsx
+  100:18  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view.tsx
+  60:5  warning  'autoLoadClaudeMd' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  61:5  warning  'setAutoLoadClaudeMd' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\api-keys\api-keys-section.tsx
+  16:50  warning  'codexAuthStatus' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  47:14  warning  'error' is defined but never used                     @typescript-eslint/no-unused-vars
+  75:14  warning  'error' is defined but never used                     @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\api-keys\claude-usage-section.tsx
+  99:9  warning  'isStale' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\components\settings-navigation.tsx
+    6:31  warning  'NavigationGroup' is defined but never used                                       @typescript-eslint/no-unused-vars
+  190:3   warning  'currentProject' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\hooks\use-cursor-permissions.ts
+  71:16  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  92:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\mcp-servers\dialogs\security-warning-dialog.tsx
+  30:3  warning  'serverName' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\model-defaults\phase-model-selector.tsx
+   407:30  warning  'cursor' is assigned a value but never used                                     @typescript-eslint/no-unused-vars
+  1518:47  warning  'sectionIndex' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\providers\claude-settings-tab\subagents-section.tsx
+  35:5  warning  'hasProject' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\providers\codex-settings-tab.tsx
+  19:5  warning  'codexSandboxMode' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  20:5  warning  'codexApprovalPolicy' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  26:5  warning  'setCodexSandboxMode' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  27:5  warning  'setCodexApprovalPolicy' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  30:5  warning  'setEnabledCodexModels' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\providers\cursor-settings-tab.tsx
+  47:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  58:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\providers\opencode-model-configuration.tsx
+   25:3  warning  'DeepSeekIcon' is defined but never used               @typescript-eslint/no-unused-vars
+   26:3  warning  'QwenIcon' is defined but never used                   @typescript-eslint/no-unused-vars
+   27:3  warning  'NovaIcon' is defined but never used                   @typescript-eslint/no-unused-vars
+   30:3  warning  'MistralIcon' is defined but never used                @typescript-eslint/no-unused-vars
+   31:3  warning  'MetaIcon' is defined but never used                   @typescript-eslint/no-unused-vars
+  229:9  warning  'hasDynamicModels' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\settings-view\providers\opencode-settings-tab.tsx
+  244:16  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  258:16  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  272:16  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\setup-view\hooks\use-cli-installation.ts
+   9:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\setup-view\hooks\use-cli-status.ts
+  6:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  7:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\setup-view\steps\claude-setup-step.tsx
+   41:11  warning  'ClaudeSetupContentProps' is defined but never used      @typescript-eslint/no-unused-vars
+  275:9   warning  'getAuthMethodLabel' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\setup-view\steps\cli-setup-step.tsx
+  76:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\setup-view\steps\providers-setup-step.tsx
+  225:9  warning  'isApiKeyAuthenticated' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  799:9  warning  'hasApiKey' is assigned a value but never used              @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\spec-view.tsx
+  24:57  warning  'setHasChanges' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\terminal-view.tsx
+    1:51  warning  'useMemo' is defined but never used                        @typescript-eslint/no-unused-vars
+   60:51  warning  'getAuthHeaders' is defined but never used                 @typescript-eslint/no-unused-vars
+  235:5   warning  'setTerminalTabLayout' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\components\views\terminal-view\terminal-panel.tsx
+   47:3   warning  'DEFAULT_TERMINAL_FONT' is defined but never used  @typescript-eslint/no-unused-vars
+  103:6   warning  'XWebLinksAddon' is defined but never used         @typescript-eslint/no-unused-vars
+  670:19  warning  'lineNum' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  671:19  warning  'colNum' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\hooks\use-electron-agent.ts
+  164:46  warning  'addToQueue' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\hooks\use-settings-migration.ts
+  54:7  warning  'LOCALSTORAGE_KEYS' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\hooks\useSandbox.ts
+  3:15  warning  'Sprite' is defined but never used      @typescript-eslint/no-unused-vars
+  3:37  warning  'Checkpoint' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\lib\electron.ts
+   124:46  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   141:32  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   142:39  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+   857:11  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  1059:23  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  1139:14  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  1146:7   warning  'getMockElectronAPI' is assigned a value but never used                                      @typescript-eslint/no-unused-vars
+  1524:45  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  1525:42  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  1568:43  warning  'apiKey' is defined but never used. Allowed unused args must match /^_/u                     @typescript-eslint/no-unused-vars
+  1623:25  warning  'callback' is defined but never used. Allowed unused args must match /^_/u                   @typescript-eslint/no-unused-vars
+  1628:22  warning  'callback' is defined but never used. Allowed unused args must match /^_/u                   @typescript-eslint/no-unused-vars
+  1772:54  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+  1991:27  warning  'callback' is defined but never used. Allowed unused args must match /^_/u                   @typescript-eslint/no-unused-vars
+  2043:25  warning  'callback' is defined but never used. Allowed unused args must match /^_/u                   @typescript-eslint/no-unused-vars
+  2186:67  warning  'useWorktrees' is defined but never used. Allowed unused args must match /^_/u               @typescript-eslint/no-unused-vars
+  2322:7   warning  'useWorktrees' is defined but never used. Allowed unused args must match /^_/u               @typescript-eslint/no-unused-vars
+  2897:3   warning  'generateFeatures' is assigned a value but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  3120:39  warning  Unexpected any. Specify a different type                                                     @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\lib\file-picker.ts
+   65:39  warning  'e' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  167:19  warning  Unexpected any. Specify a different type                             @typescript-eslint/no-explicit-any
+  270:19  warning  Unexpected any. Specify a different type                             @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\lib\http-api-client.ts
+    39:3   warning  'Sprite' is defined but never used        @typescript-eslint/no-unused-vars
+    41:3   warning  'ExecResult' is defined but never used    @typescript-eslint/no-unused-vars
+   143:75  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   221:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   238:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  1759:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  2476:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  2480:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  2487:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  2500:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  2655:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\lib\utils.ts
+  4:10  warning  'CODEX_MODEL_CONFIG_MAP' is defined but never used  @typescript-eslint/no-unused-vars
+  4:34  warning  'codexModelHasThinking' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\lib\workspace-config.ts
+  38:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\main.ts
+   31:3  warning  'electronAppReadFileSync' is defined but never used      @typescript-eslint/no-unused-vars
+   32:3  warning  'electronAppStatSync' is defined but never used          @typescript-eslint/no-unused-vars
+  111:7  warning  'SIDEBAR_EXPANDED' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  112:7  warning  'SIDEBAR_COLLAPSED' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  114:7  warning  'MIN_WIDTH_EXPANDED' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\routes\__root.tsx
+  170:5  warning  'sidebarOpen' is assigned a value but never used                                                      @typescript-eslint/no-unused-vars
+  171:5  warning  'toggleSidebar' is assigned a value but never used                                                    @typescript-eslint/no-unused-vars
+  192:9  warning  'isBoardRoute' is assigned a value but never used                                                     @typescript-eslint/no-unused-vars
+  259:3  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  261:3  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  263:3  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\store\app-store.ts
+   163:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   163:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  3826:20  warning  '_' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\src\store\notifications-store.ts
+  65:9  warning  'get' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\agent\sandbox-console-websocket.spec.ts
+  46:23  warning  'e' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\agent\sandbox-lifecycle.spec.ts
+    8:24  warning  'request' is defined but never used                                        @typescript-eslint/no-unused-vars
+   48:5   warning  'request' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  111:58  warning  Unexpected any. Specify a different type                                   @typescript-eslint/no-explicit-any
+  125:60  warning  Unexpected any. Specify a different type                                   @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\features\feature-manual-review-flow.spec.ts
+   65:11  warning  'feature' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  106:54  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\projects\new-project-creation.spec.ts
+   9:13  warning  'path' is defined but never used                @typescript-eslint/no-unused-vars
+  16:3   warning  'waitForNetworkIdle' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\projects\open-existing-project.spec.ts
+   20:3   warning  'waitForNetworkIdle' is defined but never used  @typescript-eslint/no-unused-vars
+  103:56  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  113:16  warning  'e' is defined but never used                   @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\sandbox\sandbox.spec.ts
+  142:23  warning  'err' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui\tests\utils\project\setup.ts
+  351:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  398:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  458:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  690:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  750:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 238 problems (15 errors, 223 warnings)
+  0 errors and 5 warnings potentially fixable with the `--fix` option.
+
+npm error Lifecycle script `lint` failed with error:
+npm error code 1
+npm error path C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui
+npm error workspace @automaker/ui@0.12.0
+npm error location C:\Users\justus\.gemini\antigravity\scratch\automaker\apps\ui
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c npx eslint
