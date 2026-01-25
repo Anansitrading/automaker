@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { TelemetryStore } from '../../../src/services/telemetry-store.js';
+import { TelemetryStore } from '../../../src/services/telemetry/telemetry-store.js';
 
 describe('TelemetryStore (Prometheus)', () => {
   it('should be a singleton', () => {

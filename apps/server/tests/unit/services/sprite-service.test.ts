@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SpriteService, SpriteEvents } from '../../../src/services/sprite-service.js';
-import { TelemetryStore } from '../../../src/services/telemetry-store.js';
+import { TelemetryStore } from '../../../src/services/telemetry/telemetry-store.js';
 
 // Mock SpriteApiClient constructor
 vi.mock('../../../src/services/sprite-api-client.js', () => {
