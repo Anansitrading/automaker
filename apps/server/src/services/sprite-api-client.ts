@@ -38,13 +38,15 @@ export interface SpriteConfig {
   env?: Record<string, string>;
 }
 
+import { SpriteProvider } from '../interfaces/sprite-provider.js';
+
 /**
  * SpriteApiClient - Client for interacting with the Sprites.dev REST API
  *
  * Handles sprite lifecycle, command execution, and state management.
  * Uses axios for communication.
  */
-export class SpriteApiClient extends EventEmitter {
+export class SpriteApiClient extends EventEmitter implements SpriteProvider {
   private axiosInstance: AxiosInstance;
   private statusCache: Map<string, Sprite> = new Map();
   private token: string;

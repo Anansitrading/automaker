@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events';
 import { createLogger } from '@automaker/utils';
 import { SpriteApiClient } from './sprite-api-client.js';
+import { LocalSpriteProvider } from './local-sprite-provider.js';
+import { SpriteProvider } from '../interfaces/sprite-provider.js';
 import type { Sprite, SpriteConfig, Checkpoint, ExecResult } from './sprite-api-client.js';
 import { TelemetryStore } from './telemetry-store.js';
 
@@ -35,12 +37,20 @@ export const SpriteEvents = {
  * Wraps SpriteApiClient with additional logging, telemetry, and event handling.
  */
 export class SpriteService extends EventEmitter {
-  private client: SpriteApiClient;
+  private client: SpriteProvider;
   private telemetry: TelemetryStore;
 
   constructor() {
     super();
-    this.client = new SpriteApiClient();
+    // Choose provider based on environment variable
+    if (process.env.SPRITES_PROVIDER === 'local') {
+      logger.info('Using LocalSpriteProvider (Firecracker)');
+      this.client = new LocalSpriteProvider();
+    } else {
+      logger.info('Using SpriteApiClient (Cloud)');
+      this.client = new SpriteApiClient();
+    }
+
     this.telemetry = TelemetryStore.getInstance();
 
     // Re-emit client events with standardized names if needed,
