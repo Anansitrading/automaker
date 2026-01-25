@@ -15,7 +15,12 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { createLogger } from '@automaker/utils/logger';
 import { getHttpApiClient, waitForApiKeyInit } from '@/lib/http-api-client';
 import { setItem } from '@/lib/storage';
-import { useAppStore, type ThemeMode, THEME_STORAGE_KEY } from '@/store/app-store';
+import {
+  useAppStore,
+  type ThemeMode,
+  THEME_STORAGE_KEY,
+  type SandboxSettings,
+} from '@/store/app-store';
 import { useSetupStore } from '@/store/setup-store';
 import { useAuthStore } from '@/store/auth-store';
 import { waitForMigrationComplete, resetMigrationState } from './use-settings-migration';
@@ -74,6 +79,7 @@ const SETTINGS_FIELDS_TO_SYNC = [
   'worktreePanelCollapsed',
   'lastProjectDir',
   'recentFolders',
+  'sandboxSettings',
 ] as const;
 
 // Fields from setup store to sync
@@ -447,7 +453,9 @@ export async function refreshSettingsFromServer(): Promise<boolean> {
       return false;
     }
 
-    const serverSettings = result.settings as unknown as GlobalSettings;
+    const serverSettings = result.settings as unknown as GlobalSettings & {
+      sandboxSettings?: SandboxSettings;
+    };
     const currentAppState = useAppStore.getState();
     const validOpencodeModelIds = new Set(getAllOpencodeModelIds());
     const incomingEnabledOpencodeModels =
@@ -526,6 +534,7 @@ export async function refreshSettingsFromServer(): Promise<boolean> {
           fontFamily: serverSettings.terminalFontFamily,
         },
       }),
+      sandboxSettings: serverSettings.sandboxSettings ?? currentAppState.sandboxSettings,
     });
 
     // Also refresh setup wizard state

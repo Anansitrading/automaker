@@ -44,6 +44,28 @@ const logger = createLogger('AppStore');
 const OPENCODE_BEDROCK_PROVIDER_ID = 'amazon-bedrock';
 const OPENCODE_BEDROCK_MODEL_PREFIX = `${OPENCODE_BEDROCK_PROVIDER_ID}/`;
 
+export interface SandboxSettings {
+  enabled: boolean;
+  resourceLimits: {
+    cpu: number;
+    memory: number; // MB
+  };
+  autoHibernateTimeout: number; // Minutes, 0 to disable
+  useInAutoMode: boolean;
+  useForAgents: boolean;
+}
+
+export const DEFAULT_SANDBOX_SETTINGS: SandboxSettings = {
+  enabled: true,
+  resourceLimits: {
+    cpu: 2,
+    memory: 2048,
+  },
+  autoHibernateTimeout: 30,
+  useInAutoMode: true,
+  useForAgents: true,
+};
+
 // Re-export types for convenience
 export type {
   ModelAlias,
@@ -638,6 +660,8 @@ export interface AppState {
   // Kanban Card Display Settings
   boardViewMode: BoardViewMode; // Whether to show kanban or dependency graph view
 
+  sandboxSettings: SandboxSettings;
+
   // Feature Default Settings
   defaultSkipTests: boolean; // Default value for skip tests when creating new features
   enableDependencyBlocking: boolean; // When true, show blocked badges and warnings for features with incomplete dependencies (default: true)
@@ -1076,6 +1100,9 @@ export interface AppActions {
   setPlanUseSelectedWorktreeBranch: (enabled: boolean) => Promise<void>;
   setAddFeatureUseSelectedWorktreeBranch: (enabled: boolean) => Promise<void>;
 
+  // Sandbox Settings actions
+  setSandboxSettings: (settings: Partial<SandboxSettings>) => void;
+
   // Worktree Settings actions
   setUseWorktrees: (enabled: boolean) => void;
   setCurrentWorktree: (projectPath: string, worktreePath: string | null, branch: string) => void;
@@ -1380,6 +1407,7 @@ const initialState: AppState = {
   autoModeActivityLog: [],
   maxConcurrency: 3, // Default to 3 concurrent agents
   boardViewMode: 'kanban', // Default to kanban view
+  sandboxSettings: DEFAULT_SANDBOX_SETTINGS,
   defaultSkipTests: true, // Default to manual verification (tests disabled)
   enableDependencyBlocking: true, // Default to enabled (show dependency blocking UI)
   skipVerificationInAutoMode: false, // Default to disabled (require dependencies to be verified)
@@ -1473,6 +1501,7 @@ const initialState: AppState = {
   lastProjectDir: '',
   recentFolders: [],
   initScriptState: {},
+  sandboxSettings: DEFAULT_SANDBOX_SETTINGS,
 };
 
 export const useAppStore = create<AppState & AppActions>()((set, get) => ({
@@ -1762,7 +1791,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
         : p
     );
     set({ projects: updatedProjects });
-    // Also update currentProject if it matches
     if (currentProject?.id === projectId) {
       set({
         currentProject: {
@@ -1777,16 +1805,15 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
     const { projects, currentProject } = get();
     const updatedProjects = projects.map((p) => (p.id === projectId ? { ...p, name } : p));
     set({ projects: updatedProjects });
-    // Also update currentProject if it matches
     if (currentProject?.id === projectId) {
-      set({
-        currentProject: {
-          ...currentProject,
-          name,
-        },
-      });
+      set({ currentProject: { ...currentProject, name } });
     }
   },
+
+  setSandboxSettings: (settings) =>
+    set((state) => ({
+      sandboxSettings: { ...state.sandboxSettings, ...settings },
+    })),
 
   // View actions
   setCurrentView: (view) => set({ currentView: view }),

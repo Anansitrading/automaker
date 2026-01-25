@@ -18,6 +18,7 @@ export type SettingsViewId =
   | 'event-hooks'
   | 'defaults'
   | 'worktrees'
+  | 'sandbox'
   | 'account'
   | 'security'
   | 'developer'
