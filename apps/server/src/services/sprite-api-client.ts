@@ -22,6 +22,7 @@ export interface Checkpoint {
   spriteId: string;
   name: string;
   createdAt: string;
+  sizeBytes?: number;
 }
 
 export interface ExecResult {

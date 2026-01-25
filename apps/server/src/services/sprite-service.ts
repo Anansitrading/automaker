@@ -142,7 +142,11 @@ export class SpriteService extends EventEmitter {
       const sprite = await this.client.createSprite(config);
 
       const duration = Date.now() - start;
-      logger.info(`Sprite '${config.name}' created in ${duration}ms`);
+      logger.info('sandbox.created', {
+        sandboxId: sprite.id,
+        name: sprite.name,
+        config,
+      });
       this.telemetry.recordHistogram('sprites.create.duration', duration);
 
       // Emit standardized sandbox:created event
@@ -165,6 +169,11 @@ export class SpriteService extends EventEmitter {
   async deleteSprite(id: string, reason: string = 'manual'): Promise<void> {
     try {
       await this.client.deleteSprite(id);
+
+      logger.info('sandbox.destroyed', {
+        sandboxId: id,
+        reason,
+      });
 
       // Emit standardized sandbox:destroyed event
       this.emit(SpriteEvents.SANDBOX_DESTROYED, {
@@ -210,7 +219,14 @@ export class SpriteService extends EventEmitter {
     const start = Date.now();
     try {
       await this.client.restoreCheckpoint(id, checkpointId);
-      this.telemetry.recordHistogram('sprites.restore.duration', Date.now() - start);
+      const durationMs = Date.now() - start;
+      this.telemetry.recordHistogram('sprites.restore.duration', durationMs);
+
+      logger.info('checkpoint.restored', {
+        sandboxId: id,
+        checkpointId,
+        durationMs,
+      });
 
       // Standardized checkpoint:restored event is already emitted by helper, or we can emit here.
       // SpriteApiClient emits 'spriteRestored', which SpriteService listens to and emits 'sprite:restored' (SpriteEvents.RESTORED).
@@ -236,8 +252,16 @@ export class SpriteService extends EventEmitter {
     const start = Date.now();
     try {
       const checkpoint = await this.client.createCheckpoint(id, comment);
-      this.telemetry.recordHistogram('sprites.checkpoint.duration', Date.now() - start);
+      const durationMs = Date.now() - start;
+      this.telemetry.recordHistogram('sprites.checkpoint.duration', durationMs);
       this.telemetry.recordCounter('sprites.checkpoint.created');
+
+      logger.info('checkpoint.created', {
+        sandboxId: id,
+        checkpointId: checkpoint.id,
+        durationMs,
+        sizeBytes: checkpoint.sizeBytes,
+      });
 
       // Emit standardized checkpoint:created event
       this.emit(SpriteEvents.CHECKPOINT_CREATED, {
@@ -275,7 +299,15 @@ export class SpriteService extends EventEmitter {
     const start = Date.now();
     try {
       const result = await this.client.execCommand(id, command, timeout);
-      this.telemetry.recordHistogram('sprites.exec.duration', Date.now() - start);
+      const durationMs = Date.now() - start;
+      this.telemetry.recordHistogram('sprites.exec.duration', durationMs);
+
+      logger.info('exec.completed', {
+        sandboxId: id,
+        command,
+        exitCode: result.exitCode,
+        durationMs,
+      });
 
       // Emit standardized exec:output event
       this.emit(SpriteEvents.EXEC_OUTPUT, {
