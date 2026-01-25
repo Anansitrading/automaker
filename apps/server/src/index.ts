@@ -89,6 +89,7 @@ import { createOnboardingRoutes } from './routes/onboarding/index.js';
 import { getTelemetryService } from './services/telemetry/telemetry-service.js';
 import { SpriteService } from './services/sprite-service.js';
 import { createSpriteRoutes } from './routes/sprite/index.js';
+import metricsRouter from './routes/metrics.js';
 
 // Load environment variables
 dotenv.config();
@@ -298,6 +299,7 @@ setInterval(() => {
 app.use('/api', requireJsonContentType);
 
 // Mount API routes - health, auth, and setup are unauthenticated
+app.use('/metrics', metricsRouter);
 app.use('/api/health', createHealthRoutes());
 app.use('/api/auth', createAuthRoutes());
 app.use('/api/setup', createSetupRoutes());

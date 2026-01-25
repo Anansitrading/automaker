@@ -237,6 +237,7 @@ export class SpriteService extends EventEmitter {
     try {
       const checkpoint = await this.client.createCheckpoint(id, comment);
       this.telemetry.recordHistogram('sprites.checkpoint.duration', Date.now() - start);
+      this.telemetry.recordCounter('sprites.checkpoint.created');
 
       // Emit standardized checkpoint:created event
       this.emit(SpriteEvents.CHECKPOINT_CREATED, {
