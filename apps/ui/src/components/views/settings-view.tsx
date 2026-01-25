@@ -26,7 +26,6 @@ import {
 } from './settings-view/providers';
 import { SandboxSettingsSection } from './settings-view/sandbox/sandbox-section';
 import { MCPServersSection } from './settings-view/mcp-servers';
-import { MCPServersSection } from './settings-view/mcp-servers';
 import { PromptCustomizationSection } from './settings-view/prompts';
 import { EventHooksSection } from './settings-view/event-hooks';
 import { ImportExportDialog } from './settings-view/components/import-export-dialog';

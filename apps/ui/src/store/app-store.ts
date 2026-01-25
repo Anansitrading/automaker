@@ -1501,7 +1501,6 @@ const initialState: AppState = {
   lastProjectDir: '',
   recentFolders: [],
   initScriptState: {},
-  sandboxSettings: DEFAULT_SANDBOX_SETTINGS,
 };
 
 export const useAppStore = create<AppState & AppActions>()((set, get) => ({
