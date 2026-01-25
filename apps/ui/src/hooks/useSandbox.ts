@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
 import { getElectronAPI } from '@/lib/electron';
 import type { Sprite, SpriteConfig, Checkpoint } from '@/lib/electron';
 import { toast } from 'sonner';
@@ -162,5 +163,111 @@ export function useCheckpointOperations() {
   return {
     createCheckpoint,
     restoreCheckpoint,
+  };
+}
+
+/**
+ * Hook to manage WebSocket console connection
+ */
+export function useConsoleSocket(
+  sandboxName: string | null,
+  options?: { cols?: number; rows?: number }
+) {
+  const [socket, setSocket] = React.useState<WebSocket | null>(null);
+  const [status, setStatus] = React.useState<'disconnected' | 'connecting' | 'connected' | 'error'>(
+    'disconnected'
+  );
+  const [error, setError] = React.useState<string | null>(null);
+  const [sessionId, setSessionId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!sandboxName) {
+      return;
+    }
+
+    setStatus('connecting');
+    setError(null);
+
+    const cols = options?.cols || 80;
+    const rows = options?.rows || 24;
+
+    // Construct WebSocket URL
+    const wsUrl = `ws://localhost:3008/api/sandboxes/${sandboxName}/console?cols=${cols}&rows=${rows}`;
+
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      setStatus('connected');
+      setSocket(ws);
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+
+        if (message.type === 'connected') {
+          setSessionId(message.sessionId);
+        } else if (message.type === 'error') {
+          setError(message.message);
+          setStatus('error');
+        }
+      } catch (e) {
+        // Non-JSON message, ignore or handle as needed
+      }
+    };
+
+    ws.onerror = (event) => {
+      setError('WebSocket connection error');
+      setStatus('error');
+    };
+
+    ws.onclose = () => {
+      setStatus('disconnected');
+      setSocket(null);
+      setSessionId(null);
+    };
+
+    setSocket(ws);
+
+    // Cleanup on unmount or when sandboxName changes
+    return () => {
+      if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+        ws.close();
+      }
+    };
+  }, [sandboxName, options?.cols, options?.rows]);
+
+  const sendInput = React.useCallback(
+    (data: string) => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'input', data }));
+      }
+    },
+    [socket]
+  );
+
+  const resize = React.useCallback(
+    (cols: number, rows: number) => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'resize', cols, rows }));
+      }
+    },
+    [socket]
+  );
+
+  const disconnect = React.useCallback(() => {
+    if (socket) {
+      socket.close();
+    }
+  }, [socket]);
+
+  return {
+    socket,
+    status,
+    error,
+    sessionId,
+    sendInput,
+    resize,
+    disconnect,
   };
 }
