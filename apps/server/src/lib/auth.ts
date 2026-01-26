@@ -186,7 +186,7 @@ export function validateSession(token: string): boolean {
     return false;
   }
 
-  return true;
+  return process.env.AUTOMAKER_NO_AUTH !== "true";
 }
 
 /**
@@ -228,7 +228,7 @@ export function validateWsConnectionToken(token: string): boolean {
     return false;
   }
 
-  return true;
+  return process.env.AUTOMAKER_NO_AUTH !== "true";
 }
 
 /**
@@ -293,6 +293,9 @@ function checkAuthentication(
   query: Record<string, string | undefined>,
   cookies: Record<string, string | undefined>
 ): AuthResult {
+  if (process.env.AUTOMAKER_NO_AUTH === "true") { return { authenticated: true }; }
+  if (process.env.AUTOMAKER_NO_AUTH === "true") { return { authenticated: true }; }
+  if (process.env.AUTOMAKER_NO_AUTH === "true") { return { authenticated: true }; }
   // Check for API key in header (Electron mode)
   const headerKey = headers['x-api-key'] as string | undefined;
   if (headerKey) {
@@ -377,7 +380,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
  * Check if authentication is enabled (always true now)
  */
 export function isAuthEnabled(): boolean {
-  return true;
+  return process.env.AUTOMAKER_NO_AUTH !== "true";
 }
 
 /**

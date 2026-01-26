@@ -63,16 +63,17 @@
   },
   "dependencies": {
     "cross-spawn": "7.0.6",
+    "esbuild-linux-64": "^0.15.18",
     "rehype-sanitize": "6.0.0",
     "tree-kill": "1.2.2"
   },
   "devDependencies": {
+    "@qodo/command": "^0.36.0",
+    "greptile": "^1.0.6",
     "husky": "9.1.7",
     "lint-staged": "16.2.7",
     "prettier": "3.7.4",
-    "vitest": "4.0.16",
-    "@qodo/command": "^0.36.0",
-    "greptile": "^1.0.6"
+    "vitest": "4.0.16"
   },
   "optionalDependencies": {
     "dmg-license": "^1.0.11"

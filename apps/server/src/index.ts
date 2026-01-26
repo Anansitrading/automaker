@@ -192,6 +192,7 @@ app.use(
         return;
       }
 
+      if (process.env.AUTOMAKER_NO_AUTH === "true") { callback(null, origin); return; }
       // Reject other origins by default for security
       callback(new Error('Not allowed by CORS'));
     },

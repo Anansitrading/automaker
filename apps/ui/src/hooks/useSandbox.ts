@@ -192,7 +192,7 @@ export function useConsoleSocket(
     const rows = options?.rows || 24;
 
     // Construct WebSocket URL
-    const wsUrl = `ws://localhost:3008/api/sandboxes/${sandboxName}/console?cols=${cols}&rows=${rows}`;
+    const wsUrl = `wss://${window.location.host}/api/sandboxes/${sandboxName}/console?cols=${cols}&rows=${rows}`;
 
     const ws = new WebSocket(wsUrl);
 

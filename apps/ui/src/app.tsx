@@ -61,7 +61,7 @@ export default function App() {
   return (
     <>
       <RouterProvider router={router} />
-      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+      {/* {showSplash && <SplashScreen onComplete={handleSplashComplete} />} */}
     </>
   );
 }

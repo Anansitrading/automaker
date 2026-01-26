@@ -164,7 +164,8 @@ const getServerUrl = (): string => {
   }
   // Use VITE_HOSTNAME if set, otherwise default to localhost
   const hostname = import.meta.env.VITE_HOSTNAME || 'localhost';
-  return `http://${hostname}:3008`;
+  // PATCHED FOR SPRITE
+  return "";
 };
 
 /**
