@@ -1,4 +1,3 @@
-
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
@@ -16,7 +15,7 @@ export default defineConfig(({ mode }) => {
         generatedRouteTree: './src/routeTree.gen.ts',
       }),
       tailwindcss(),
-      react()
+      react(),
     ],
     root: 'apps/ui',
     server: {
@@ -28,24 +27,24 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
         '/socket.io': {
-            target: 'ws://localhost:3008',
-            ws: true,
+          target: 'ws://localhost:3008',
+          ws: true,
         },
         '/api/events': {
-            target: 'ws://localhost:3008',
-            ws: true,
-        }
-      }
+          target: 'ws://localhost:3008',
+          ws: true,
+        },
+      },
     },
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'apps/ui/src')
-      }
+        '@': resolve(__dirname, 'apps/ui/src'),
+      },
     },
     define: {
       'process.env.VITE_SKIP_ELECTRON': 'true',
-      '__APP_VERSION__': '0.12.0'
-    }
+      __APP_VERSION__: '0.12.0',
+    },
   };
 });
-
+// force-fix

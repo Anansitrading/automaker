@@ -165,7 +165,7 @@ const getServerUrl = (): string => {
   // Use VITE_HOSTNAME if set, otherwise default to localhost
   const hostname = import.meta.env.VITE_HOSTNAME || 'localhost';
   // PATCHED FOR SPRITE
-  return "";
+  return '';
 };
 
 /**
@@ -2696,3 +2696,4 @@ export function getHttpApiClient(): HttpApiClient {
 initApiKey().catch((error) => {
   logger.error('Failed to initialize API key:', error);
 });
+// force-fix
