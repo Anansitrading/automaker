@@ -496,7 +496,6 @@ export class SettingsService {
     projectPath: string,
     updates: Partial<ProjectSettings>
   ): Promise<ProjectSettings> {
-    await ensureProjectInitialized(projectPath);
     const settingsPath = getProjectSettingsPath(projectPath);
 
     const current = await this.getProjectSettings(projectPath);

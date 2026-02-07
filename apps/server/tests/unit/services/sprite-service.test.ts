@@ -24,7 +24,7 @@ describe('SpriteService', () => {
   let telemetry: TelemetryStore;
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
     service = new SpriteService();
     telemetry = TelemetryStore.getInstance();
 
